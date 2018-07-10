@@ -12,5 +12,44 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
+
+
+
+Route::get('/login', 'UserController@login_view');
+
+Route::get('logout', 'UserController@logout');
+
+Route::get('facebook', 'UserController@loginFacebook');
+
+Route::get('facebook/callback', 'UserController@facebookCallback');
+
+Route::get('/loginCheck', 'UserController@loginCheck');
+
+
+
+//カテゴリ登録
+Route::get('/category','BooksController@category');
+
+Route::post('/category', 'BooksController@category_insert');
+
+Route::delete('/category/{category}', 'BooksController@category_delete');
+
+Route::post('/category/{category}', 'BooksController@category_update_view');
+
+Route::post('/category_update', 'BooksController@category_update');
+
+
+//書籍の登録
+Route::get('/book','BooksController@book_register');
+
+// Route::get('/book','BooksController@book');
+
+Route::post('/book', 'BooksController@book_insert');
+
+// Route::delete('/book/{book}', 'BooksController@book_delete');
+
+// Route::post('/book/{book}', 'BooksController@book_update_view');
+
+// Route::post('/book_update', 'BooksController@book_update');
