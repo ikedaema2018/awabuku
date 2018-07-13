@@ -54,6 +54,29 @@
                         <p class="h4">書籍概要:</p>
                         <p id="BookDiscription" class="type"></p>
                     </div>
+                    <div>
+                        <p>所有者の名前を記入してください。</p>
+                        <input type="text" name="owner" value="a">
+
+                        
+                        
+                        <p>本を貸し出せますか？</p>
+                          <input type="radio" name="rental_flag" value=0>はい
+                        　<input type="radio" name="rental_flag" value=1>いいえ
+                  
+                        <p>カテゴリー一覧</p>
+                            @foreach($categories as $category)
+                            <input type="radio" name="category_id" value="{{$category->id}}">{{$category->category_name}}
+                            @endforeach
+                        </div>
+
+                        <!--ユーザーid-->
+                            <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
+                            <input type="hidden" name="life_flag" value="0">
+                    
+                    
+                    
+                    
                     
                       <button type="submit">送信</button>
 
@@ -88,23 +111,25 @@
                     $("#message").html(' <p class = "bg-warning"id = "warning" > 該当する書籍がありません。 < /p>');
                     $('#message > p').fadeOut(3000);
                 } else {
-                    $("#BookTitle").html('<input name="BookTitle" type="text" value="' + data.items[0].volumeInfo.title +
+                    $("#BookTitle").html('<input name="BookTitle" readonly="readonly" type="text" value="' + data.items[0].volumeInfo.title +
                         '">');
-                    $("#isbn10").html('<input name ="isbn10" type="number" value="' + data.items[0].volumeInfo.industryIdentifiers[
-                        0].identifier + '">');
-                    $("#isbn13").html('<input name ="isbn13" type="number" value="' + data.items[0].volumeInfo.industryIdentifiers[
+                    $("#isbn10").html('<input name ="isbn10" readonly="readonly" type="number" value="' + data.items[0].volumeInfo.industryIdentifiers[
                         1].identifier + '">');
-                    $("#BookAuthor").html('<input name="BookAuthor" type="text" value="' + data.items[0].volumeInfo.authors +
+                    $("#isbn13").html('<input name ="isbn13" readonly="readonly" type="number" value="' + data.items[0].volumeInfo.industryIdentifiers[
+                        0].identifier + '">');
+                    $("#BookAuthor").html('<input name="BookAuthor" readonly="readonly" type="text" value="' + data.items[0].volumeInfo.authors +
                         '">');
-                    $("#PublishedDate").html('<input name="PublishedDate" type="text" value="' + data.items[0].volumeInfo
+                    $("#PublishedDate").html('<input name="PublishedDate" readonly="readonly" type="text" value="' + data.items[0].volumeInfo
                         .publishedDate + '">');
-                    $("#BookDiscription").html('<input name="BookDiscription" type="text" value="' + data.items[0].volumeInfo
+                    $("#BookDiscription").html('<input name="BookDiscription" readonly="readonly" type="text" value="' + data.items[0].volumeInfo
                         .description + '">');
                     $("#BookThumbnail").html(' <img src=\"' + data.items[0].volumeInfo.imageLinks.smallThumbnail +
                         '\ " />');
                     $("#BookImage").html(' <input name="BookImage" type="hidden" value="' + data.items[0].volumeInfo.imageLinks.smallThumbnail +
                         '">');
                 }
+                
+                
             });
         });
 

@@ -11,9 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
 
 
 
@@ -50,6 +47,14 @@ Route::post('/book', 'BooksController@book_insert');
 
 // Route::delete('/book/{book}', 'BooksController@book_delete');
 
-// Route::post('/book/{book}', 'BooksController@book_update_view');
 
-// Route::post('/book_update', 'BooksController@book_update');
+Route::get('/book/{book}', 'BooksController@book_update_view');
+
+Route::post('/book_update', 'BooksController@book_update');
+
+/////カテゴリの表示
+
+Route::get('/book', 'BooksController@category_list');
+
+//TOP画面
+Route::get('/', 'BooksController@index');

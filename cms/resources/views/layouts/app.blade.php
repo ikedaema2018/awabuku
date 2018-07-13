@@ -11,7 +11,7 @@
 </head>
 <body>
     <div class="header">
-        @if (Auth::check())
+        @if (Auth::check() && Auth::user()->id == 1)
         <span>名前:{{Auth::user()->name}}さん</span>
         <span>facebookID:{{Auth::user()->facebook_id}}</span>
         <span>ID:{{Auth::user()->id}}</span>

@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('avater');
             $table->string('password')->nullable()->change();
+            $table->integer('kanri_flag')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });
