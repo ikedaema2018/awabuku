@@ -48,13 +48,19 @@ Route::post('/book', 'BooksController@book_insert');
 // Route::delete('/book/{book}', 'BooksController@book_delete');
 
 
-Route::get('/book/{book}', 'BooksController@book_update_view');
+Route::get('/book/{id}', 'BooksController@book_update_view');
 
 Route::post('/book_update', 'BooksController@book_update');
 
 /////カテゴリの表示
 
-Route::get('/book', 'BooksController@category_list');
+//変更
+//Route::get('/book', 'BooksController@category_list');
+
 
 //TOP画面
 Route::get('/', 'BooksController@index');
+
+
+//貸出機能画面
+Route::get('/rental/{isbn13}','BooksController@rental_view');

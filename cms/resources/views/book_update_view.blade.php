@@ -4,14 +4,14 @@
 
    <h1>書誌情報が登録されました。</h1>
       
-                    <p>{{ $book->id }}</p>
-                    <p>{{ $book->BookTitle }}</p>
-                    <p>{{ $book->BookAuthor }}</p>
-                    <p>{{ $book->isbn10 }}</p>
-                    <p>{{ $book->isbn13 }}</p>
-                    <p>{{ $book->PubrishedDate}}</p>
-                    <p>{{ $book->BookDiscription}}</p>
-                    <img src="{{ $book->BookImage}}"></img>
+                    <p>{{ $owner->book->id }}</p>
+                    <p>{{ $owner->book->BookTitle }}</p>
+                    <p>{{ $owner->book->BookAuthor }}</p>
+                    <p>{{ $owner->book->isbn10 }}</p>
+                    <p>{{ $owner->book->isbn13 }}</p>
+                    <p>{{ $owner->book->PubrishedDate}}</p>
+                    <p>{{ $owner->book->BookDiscription}}</p>
+                    <img src="{{ $owner->book->BookImage}}"></img>
                     
 
     <form action="{{ url('book_update') }}" method="post">
@@ -20,13 +20,13 @@
                    <div>
                      <p>訂正があり場合は下記よりお願いいたします。
                         <p>所有者の名前を記入してください。</p>
-                        <input type="text" name="owner" value="{{ $book->owner}}">
+                        <input type="text" name="owner" value="{{ $owner->owner}}">
 
                         
                         
                         <p>本を貸し出せますか？</p>
-                          <input type="radio" name="rental_flag" value="0"<?php if($book->rental_flag==0):echo 'checked="checked"';endif;?>>はい
-                        　<input type="radio" name="rental_flag" value="1"<?php if($book->rental_flag==1):echo 'checked="checked"';endif;?>>いいえ
+                          <input type="radio" name="rental_flag" value="0"<?php if($owner->rental_flag==0):echo 'checked="checked"';endif;?>>いいえ
+                        　<input type="radio" name="rental_flag" value="1"<?php if($owner->rental_flag==1):echo 'checked="checked"';endif;?>>いいえ
                   
                         <p>カテゴリー一覧</p>
                             @foreach($categories as $category)
@@ -35,12 +35,12 @@
                             @endforeach
                             
                         <p>書籍のデータを削除する。</p> 
-                          <input type="radio" name="life_flag" value="0"<?php if($book->life_flag==1):echo 'checked="checked"';endif;?>>はい
-                        　<input type="radio" name="life_flag" value="1"<?php if($book->life_flag==0):echo 'checked="checked"';endif;?>>いいえ
+                          <input type="radio" name="life_flag" value="0"<?php if($owner->life_flag==1):echo 'checked="checked"';endif;?>>はい
+                        　<input type="radio" name="life_flag" value="1"<?php if($owner->life_flag==0):echo 'checked="checked"';endif;?>>いいえ
   
                           
                 </div>
-                    1  <input type="hidden" name="id" value="{{ $book->id }}">
+                    1  <input type="hidden" name="id" value="{{ $owner->id }}">
         <button type="submit">更新する</button>
         
     </form>

@@ -56,7 +56,7 @@
                     </div>
                     <div>
                         <p>所有者の名前を記入してください。</p>
-                        <input type="text" name="owner" value="a">
+                        <input type="text" name="owner" value="">
 
                         
                         
@@ -70,7 +70,7 @@
                             @endforeach
                         </div>
 
-                        <!--ユーザーid-->
+                    
                             <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
                             <input type="hidden" name="life_flag" value="0">
                     
