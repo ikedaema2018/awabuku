@@ -4,14 +4,14 @@
 
    <h1>書誌情報が登録されました。</h1>
       
-                    <p>{{ $owner->book->id }}</p>
-                    <p>{{ $owner->book->BookTitle }}</p>
-                    <p>{{ $owner->book->BookAuthor }}</p>
-                    <p>{{ $owner->book->isbn10 }}</p>
-                    <p>{{ $owner->book->isbn13 }}</p>
-                    <p>{{ $owner->book->PubrishedDate}}</p>
-                    <p>{{ $owner->book->BookDiscription}}</p>
-                    <img src="{{ $owner->book->BookImage}}"></img>
+                    <p>{{ $owner->books->id }}</p>
+                    <p>{{ $owner->books->BookTitle }}</p>
+                    <p>{{ $owner->books->BookAuthor }}</p>
+                    <p>{{ $owner->books->isbn10 }}</p>
+                    <p>{{ $owner->books->isbn13 }}</p>
+                    <p>{{ $owner->books->PubrishedDate}}</p>
+                    <p>{{ $owner->books->BookDiscription}}</p>
+                    <img src="{{ $owner->books->BookImage}}"></img>
                     
 
     <form action="{{ url('book_update') }}" method="post">
@@ -30,8 +30,8 @@
                   
                         <p>カテゴリー一覧</p>
                             @foreach($categories as $category)
-                            <input type="radio" name="category_id" value="{{ $category->id }}" <?php if($book->category_id==$category->id):echo 'checked="checked"';endif;?>>{{$category->category_name}}
-                            <input type="hidden" name="id" value="{{ $category->id }}"/>
+                            <input type="radio" name="category_id" value="{{ $category->id }}" <?php if($owner->books->category_id==$category->id):echo 'checked="checked"';endif;?>>{{$category->category_name}}
+                            
                             @endforeach
                             
                         <p>書籍のデータを削除する。</p> 
@@ -40,7 +40,9 @@
   
                           
                 </div>
-                    1  <input type="hidden" name="id" value="{{ $owner->id }}">
+                      <input type="hidden" name="id" value="{{ $owner->id }}">
+                      <input type="hidden" name="book_id" value="{{ $owner->book_id }}">
+                      
         <button type="submit">更新する</button>
         
     </form>

@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Book extends Model
 {
     public function owners(){
-    return $this->hasMany('App\Owner');
+    return $this->hasMany('App\Owner','id','book_id');
     }
 }

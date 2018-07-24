@@ -11,36 +11,52 @@
     <p>{{ $book->isbn13 }}</p>
     <p>{{ $book->PubrishedDate}}</p>
     <p>{{ $book->BookDiscription}}</p>
-    <img src="{{ $book->BookImage}}"></img>
+    <img src="{{ $book[0]->BookImage}}"></img>
                     
 <table>
     <tr>
+        <th>本のowner</th>
         <th>貸与可否</th>
         <th>借りている人</th>
         <th>返却予定</th>
         <th>借ります！</th>
     </tr>
+    <tbody>
+
     <tr>
-        
-         <td>
-            @if ($book->rental_flag === 1)
-            <p>貸出不可</p>
-            @elseif ($book->rental_flag == 0 && $book->return_flag == 0)
-            <p>貸出可能</p>
-            @elseif ($book->rental_flag == 0 && $book->return_flag== 1)
-            <p>貸出中</p>
+            @if(isset($owners)>0)
+            @foreach($owners as $owner)
+                <td>
+                    <p>{{$book->owners->owner}}</p>
+                </td>  
+                <td>
+                    @if ($book->owners->rental_flag === 1)
+                    <p>貸出不可</p>
+                    @elseif ($book->owners->rental_flag == 0 && $book->owners->return_flag == 0)
+                    <p>貸出可能</p>
+                    @elseif ($book->owners->rental_flag == 0 && $book->owners->return_flag== 1)
+                    <p>貸出中</p>
+                    @endif
+                </td>
+                <td>
+                    
+                </td>    
+            
+            @endforeach
             @endif
+           
+            
          </td>        
-         <td><p>{{ $book->owner }}</p></td>
+         <td><p>{{ $book->owners->owner }}</p></td>
         <td></td>
         <td>
-            @if($book->rental_flag == 0)
+            @if($book->owners->rental_flag == 0)
             <a href="">本を借りる</a>
             @else
             <a href="" >--</a>
             @endif
         </td>
-    </tr>
+          </tr>
 
  
         
@@ -50,5 +66,3 @@
 
 
 
-
-@endsection

@@ -167,7 +167,7 @@ class BooksController extends Controller
         $owners->save();  
         }
        
-        return redirect('/book/'.$owners->id);
+        return redirect('/book_owner/'.$owners->id);
 
         // }else{
         //   return redirect('/book');
@@ -183,12 +183,18 @@ class BooksController extends Controller
          'categories' => $categories
          ]);
      }
+     
+     
    
        //本の登録情報をを更新viewページに飛ばす
         public function book_update_view(Owner $owner) {
         $categories = Category::orderBy('id', 'asc')->get();  
         return view('book_update_view',['owner'=>$owner])->with(["categories"=>$categories]);
     }
+    
+    
+    
+    
      // 登録した本のオーナー、貸し借りフラグ、カテゴリを更新する。
      
         public function book_update(Request $request) {
@@ -215,7 +221,7 @@ class BooksController extends Controller
         $owner->save();
 
         
-        $book = Book::find($request->id);
+        $book = Book::find($request->book_id);
         $book->category_id = $request->category_id;
         $book->save();
         return redirect('/book');        
@@ -223,9 +229,11 @@ class BooksController extends Controller
     }  
    
           //本の登録情報をレンタルviewページに飛ばす
-        public function rental_view($isbn13) {
-            $book = Book::where('isbn13', $isbn13)->first();
-        return view('rental_view', ['book'=> $book]
+        public function rental_view(Book $book) {
+         $owners= Owner::where('book_id',$book->id)->get();
+        return view('rental_view', ['book'=> $book,'owners'=>$owners]
+        // dd($book);
+        // dd($owners);
         );
     }
    

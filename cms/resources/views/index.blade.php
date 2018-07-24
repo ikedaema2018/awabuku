@@ -37,7 +37,7 @@
                                    {{$book->id}}
                               </td>
                               <td>
-                               <td><a href="{{url('/rental/'.$book->isbn13)}}">{{$book->BookTitle}}</a></td>
+                               <td><a href="{{url('/rental/'.$book->id)}}">{{$book->BookTitle}}</a></td>
                               <td>
                                    {{$book->BookAuthor}}
                               </td>
