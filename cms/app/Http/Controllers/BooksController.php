@@ -240,12 +240,35 @@ class BooksController extends Controller
    
    //本を借りる
         public function book_rental(Request $request) {
+            
+        $expired = Rental::where('user_id', $request->user_id)
+        ->where('return_flag',1)
+        //返却期限を過ぎているものをselect
+        ->where('return_day', '<', date("Y-m-d 00:00:00"))
+        ->count();
+        
+        
+        if ($expired >0) {
+            $categories = Category::orderBy('id', 'asc')
+        ->get();
+        
+        $b = Book::all();
+        $books = $b->groupBy('category_id');
+        
+        return view('index', [
+            'categories' => $categories,
+            'books' => $books,
+            'alert' => "alert"
+        ]);
+        }
+            
+            
         $validator = Validator::make($request->all(), [
           'user_id' => 'required',
           'owner_id' => 'required',
         ]);
         if ($validator->fails()){
-            return redirect('/index/')
+            return redirect('/')
             ->withInput()
             ->withError($validator);
         }
@@ -278,6 +301,15 @@ class BooksController extends Controller
             $owners = Owner::where('user_id', Auth::user()->id)->get();
             $rentals = Rental::where('user_id', Auth::user()->id)
             ->where('return_flag',1)
+            //返却期限を過ぎていないものをselect
+            ->where('return_day', '>=', date("Y-m-d 00:00:00"))
+            ->orderBy('updated_at', 'desc')
+            ->get();
+            
+            $expired_rentals = Rental::where('user_id', Auth::user()->id)
+            ->where('return_flag',1)
+            //返却期限を過ぎているものをselect
+            ->where('return_day', '<', date("Y-m-d 00:00:00"))
             ->orderBy('updated_at', 'desc')
             ->get();
            
@@ -285,6 +317,7 @@ class BooksController extends Controller
             
                 'owners' => $owners,
                 'rentals' => $rentals,
+                'expired_rentals' => $expired_rentals
                 ]);
         }else{
             return redirect('/login');
@@ -323,9 +356,10 @@ class BooksController extends Controller
         $comments->save();
         
         $rental = [
-            'return_flag' => 0
-            // 'returned_day'=> date()　⇨返した日が登録できない
+            'return_flag' => 0,
+            'returned_day'=> date("Y-m-d")
                 ];
+                
         Rental::where('id', $request->rental_id)
         ->update($rental);
         
@@ -333,6 +367,7 @@ class BooksController extends Controller
         $owner = [
             'return_flag' => 0
                 ];
+                
         Owner::where('id', $request->owner_id)
         ->update($owner);
        

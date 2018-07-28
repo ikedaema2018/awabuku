@@ -1,11 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
+
+    @if(isset($alert))
+    <p>返却期限を過ぎている本があるため新規貸出は行えません</p>
+    @endif
+
+
     <div class="box">
         <!--<h3 class="study_title">html/css</h3>-->
         
-        @if(isset($categories)>0)
-            @if(isset($books)>0)
+        @if(count($categories)>0)
+            @if(count($books)>0)
             
                 
                 @foreach($categories as $category)

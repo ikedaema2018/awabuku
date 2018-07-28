@@ -41,3 +41,9 @@ Route::get('/mypage','BooksController@mypage');
 //返却画面
 Route::post('/return/{rental}','BooksController@return_view');
 Route::post('/return_comment/','BooksController@return_comment');
+
+
+
+//テスト
+Route::get('/mypagetest', 'TestController@mypagetest');
+Route::get('/datetest', 'TestController@datetest');
