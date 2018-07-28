@@ -25,7 +25,7 @@ Route::get('/book','BooksController@book_register');
 // Route::get('/book','BooksController@book');
 Route::post('/book', 'BooksController@book_insert');
 // Route::delete('/book/{book}', 'BooksController@book_delete');
-Route::get('/book_owner/{id}', 'BooksController@book_update_view');
+Route::get('/book_owner/{owner}', 'BooksController@book_update_view');
 Route::post('/book_update', 'BooksController@book_update');
 /////カテゴリの表示
 //変更
@@ -34,3 +34,10 @@ Route::post('/book_update', 'BooksController@book_update');
 Route::get('/', 'BooksController@index');
 //貸出機能画面
 Route::get('/rental/{book}','BooksController@rental_view');
+Route::post('/book_rental','BooksController@book_rental');
+Route::get('/book_rentaled_view/{rental}','BooksController@book_rentaled_view');
+//マイページ
+Route::get('/mypage','BooksController@mypage');
+//返却画面
+Route::post('/return/{rental}','BooksController@return_view');
+Route::post('/return_comment/','BooksController@return_comment');

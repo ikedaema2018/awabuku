@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Category;
 use App\Owner;
 use App\Book;
+use App\Rental;
+use App\User;
+use App\Comment;
 use Validator;
 use Illuminate\Support\Facades\Auth;
 
@@ -64,8 +67,8 @@ class BooksController extends Controller
     // カテゴリーを更新する
     public function category_update(Request $request) {
         $validator = Validator::make($request->all(), [
-            // 'id' => 'required',
-            'category_name' => 'required | max:10',
+            'id' => 'required',
+            'category_name' => 'required | max:20',
         ]);
         if ($validator->fails()){
             return redirect('/category')
@@ -183,12 +186,12 @@ class BooksController extends Controller
          'categories' => $categories
          ]);
      }
-     
+   
      
    
        //本の登録情報をを更新viewページに飛ばす
         public function book_update_view(Owner $owner) {
-        $categories = Category::orderBy('id', 'asc')->get();  
+        $categories = Category::orderBy('id', 'asc')->get(); 
         return view('book_update_view',['owner'=>$owner])->with(["categories"=>$categories]);
     }
     
@@ -228,22 +231,115 @@ class BooksController extends Controller
         
     }  
    
-          //本の登録情報をレンタルviewページに飛ばす
+    //本の登録情報をレンタルviewページに飛ばす
         public function rental_view(Book $book) {
          $owners= Owner::where('book_id',$book->id)->get();
         return view('rental_view', ['book'=> $book,'owners'=>$owners]
-        // dd($book);
-        // dd($owners);
         );
     }
    
+   //本を借りる
+        public function book_rental(Request $request) {
+        $validator = Validator::make($request->all(), [
+          'user_id' => 'required',
+          'owner_id' => 'required',
+        ]);
+        if ($validator->fails()){
+            return redirect('/index/')
+            ->withInput()
+            ->withError($validator);
+        }
+        $rentals = new Rental;
+        $rentals->user_id = $request->user_id;
+        $rentals->owner_id = $request->owner_id;
+        $rentals->return_day =date("Y-m-d",strtotime("+7 day"));
+        $rentals->return_flag = 1;
+        $rentals->save();
+        
+        $owner = [
+        'return_flag' => 1
+        ];
+        Owner::where('id', $request->owner_id)
+        ->update($owner);
+        
+        
+         return redirect('/book_rentaled_view/'.$rentals->id);    
+        }
+     //本の登録情報をレンタルviewページに飛ばす
+        public function book_rentaled_view(Rental $rental) {
+         $owner= Owner::where('id',$rental->owner_id)->first();
+        return view('book_rentaled_view', ['owner'=>$owner,'rental'=> $rental]
+        );
+    }
    
-   
-   
-   
-   
-   
-   
+   //マイページ
+       public function mypage() {
+        if(Auth::check()) {
+            $owners = Owner::where('user_id', Auth::user()->id)->get();
+            $rentals = Rental::where('user_id', Auth::user()->id)
+            ->where('return_flag',1)
+            ->orderBy('updated_at', 'desc')
+            ->get();
+           
+            return view('/mypage', [
+            
+                'owners' => $owners,
+                'rentals' => $rentals,
+                ]);
+        }else{
+            return redirect('/login');
+        }
+    }
+        //本の登録情報をレンタルviewページに飛ばす
+        public function return_view(Rental $rental) {
+         $owner= Owner::where('id',$rental->owner_id)->first();
+        return view('return_view', ['owner'=>$owner,'rental'=> $rental]
+        );
+    }
+   //本を返却する。
+        public function return_comment(Request $request) {
+        //バリデーターがおかしい・・
+        //     $validator = Validator::make($request->all(), [
+        //       'rental_id' => 'required',
+        //       'user_id' => 'required',
+        //       'owner_id' => 'required',
+        //       'comment_text' => 'required',
+        //       'evolution' => 'required',
+        //       'person' =>'required',
+
+        // ]);
+        // if ($validator->fails()){
+        //     return redirect('/aaa')
+        //     ->withInput()
+        //     ->withError($validator);
+        // }
+        $comments = new Comment;
+        $comments->rental_id = $request->rental_id;
+        $comments->user_id = Auth::user()->id;
+        $comments->owner_id = $request->owner_id;
+        $comments->comment_text= $request->comment_text;
+        $comments->evolution= $request->evolution;
+        $comments->person= $request->person;
+        $comments->save();
+        
+        $rental = [
+            'return_flag' => 0
+            // 'returned_day'=> date()　⇨返した日が登録できない
+                ];
+        Rental::where('id', $request->rental_id)
+        ->update($rental);
+        
+        
+        $owner = [
+            'return_flag' => 0
+                ];
+        Owner::where('id', $request->owner_id)
+        ->update($owner);
+       
+        return redirect('/mypage');    
+        }
+
+
 }
 
 

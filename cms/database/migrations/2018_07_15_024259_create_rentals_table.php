@@ -16,10 +16,10 @@ class CreateRentalsTable extends Migration
         Schema::create('rentals', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
-            $table->integer('book_id');
-            $table->string('comment_text');
+            $table->integer('owner_id');
             $table->dateTime('return_day');
-            $table->integer('return_flag');
+            $table->dateTime('returned_day');
+            $table->integer('return_flag')->default(0);
             $table->timestamps();
         });
     }
