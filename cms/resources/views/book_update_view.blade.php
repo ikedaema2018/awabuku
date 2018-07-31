@@ -43,7 +43,7 @@
                       <input type="hidden" name="id" value="{{ $owner->id }}">
                       <input type="hidden" name="book_id" value="{{ $owner->book_id }}">
                       
-        <button type="submit">更新する</button>
+        <button type="submit" class="btn-huge">更新する</button>
         
     </form>
 @endsection

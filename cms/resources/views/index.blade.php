@@ -13,55 +13,47 @@
         @if(count($categories)>0)
             @if(count($books)>0)
             
-                
+                <div class="row">
                 @foreach($categories as $category)
-        
-        <!--テーブルタグの長さの揃えたいときはcssで調整してください-->
-        <table>
-            
-        <!--ここの長さを調節すれば揃うはずです。俺はCSSダメなのでできないときは秦さんにでも聞いてください-->
-        <tr>
-            <th>
-                
-            </th>
-            <th>
-            
-            </th>
-            <th>
-                
-            </th>
-        <tr>
-        <!--ここの長さを調節すれば揃うはずです。俺はCSSダメなのでできないときは誰かに聞いてください-->
+
         
                 　　@if($books->get($category->id) != null)
-                　　<tr>
-                　　<p>{{$category->category_name}}</p>
                 　　
-                        @foreach($books->get($category->id) as $book)
+                　　  <h2 class="col-xs-12">{{$category->category_name}}</h2>
+                   　   
+                   　   
+                           <!--{{count($books->get($category->id))}}-->
+                            @for ($i=0; count($books->get($category->id)) > $i ;$i++)
+                             <div class="col-xs-2" style="backgroud:#ccc,height:250px;">
+                                <ul style="list-style:none;">
+                              <li><img src="{{$books->get($category->id)[$i]->BookImage}}"><img></li>
+                            　<li><a href="{{url('/rental/'.$books->get($category->id)[$i]->id)}}">{{$books->get($category->id)[$i]->BookTitle}}</a></li>
+                              <li>{{$books->get($category->id)[$i]->BookAuthor}}</li>
+                              
+                              </ul>
+                              </div>
+                              @if($i==6)
+                               @break
+                              @endif
+                              
+                            @endfor
+                         
                             
-                              <td>
-                                   {{$book->id}}
-                              </td>
-                              <td>
-                               <td><a href="{{url('/rental/'.$book->id)}}">{{$book->BookTitle}}</a></td>
-                              <td>
-                                   {{$book->BookAuthor}}
-                              </td>
                             
-                        @endforeach
-                    </tr>
-                    @endif
+                
+                
+            </div>
+                @endif
                 @endforeach
-            
-            
             @endif
         @endif
-        </table>
-    </div>
+       
+  
                         
                        
-    
-    <div><a href="{{url('book')}}">もっと見る</a></div>
-</div>
+  
 
+  
+    <div><a href="{{url('book')}}">もっと見る</a></div>
+      </div>
 @endsection
