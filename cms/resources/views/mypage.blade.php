@@ -7,11 +7,20 @@
 use App\User;
 use App\Book;
 
+
 ?>
+ <div class="jumbotron text-center">
+     
+     <span navbar-brand><img class="avater img-circle" src="{{Auth::user()->avater}}"></img></span>
+     <h3>{{Auth::user()->name}}さんのマイページ</h3>
 
-<h1>マイページ</h1>
+</div>
 
-   <ul>
+
+
+  <div class="row">
+   
+     <ul style="list-style:none;">
        
        
        <!--返却期限を過ぎている本があった時に警告-->
@@ -22,7 +31,7 @@ use App\Book;
        
        @foreach($expired_rentals as $expired_rental)
        
-       <h1>期限切の本</h1>
+       <h2>期限切の本</h2>
         
             <li><p>返却期限：{{$expired_rental->return_day}}</p></li>
             <li><p>{{Book::find($expired_rental->rental_books->book_id)->BookTitle}}</p></li>
@@ -33,7 +42,7 @@ use App\Book;
            
             
         <div>
-        <p>◆本を返却する◆</p>
+        <p>本を返却する◆</p>
             <form action="{{url('return/'.$expired_rental->id)}}" method="post">
             {{ csrf_field() }}
               <input type ="hidden" name="rental_id" value="{{ $expired_rental->book_id }}">
@@ -48,27 +57,33 @@ use App\Book;
        
        
        
-       <h1>★現在借りている本★</h1>
+       <h2>現在借りている本</h2>
+       <div class="row">
         @if(count($rentals) > 0 )
         @foreach($rentals as $rental)
         
-            <li><p>返却期限：{{$rental->return_day}}</p></li>
+        <div class="col-xs-2" style="backgroud:#ccc,height:250px;">
+         <ul style="list-style:none;">
+            <li><img src="{{Book::find($rental->rental_books->book_id)->BookImage}}"></img></li> 
             <li><p>{{Book::find($rental->rental_books->book_id)->BookTitle}}</p></li>
+            <li><p>返却期限：</p></li>
+            <li><p>{{$rental->return_day}}</p></li>
             <li><p>{{Book::find($rental->rental_books->book_id)->BookAuthor}}</p></li>
             <li><p>{{Book::find($rental->rental_books->book_id)->isbn13 }}</p></li>
-            <li><img src="{{Book::find($rental->rental_books->book_id)->BookImage}}"></img></li>
+            
             <li><p>{{$rental->rental_books->owner}}さんの本</p></li>
            
+        
             
-        <div>
-        <p>◆本を返却する◆</p>
-            <form action="{{url('return/'.$rental->id)}}" method="post">
-            {{ csrf_field() }}
-              <input type ="hidden" name="rental_id" value="{{ $rental->book_id }}">
-               <input type ="hidden" name="owner_id" value="{{ $rental->owner_id }}">
-                 <button type="submit">返却する</button>
-             
-            </form>
+       
+            <li>
+                <form action="{{url('return/'.$rental->id)}}" method="post">
+                {{ csrf_field() }}
+                  <input type ="hidden" name="rental_id" value="{{ $rental->book_id }}">
+                  <input type ="hidden" name="owner_id" value="{{ $rental->owner_id }}">
+                 <button type="submit" class="btn-success">返却する</button>
+                </form>
+            </li>
          </div> 
         @endforeach   
  
@@ -76,7 +91,7 @@ use App\Book;
             <p>現在借りている本はありません</p>
         
         @endif
-        
+         </div>
         
     
         
@@ -84,34 +99,70 @@ use App\Book;
     
     
     
-    <ul>
-     <p>★所有している本★</p>
-     
-        @if(isset($owners)>0)
-        @foreach($owners as $owner)
+
+    
+
+     <h2 class="col-xs-12">所有している本</h2>
  
-            <li><p>{{ $owner->books->BookTitle }}</p></li>
-            <li><p>{{ $owner->books->BookAuthor }}</p></li>
-            <li><p>{{ $owner->books->isbn10 }}</p></li>
-            <li><p>{{ $owner->books->isbn13 }}</p></li>
-            <li><p>{{ $owner->books->PubrishedDate}}</p></li>      
-            <li><p>{{ $owner->books->BookDiscription}}</p></li>
-            <li><img src="{{$owner->books->BookImage}}"></img></li>
-            <li><p>{{$owner->owner}}</p></li>
-            
-            @foreach($owner->rentals as $aaa)
-            @if($aaa->return_flag == 1)
-            <p>{{User::find($aaa->user_id)->name}}に貸出中</p>
-            @endif
-            @endforeach
-        
-        @endforeach   
-        @endif
-       
-    </ul>
+        <div class="row">
+          @if(isset($owners)>0)
+          @foreach($owners as $owner)
+    
+           <div class="col-xs-2" style="backgroud:#ccc,height:250px;">
+                <ul style="list-style:none;">
+                    <li><img src="{{$owner->books->BookImage}}" class="img-responsive"></img></li>
+                    <li><a href="">{{ $owner->books->BookTitle }}</a></li>
+                    <li><p>{{ $owner->books->BookAuthor }}</p></li>
+                    <li><p>{{ $owner->books->isbn13 }}</p></li>
+                    <li><p>{{ $owner->books->Published}}</p></li>      
+                    <li><a href="{{url('mypage/'.$owner->id)}}">詳細へ</a></li>
+
+                    @foreach($owner->rentals as $aaa)
+                    @if($aaa->return_flag == 1)
+                    <li style="color:red">{{User::find($aaa->user_id)->name}}さんに{{$aaa->return_day}}まで貸出中</p>
+                    @endif
+                    @endforeach
+                </ul>
+                
+     　   </div>
+          @endforeach   
+          @endif
+     　
+     　</div>
+
+
+ <h2 class="col-xs-12">レンタル履歴</h2>
+ 
+        <div class="row">
+          @if(isset($returned_rentals)>0)
+          @foreach($returned_rentals as $returned_rental)
+    
+           <div class="col-xs-2" style="backgroud:#ccc,height:250px;">
+                <ul style="list-style:none;">
+                    <li><img src="{{Book::find($returned_rental->rental_books->book_id)->BookImage}}" class="img-responsive"></img></li>
+                    <li><a href="">{{Book::find($returned_rental->rental_books->book_id)->BookTitle}}</a></li>
+                    <li><p>{{ Book::find($returned_rental->rental_books->book_id)->BookAuthor}}</p></li>
+                    <li><p>{{ Book::find($returned_rental->rental_books->book_id)->isbn13 }}</p></li>
+                    <li><p>{{ Book::find($returned_rental->rental_books->book_id)->Published}}</p></li>      
+                    <li><a href="{{url('mypage/'.$owner->id)}}">詳細へ</a></li>
+                    
+                  
+                </ul>
+                _
+     　   </div>
+          @endforeach   
+          @endif
+     　
+     　</div>
+
+
+
+
+
 
 
 
 
 
  @endsection
+  

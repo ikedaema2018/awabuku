@@ -15,6 +15,11 @@ class Owner extends Model
       public function rentals(){
               return $this->hasMany('App\Rental','owner_id','id');
             // return $this->belongsTo('App\User', '外部キーのカラム名', '親元のid扱いのカラム名');
+      }
+      public function owner_comments(){
+              return $this->hasMany('App\Comment','owner_id','id');
+            // return $this->belongsTo('App\User', '外部キーのカラム名', '親元のid扱いのカラム名');
+
 
       }
       // public function users(){

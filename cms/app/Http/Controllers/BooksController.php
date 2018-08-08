@@ -3,13 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Category;
+use App\Category_genru;
+use App\Category_list;
+
 use App\Owner;
 use App\Book;
 use App\Rental;
 use App\User;
 use App\Comment;
 use Validator;
+use App\Thread;
+use App\Thread_comment;
 use Illuminate\Support\Facades\Auth;
 
 class BooksController extends Controller
@@ -17,31 +23,89 @@ class BooksController extends Controller
     //index TOP画面
     public function index(){
      
+     
+     
         $categories = Category::orderBy('id', 'asc')
         ->get();
         
-        $b = Book::all();
-        $books = $b->groupBy('category_id');
+        $b = Category_list::all();
+        $category_lists = $b->groupBy('category_id');
         
         return view('index', [
             'categories' => $categories,
-            'books' => $books
+            'category_lists' => $category_lists,
         ]);
     }    
     
 
     // <======ここからカテゴリーの処理 ======>
+  
+      //カテゴリージャンル登録
+    public function category_genru() {
+        $category_genrus = Category_genru::orderBy('id', 'asc')->get();
+        return view('category_genru', ['category_genrus' => $category_genrus]);
+    }
+    
+    //ポストされてきたカテゴリージャンルをインサートする処理
+    public function category_genru_insert(Request $request) {
+      $validator = Validator::make($request->all(), [
+          'category_genruname' => 'required | max: 30',
+      ]);
+      if ($validator->fails()){
+          return redirect('category')
+          ->withInput()
+          ->withError($validator);
+      }
+      $category_genru = new Category_genru;
+      $category_genru->category_genruname = $request->category_genruname;
+      $category_genru->save();
+      return redirect('category_genru');
+    }
+    
+    //カテゴリージャンルを消す
+    public function category_genru_delete(Category_genru $category_genru) {
+        $category->delete();
+        return redirect('category_genru');
+    }
+    
+    //カテゴリージャンルを更新viewページに飛ばす
+    public function category_genru_update_view(Category_genru $category_genru) {
+        return view('category_genru_update_view', ['category_genru'=> $category_genru]);
+    }
+    // カテゴリージャンルを更新する
+    public function category_genru_update(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+            'category_genruname' => 'required | max:30',
+        ]);
+        if ($validator->fails()){
+            return redirect('/category_genru')
+            ->withInput()
+            ->withError($validator);
+        }
+        
+        $category_genru = Category_genru::find($request->id);
+        $category_genru->category_genruname = $request->category_genruname;
+        $category_genru->save();
+        return redirect('/category_genru'); 
+        
+    }
     
     //カテゴリー表示＆新規カテゴリー送信
     public function category() {
         $categories = Category::orderBy('id', 'asc')->get();
-        return view('category', ['categories' => $categories]);
+        $category_genrus=Category_genru::orderBy('id', 'asc')->get();
+        return view('category',
+        ['categories' => $categories],
+        ['category_genrus' => $category_genrus]
+        );
     }
     
     //ポストされてきたカテゴリーをインサートする処理
     public function category_insert(Request $request) {
       $validator = Validator::make($request->all(), [
           'category_name' => 'required | max: 20',
+          'category_genru' =>'required',
       ]);
       if ($validator->fails()){
           return redirect('category')
@@ -50,6 +114,8 @@ class BooksController extends Controller
       }
       $categories = new Category;
       $categories->category_name = $request->category_name;
+      $categories->category_genru = $request->category_genru;
+      
       $categories->save();
       return redirect('category');
     }
@@ -103,7 +169,7 @@ class BooksController extends Controller
         // //バリデーション
         
         //Authで通らなければ、登録ができないように追加する
-        // if(Auth::check()){
+        if(Auth::check()){
                  
         // $validator = Validator::make($request->all(), [
         //         'BookTitle' => 'required|min:1|max:255',
@@ -120,7 +186,8 @@ class BooksController extends Controller
         //         'life_flag'=>'required',
             
         // ]);
-        // //バリデーション:エラー 
+        
+        //バリデーション:エラー 
         // if ($validator->fails()) {
         //         return redirect('/aaa')
         //             ->withInput()
@@ -143,13 +210,23 @@ class BooksController extends Controller
         $books->PublishedDate = $request->PublishedDate;
         $books->BookImage = $request->BookImage;
         $books->BookDiscription= $request->BookDiscription;
-        $books->category_id= $request->category_id;
         $books->save();
         
         $aiu = Book::orderBy('id', 'desc')->first();
         $book_id = $aiu->id;
         
         
+        $category = $request->category_id;
+        for ($i = 0; $i < count($request->category_id); $i++){
+            if(count(Category_list::where('book_id', $book_id)
+            ->where('category_id', $request->category_id[$i])->get()) == 0){
+        $category_lists =new Category_list;
+        $category_lists->book_id=$book_id;
+        $category_lists->category_id= $request->category_id[$i];
+        $category_lists->save();
+        }
+        }
+
         $owners = new Owner;
         $owners->book_id= $book_id;
         $owners->user_id= $request->user_id;
@@ -157,19 +234,59 @@ class BooksController extends Controller
         $owners->rental_flag= $request->rental_flag;
         $owners->save();  
         
+        $eok = Owner::orderBy('id', 'desc')->first();
+        $owner_id = $eok->id;
+        
+        
+        $comments = new Comment;
+        $comments->book_id= $book_id;
+        $comments->owner_id =$owner_id;
+        $comments->user_id= $request->user_id;
+        $comments->comment_text= $request->comment_text;
+        $comments->evolution= $request->evolution;
+        $comments->person= $request->person;
+        $comments->comment_text= $request->comment_text;
+        $comments->save();  
+    
         }else{
         $aiu = Book::where('isbn13', $isbn13)->first();
         $book_id = $aiu->id;
+       
         
         
+        for ($i = 0; $i < count($request->category_id); $i++){
+            if(count(Category_list::where('book_id', $book_id)
+            ->where('category_id', $request->category_id[$i])->get()) == 0){
+        $category_lists =new Category_list;
+        $category_lists->book_id=$book_id;
+        $category_lists->category_id= $request->category_id[$i];
+        $category_lists->save();
+        }
+        }
         $owners = new Owner;
         $owners->book_id= $book_id;
         $owners->user_id= $request->user_id;
         $owners->owner= $request->owner;
         $owners->rental_flag= $request->rental_flag;
         $owners->save();  
-        }
-       
+        
+        $eok = Owner::orderBy('id', 'desc')->first();
+        $owner_id = $eok->id;
+        
+        
+        $comments = new Comment;
+        $comments->book_id= $book_id;
+        $comments->owner_id =$owner_id;
+        $comments->user_id= $request->user_id;
+        $comments->comment_text= $request->comment_text;
+        $comments->evolution= $request->evolution;
+        $comments->person= $request->person;
+        $comments->comment_text= $request->comment_text;
+        $comments->save();   
+        
+
+    //   dd(count(Category_list::where('book_id', 1)
+    //         ->where('category_id', 1)->get()));
         return redirect('/book_owner/'.$owners->id);
 
         // }else{
@@ -177,7 +294,7 @@ class BooksController extends Controller
         //     }
             
             
-    }
+    }}}
 
 
         public function category_list() {
@@ -233,8 +350,13 @@ class BooksController extends Controller
    
     //本の登録情報をレンタルviewページに飛ばす
         public function rental_view(Book $book) {
-         $owners= Owner::where('book_id',$book->id)->get();
-        return view('rental_view', ['book'=> $book,'owners'=>$owners]
+        $owners= Owner::where('book_id',$book->id)->get();
+        $comments=Comment::where('book_id',$book->id)->get();
+        $category_lists=Category_list::where('book_id',$book->id)->get();        
+
+        return view('rental_view', ['book'=> $book,'owners'=>$owners,
+        'comments'=>$comments,'category_lists'=>$category_lists,
+        ]
         );
     }
    
@@ -312,12 +434,19 @@ class BooksController extends Controller
             ->where('return_day', '<', date("Y-m-d 00:00:00"))
             ->orderBy('updated_at', 'desc')
             ->get();
-           
+            
+            $returned_rentals = Rental::where('user_id', Auth::user()->id)
+            ->where('returned_day','>',1)
+            ->orderBy('updated_at','desc')
+            ->get();
+            
             return view('/mypage', [
             
                 'owners' => $owners,
                 'rentals' => $rentals,
-                'expired_rentals' => $expired_rentals
+                'expired_rentals' => $expired_rentals,
+                'returned_rentals' => $returned_rentals
+                 
                 ]);
         }else{
             return redirect('/login');
@@ -350,6 +479,7 @@ class BooksController extends Controller
         $comments->rental_id = $request->rental_id;
         $comments->user_id = Auth::user()->id;
         $comments->owner_id = $request->owner_id;
+        $comments->book_id = $request->book_id;
         $comments->comment_text= $request->comment_text;
         $comments->evolution= $request->evolution;
         $comments->person= $request->person;
@@ -373,6 +503,37 @@ class BooksController extends Controller
        
         return redirect('/mypage');    
         }
+
+        //本の登録情報をレンタルviewページに飛ばす
+        public function mypage_detail(Owner $owner) {
+         $book= Book::where('id',$owner->book_id)->first();
+         $comments=Comment::where('book_id',$owner->book_id)->get();
+        
+        return view('mypage_detail', ['owner'=>$owner,'book'=> $book,'comments'=>$comments]
+        );
+
+        }
+
+    //スレッド新規登録
+    public function thread() {
+        $threads = Thread::orderBy('id', 'asc')->get();
+        $categories=Category::orderBy('id', 'asc')->get();
+        return view('thread',
+        ['threads' => $threads],
+        ['categories' => $categories]
+        );
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

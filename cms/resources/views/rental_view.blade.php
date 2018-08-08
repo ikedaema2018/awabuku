@@ -2,19 +2,54 @@
 
 @section('content')
 
-<h1>貸出機能</h1>
-      
+<?php
 
-    <p>{{ $book->BookTitle }}</p>
-    <p>{{ $book->BookAuthor }}</p>
-    <p>{{ $book->isbn10 }}</p>
-    <p>{{ $book->isbn13 }}</p>
-    <p>{{ $book->PubrishedDate}}</p>
-    <p>{{ $book->BookDiscription}}</p>
-    <img src="{{ $book->BookImage}}"></img>
+use App\Comment;
+use App\User;
+use App\Category;
+
+?>
+
+
+    <div class="row">
+        <div class="col-xs-3"　style="background:#CCC;height:200px;">
+            <img src="{{ $book->BookImage}}"></img>
+        </div>
+        <div class="col-xs-9"　style="background:#CCC;height:200px;">
+            <h2>{{ $book->BookTitle }}</h2>
+            <p>{{ $book->BookAuthor }}</p>
+            <p>{{ $book->isbn10 }}/&nbsp;{{ $book->isbn13 }}</p>
+            <p>{{ $book->PublishedDate}}</p>
+             @if(isset($comment_lists)>0)
+             @foreach($category_lists as $category_list)
+            <p>{{ Category::find($ccategory_list->category_id)->category_name}}</p>
+             @endforeach
+             @endif
+        </div>
+    </div>  
+    
+    <div class="row">
+        <p class="col-xs-12">書籍の内容</p>
+        <p class="col-xs-12">{{ $book->BookDiscription}}</p>
+    </div>
+   
+    <div class="row">
+        
+        <p class="col-xs-12">おすすめコメント</p>
+       
+             @if(isset($comments)>0)
+             @foreach($comments as $comment)
+                 <p class="col-xs-12">{{$comment->comment_text}}({{User::find($comment->user_id)->name}})</p>
+                
+             @endforeach
+             @endif
+    </div>
+                 
+                 
                     
-<table>
+<table class="table table-striped">
     <tr>
+        <th>本のowner_id</th>
         <th>本のowner</th>
         <th>貸与可否</th>
         <th>借りている人</th>
@@ -27,10 +62,13 @@
             <tbody>
 
     <tr>
+        <td>
+            <p>{{$owner->id}}</p>
+        </td>
                 <td>
                     <p>{{$owner->owner}}</p>
                 </td>  
-                <td>
+                <td class="warning">
                     @if ($owner->rental_flag === 1)
                     <p>不可</p>
                     @elseif ($owner->rental_flag == 0 && $owner->return_flag == 0)
