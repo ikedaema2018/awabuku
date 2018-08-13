@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="form-group"> 
-            <p class="col-sm-3 control-label"><b>ジャンル:</b></p>
+            <p class="col-sm-3 control-label"><b>カテゴリ:</b></p>
              @foreach($categories as $category)
             <label class="radio-inline">
             <input type="radio" name="category" value="{{$category->id}}">{{$category->category_name}}
@@ -46,8 +46,8 @@
                 @foreach ($threads as $thread)
                 <tr>
                     <td>{{ $thread->id }}</td>
-                    <td>{{ $thread->thread_sub }}</td>
-
+                    <td><a href="{{url('thread/'.$thread->id)}}">{{ $thread->thread_sub }}</a></td>
+                    
                 
                     <td>
                         <form action="{{url('thread/'.$thread->id)}}" method="post">

@@ -1,0 +1,15 @@
+li {
+ 
+  display: inline-block;
+
+}
+
+textarea {
+  resize: auto;
+  max-width: 500px;
+  max-height: 500px;
+  min-width: 100px;
+  min-height: 100px;
+  width:400px;
+  height:300px
+}

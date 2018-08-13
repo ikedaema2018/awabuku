@@ -59,11 +59,10 @@ Route::post('/return_comment/','BooksController@return_comment');
 //テスト
 Route::get('/mypagetest', 'TestController@mypagetest');
 Route::get('/datetest', 'TestController@datetest');
-
 //掲示板
 Route::get('/thread','BooksController@thread');
 Route::post('/thread', 'BooksController@thread_insert');
 
-Route::post('/thread/{thread}', 'BooksController@thread_page');
+Route::get('/thread/{thread}', 'BooksController@thread_page');
 
 

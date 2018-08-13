@@ -524,7 +524,41 @@ class BooksController extends Controller
         );
     }
 
+    //ポストされてきたカテゴリーをインサートする処理
+    public function thread_insert(Request $request) {
+      $validator = Validator::make($request->all(), [
+          'thread_sub'  =>'required | max: 50',
+          'thread_body' =>'required | max: 200',
+          'category'    =>'required'
+      ]);
+      if ($validator->fails()){
+          return redirect('thread')
+          ->withInput()
+          ->withError($validator);
+      }
+      $threads = new Thread;
+      $threads->thread_sub = $request->thread_sub;
+      $threads->thread_body = $request->thread_body;
+      $threads->category_id=$request->category;
+      $threads->user_name=Auth::user()->id;
+      $threads->save();
+      return redirect('/thread/'.$threads->id);
+    }
+ 
+    //ポストされてきたスレッドをスレッドページへ
+       public function thread_page(Thread $thread) {
 
+      $thread_user_name =User::where('id',$thread->user_name)->first();
+      $user_comments =Comment::where('user_id',Auth::user()->id)->get();
+      
+      
+        return view('thread_page',
+        ['thread' => $thread,
+        'thread_user_name' => $thread_user_name,
+        'user_comments' => $user_comments ]
+        
+        );
+    } 
 
 
 

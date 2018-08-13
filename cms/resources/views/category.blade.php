@@ -47,7 +47,7 @@
                     <td>
                         <form action="{{url('category/'.$category->id)}}" method="post">
                             {{ csrf_field() }}
-                            <button type="submit">更新</button>
+                            <button type="submit">変更</button>
                         </form>
                     </td>
                 </tr>
