@@ -22,18 +22,64 @@ class BooksController extends Controller
 {
     //index TOP画面
     public function index(){
-     
-     
-     
-        $categories = Category::orderBy('id', 'asc')
-        ->get();
         
+        $genrus = Category_genru::all();
+        
+        // カテゴリジャンルごとの本一覧.
+        $genreBooks = [];
+    
+        // ジャンルごとに処理.    
+        foreach($genrus as $genru) {
+            
+            $books = [];
+            
+            // ジャンルに紐づくカテゴリー一覧を取得.
+            $ids=[];
+            $categories = $genru->categories()->get();
+            foreach($categories as $category){
+                
+                // カテゴリーごとに処理.
+
+                // カテゴリーから本を取得する.
+                $tmpBooks = $category->books()->get()->toArray();
+                
+                if ($tmpBooks && count($tmpBooks) > 0) {
+                    // 取得できたら、$booksに追加.
+                    $books = array_merge($books, $tmpBooks);
+                }
+            }
+            
+            // とあるカテゴリージャンルに紐づく、本の一覧.
+           
+            
+            $genreBooks[$genru->category_genruname] = $books;
+            // dd($genreBooks);
+
+                // カテゴリー一覧にひもづくBooksを取得.
+            // $books=Category::whereIn("Categories.id",$ids)->books()->limit(5);
+            // $books=Category::whereIn("id",$ids)->books()->get();
+            // dd($books);
+            }
+         
+        // $categories = Category::orderBy('id', 'asc')
+        // ->get();
+   
         $b = Category_list::all();
         $category_lists = $b->groupBy('category_id');
         
+        
+        $thread_lists = Thread::orderBy('updated_at','desc')
+                        ->take(5)
+                        ->get();
+         
+        $rentals = Rental::all();
+                       
         return view('index', [
             'categories' => $categories,
             'category_lists' => $category_lists,
+            'thread_lists'  =>$thread_lists,
+            'rentals'=>$rentals,
+            'genreBooks'=>$genreBooks
         ]);
     }    
     
@@ -460,7 +506,7 @@ class BooksController extends Controller
     }
    //本を返却する。
         public function return_comment(Request $request) {
-        //バリデーターがおかしい・・
+        //バ���データーがおかしい・���
         //     $validator = Validator::make($request->all(), [
         //       'rental_id' => 'required',
         //       'user_id' => 'required',
@@ -518,7 +564,7 @@ class BooksController extends Controller
     public function thread() {
         $threads = Thread::orderBy('id', 'asc')->get();
         $categories=Category::orderBy('id', 'asc')->get();
-        return view('thread',
+        return view('threads',
         ['threads' => $threads],
         ['categories' => $categories]
         );
@@ -550,18 +596,220 @@ class BooksController extends Controller
 
       $thread_user_name =User::where('id',$thread->user_name)->first();
       $user_comments =Comment::where('user_id',Auth::user()->id)->get();
+      $categories = Category::orderBy('id', 'asc')->get();
+      $thread_comment_lists =Thread_comment::where('thread_id',$thread->id)->get();
       
-      
+     
         return view('thread_page',
         ['thread' => $thread,
         'thread_user_name' => $thread_user_name,
-        'user_comments' => $user_comments ]
+        'user_comments' => $user_comments,
+        'categories' =>$categories,
+        'thread_comment_lists'=>$thread_comment_lists 
+        ]
         
         );
     } 
+    //スレッド用の書籍の新規登録
+    public function thread_comment_insert(Request $request) {
+ 
 
+        $thread_comments = new Thread_comment;
+        $thread_comments->comment_id =$request->id;
+        $thread_comments->thread_id =$request->thread_id;
+        $thread_comments->thread_comment =$request->thread_comment;
+        $thread_comments->save();
+        
+        $thread = Thread::where('id',$request->thread_id)->first();
+        
+         return redirect('/thread/'.$thread->id);
+      
+    }
 
+   //スレッド用の書籍の新規登録
+    public function book_insert_thread(Request $request) {
+        // //バリデーション
+        
+        //Authで通らなければ、登録ができないように追加する
+        if(Auth::check()){
+                 
+        // $validator = Validator::make($request->all(), [
+        //         'BookTitle' => 'required|min:1|max:255',
+        //         'BookAuthor' => 'required|min:1|max:50',
+        //         'isbn10' => 'required|max:10',
+        //         'isbn13' => 'required|max:13',
+        //         'PublishedDate' => 'required',
+        //         'BookImage' => 'required',
+        //         'BookDiscription' => 'required|min:1|max:1000',
+        //         'owner' =>'required|min:1|max:50',
+        //         'category_id'=>'required',
+        //         'rental_flag'=>'required',
+        //         'user_id'=>'required',
+        //         'life_flag'=>'required',
+            
+        // ]);
+        
+        //バリデーション:エラー 
+        // if ($validator->fails()) {
+        //         return redirect('/aaa')
+        //             ->withInput()
+        //             ->withErrors($validator);
+        // }
+        
+        //isbnをstr型に変更
+        $isbn10 = strval($request->isbn10);
+        $isbn13 = strval($request->isbn13);
+        
+        
+        if(count(Book::where('isbn13', $isbn13)->get()) == 0) {
+        
+        // 本作成処理...
+        $books = new Book;
+        $books->BookTitle = $request->BookTitle;
+        $books->BookAuthor = $request->BookAuthor;
+        $books->isbn10 = $isbn10;
+        $books->isbn13 = $isbn13;
+        $books->PublishedDate = $request->PublishedDate;
+        $books->BookImage = $request->BookImage;
+        $books->BookDiscription= $request->BookDiscription;
+        $books->save();
+        
+        $aiu = Book::orderBy('id', 'desc')->first();
+        $book_id = $aiu->id;
+        
+        
+        $category = $request->category_id;
+        for ($i = 0; $i < count($request->category_id); $i++){
+            if(count(Category_list::where('book_id', $book_id)
+            ->where('category_id', $request->category_id[$i])->get()) == 0){
+        $category_lists =new Category_list;
+        $category_lists->book_id=$book_id;
+        $category_lists->category_id= $request->category_id[$i];
+        $category_lists->save();
+        }
+        }
 
+        $owners = new Owner;
+        $owners->book_id= $book_id;
+        $owners->user_id= $request->user_id;
+        $owners->owner= $request->owner;
+        $owners->rental_flag= $request->rental_flag;
+        $owners->save();  
+        
+        $eok = Owner::orderBy('id', 'desc')->first();
+        $owner_id = $eok->id;
+        
+        
+        $comments = new Comment;
+        $comments->book_id= $book_id;
+        $comments->owner_id =$owner_id;
+        $comments->user_id= $request->user_id;
+        $comments->comment_text= $request->comment_text;
+        $comments->evolution= $request->evolution;
+        $comments->person= $request->person;
+        $comments->comment_text= $request->comment_text;
+        $comments->save();  
+    
+        $kkk = Comment::orderBy('id', 'desc')->first();
+        $comment_id = $kkk->id;
+    
+        $thread_comments = new Thread_comment;
+        $thread_comments->comment_id =$comment_id;
+        $thread_comments->thread_id =$request->thread_id;
+        $thread_comments->thread_comment =$request->thread_comment;
+        $thread_comments->save();
+        
+        
+        
+        
+        return redirect('/thread/'.$request->thread_id);
+    
+    
+    
+        }else{
+        $aiu = Book::where('isbn13', $isbn13)->first();
+        $book_id = $aiu->id;
+       
+        
+        
+        for ($i = 0; $i < count($request->category_id); $i++){
+            if(count(Category_list::where('book_id', $book_id)
+            ->where('category_id', $request->category_id[$i])->get()) == 0){
+        $category_lists =new Category_list;
+        $category_lists->book_id=$book_id;
+        $category_lists->category_id= $request->category_id[$i];
+        $category_lists->save();
+        }
+        }
+        $owners = new Owner;
+        $owners->book_id= $book_id;
+        $owners->user_id= $request->user_id;
+        $owners->owner= $request->owner;
+        $owners->rental_flag= $request->rental_flag;
+        $owners->save();  
+        
+        $eok = Owner::orderBy('id', 'desc')->first();
+        $owner_id = $eok->id;
+        
+        
+        $comments = new Comment;
+        $comments->book_id= $book_id;
+        $comments->owner_id =$owner_id;
+        $comments->user_id= $request->user_id;
+        $comments->comment_text= $request->comment_text;
+        $comments->evolution= $request->evolution;
+        $comments->person= $request->person;
+        $comments->comment_text= $request->comment_text;
+        $comments->save();   
+        
+        $kkk = Comment::orderBy('id', 'desc')->first();
+        $comment_id = $kkk->id;
+    
+        $thread_comments = new Thread_comment;
+        $thread_comments->comment_id =$comment_id;
+        $thread_comments->thread_id =$request->thread_id;
+        $thread_comments->thread_comment =$request->thread_comment;
+        $thread_comments->save();
+        
+        $thread = Thread::where('id',$request->thread_id)->first();
+        
+         return redirect('/thread/'.$thread->id);
+
+        // }else{
+        //   return redirect('/');
+        //     }
+            
+        }
+            
+        }
+        
+    }
+
+  //index TOP画面
+    public function category_genru_page(){
+
+        $category_genrus=Category_genru::
+        $categories = Category::orderBy('id', 'asc')
+        ->get();
+        
+        $b = Category_list::all();
+        $category_lists = $b->groupBy('category_id');
+        
+        
+        $thread_lists = Thread::orderBy('updated_at','desc')
+                        ->take(5)
+                        ->get();
+         
+        $rentals = Rental::all();
+                    
+        return view('index', [
+            'categories' => $categories,
+            'category_lists' => $category_lists,
+            'thread_lists'  =>$thread_lists,
+            'rentals'=>$rentals
+        ]);
+    }    
+    
 
 
 

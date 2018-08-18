@@ -8,6 +8,8 @@
     
     <title>アワブク</title>
     <link rel="stylesheet" href="{{asset('css/thread_page.css')}}">
+    <link rel="stylesheet" href="{{asset('css/index.css')}}">
+    
     <link rel="stylesheet" href="{{secure_asset('css/head.css')}}" type="text/css" />
     
     
@@ -49,7 +51,7 @@
                     <a href="{{url('mypage')}}"><span class="glyphincon glyphincon-glass"></span>マイページ</a>
                 </li>
                 <li>
-                    <a href="{{url('thread')}}"><span class="glyphincon glyphincon-glass"></span>スレッド</a>
+                    <a href="{{url('threads')}}"><span class="glyphincon glyphincon-glass"></span>スレッド</a>
                 </li>
             </ul>        
     

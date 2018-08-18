@@ -18,7 +18,7 @@ class CreateRentalsTable extends Migration
             $table->integer('user_id');
             $table->integer('owner_id');
             $table->dateTime('return_day');
-            $table->dateTime('returned_day');
+            $table->dateTime('returned_day')->nullable();
             $table->integer('return_flag')->default(0);
             $table->timestamps();
         });

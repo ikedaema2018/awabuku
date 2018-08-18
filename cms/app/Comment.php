@@ -16,3 +16,5 @@ class Comment extends Model
             // return $this->belongsTo('App\User', '外部キーのカラム名', '親元のid扱いのカラム名');
           }
 }
+
+

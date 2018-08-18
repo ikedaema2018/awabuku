@@ -22,6 +22,7 @@ class CreateCommentsTable extends Migration
             $table->integer('evolution');
             $table->integer('person');
             $table->integer('rental_id');
+            $table->integer('today_book')->default(0);
             $table->integer('thread_comment_check')->default(0);
             $table->timestamps();
         });

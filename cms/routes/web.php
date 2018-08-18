@@ -57,12 +57,17 @@ Route::post('/return/{rental}','BooksController@return_view');
 Route::post('/return_comment/','BooksController@return_comment');
 
 //テスト
-Route::get('/mypagetest', 'TestController@mypagetest');
-Route::get('/datetest', 'TestController@datetest');
-//掲示板
-Route::get('/thread','BooksController@thread');
-Route::post('/thread', 'BooksController@thread_insert');
+// Route::get('/mypagetest', 'TestController@mypagetest');
+// Route::get('/datetest', 'TestController@datetest');
 
+
+//掲示板
+Route::get('/threads','BooksController@thread');
+Route::post('/threads','BooksController@thread_insert');
+Route::post('/thread', 'BooksController@book_insert_thread');
+Route::post('/thread_2', 'BooksController@thread_comment_insert');
 Route::get('/thread/{thread}', 'BooksController@thread_page');
 
-
+//カテゴリジャンル別ページ
+Route::get('/category_genru_page', 'BooksController@category_genru_page');
+Route::get('/category_page', 'BooksController@category_page');

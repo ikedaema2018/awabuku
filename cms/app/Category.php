@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
  
-       public function category_genru_relation(){
-              return $this->belongsTo('App\Category_genru', 'category_genru', 'id');
+       public function books(){
+              return $this->belongsToMany('App\Book', 'category_lists', 'category_id','book_id');
             // return $this->belongsTo('App\User', '外部キーのカラム名', '親元のid扱いのカラム名');
           }
     
