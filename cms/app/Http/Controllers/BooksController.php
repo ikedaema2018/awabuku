@@ -53,6 +53,7 @@ class BooksController extends Controller
            
             
             $genreBooks[$genru->category_genruname] = $books;
+            
             // dd($genreBooks);
 
                 // カテゴリー一覧にひもづくBooksを取得.
@@ -60,6 +61,7 @@ class BooksController extends Controller
             // $books=Category::whereIn("id",$ids)->books()->get();
             // dd($books);
             }
+            // dd($genreBooks);
          
         // $categories = Category::orderBy('id', 'asc')
         // ->get();
@@ -73,7 +75,10 @@ class BooksController extends Controller
                         ->get();
          
         $rentals = Rental::all();
-                       
+        
+        // dd($rentals);
+        
+
         return view('index', [
             'categories' => $categories,
             'category_lists' => $category_lists,

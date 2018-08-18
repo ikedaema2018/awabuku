@@ -49,18 +49,18 @@ use App\Book;
         <div class= "col-sm-9">
         @if(count($genreBooks)>0)
             
-             <div class="row">
-                @foreach($genreBooks as $genreBook)
-                    
-                     <h2 class="col-xs-12">{{$genreBook['category_id']}}</h2>
-                     <h2 class="col-xs-12">{{$genreBook->id}}</h2>
-                
-              
-                            
-                     
-                   
+            <div class="row">
+                <dl>
+                @foreach($genreBooks as $genreBookKey => $genreBookValues)
+                <?php
+                ?>
+                    <dt>{{$genreBookKey}}</dt>
+                    @foreach($genreBookValues as $genreBookValue)
+                    <dd><a href="{{url('rental/'.$genreBookValue['id'])}}">{{$genreBookValue["BookTitle"]}}</a></dd>
+                    @endforeach
                 @endforeach
-                </div>
+                </dl>
+            </div>
             
         @endif
         

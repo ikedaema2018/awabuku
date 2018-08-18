@@ -22,7 +22,7 @@ use App\Category;
             <p>{{ $book->PublishedDate}}</p>
              @if(isset($comment_lists)>0)
              @foreach($category_lists as $category_list)
-            <p>{{ Category::find($ccategory_list->category_id)->category_name}}</p>
+            <p>{{ Category::find($category_list->category_id)->category_name}}</p>
              @endforeach
              @endif
         </div>
