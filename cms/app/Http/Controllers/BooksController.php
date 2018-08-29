@@ -16,17 +16,20 @@ use App\Comment;
 use Validator;
 use App\Thread;
 use App\Thread_comment;
+
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class BooksController extends Controller
 {
-    //index TOP画面
+//index TOP画面
     public function index(){
         
         $genrus = Category_genru::all();
         
         // カテゴリジャンルごとの本一覧.
         $genreBooks = [];
+        $genreBooksId = [];
     
         // ジャンルごとに処理.    
         foreach($genrus as $genru) {
@@ -34,7 +37,7 @@ class BooksController extends Controller
             $books = [];
             
             // ジャンルに紐づくカテゴリー一覧を取得.
-            $ids=[];
+            // $ids=[];
             $categories = $genru->categories()->get();
             foreach($categories as $category){
                 
@@ -54,7 +57,9 @@ class BooksController extends Controller
             
             $genreBooks[$genru->category_genruname] = $books;
             
-            // dd($genreBooks);
+            
+            
+        //   dd($genreBooks);
 
                 // カテゴリー一覧にひもづくBooksを取得.
             // $books=Category::whereIn("Categories.id",$ids)->books()->limit(5);
@@ -84,11 +89,66 @@ class BooksController extends Controller
             'category_lists' => $category_lists,
             'thread_lists'  =>$thread_lists,
             'rentals'=>$rentals,
-            'genreBooks'=>$genreBooks
+            'genreBooks'=>$genreBooks,
+            
         ]);
     }    
     
+// <======カテゴリごとの紹介ページ ======>  
+      
+      
+   public function category_genre_page(Category_genru $category_genru) { 
+    
+     $categories=Category::where('category_genru',$category_genru->id)
+                        ->get();
+     $book_lists= Category_list::all();
+     $books = [];
+     foreach($categories as $category){
+                
+                // カテゴリーごとに処理.
 
+                // カテゴリーから本を取得する.
+                $tmpBooks = $category->books()->get()->toArray();
+                
+                if ($tmpBooks && count($tmpBooks) > 0) {
+                    // 取得できたら、$booksに追加.
+                    $books = array_merge($books, $tmpBooks);
+                }
+            }
+            
+            // とあるカテゴリージャンルに紐づく、本の一覧.
+           
+            $genreBooks[$category_genru->category_genruname] = $books;
+                   
+            
+       
+            
+        return view('category_genre_page', [
+            
+             'category_genru' => $category_genru,
+             'categories' =>$categories,
+             'genreBooks'=>$genreBooks,
+             'book_lists' =>$book_lists
+      
+        ]);
+   } 
+  
+   public function category_page(Category $category) { 
+    
+   
+     $book_lists= Category_list::where('category_id',$category->id)
+                ->get();
+      
+        return view('category_page', [
+            
+            
+             'category' =>$category,
+             'book_lists' =>$book_lists
+      
+        ]);
+  
+  
+   } 
     // <======ここからカテゴリーの処理 ======>
   
       //カテゴリージャンル登録
@@ -205,11 +265,37 @@ class BooksController extends Controller
     public function book_register() {
         
         if(Auth::check()){
-            $categories = Category::orderBy('id', 'asc')->get();
-            return view('book_register', [
-            'categories' => $categories
-         ]);
-            return view('/book_register');
+            // $categories = Category::orderBy('id', 'asc')->get();       
+           
+            $genrus = Category_genru::all();
+            // ジャンルごとに処理.    
+            
+            foreach($genrus as $genru) {
+             $categories = [];
+            // ジャンルに紐づくカテゴリー一覧を取得.
+           
+            $tmp_categories = $genru->categories()->get()->toArray();
+            
+            if ($tmp_categories && count($tmp_categories) > 0) {
+                    // 取得できたら、$categoriesに追加.
+                    $categories = array_merge($categories, $tmp_categories);
+                }
+                 $genreCategories[$genru->category_genruname] = $categories;
+            }
+           
+                
+        
+            // $genreCategories[$genru->category_genruname] = $categories;
+
+
+            return view('book_register',
+            ['categories' => $categories,
+            'genreCategories' =>$genreCategories,
+            ]
+          
+            );
+        
+            
         }else{
             return redirect('/aiu');
         }
@@ -427,12 +513,8 @@ class BooksController extends Controller
         
         $b = Book::all();
         $books = $b->groupBy('category_id');
-        
-        return view('index', [
-            'categories' => $categories,
-            'books' => $books,
-            'alert' => "alert"
-        ]);
+     
+        return redirect('/')->with('alert', '返却期限を過ぎている書籍があります。大至急ご返却ください');
         }
             
             

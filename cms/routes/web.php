@@ -69,5 +69,6 @@ Route::post('/thread_2', 'BooksController@thread_comment_insert');
 Route::get('/thread/{thread}', 'BooksController@thread_page');
 
 //カテゴリジャンル別ページ
-Route::get('/category_genru_page', 'BooksController@category_genru_page');
-Route::get('/category_page', 'BooksController@category_page');
+Route::get('/category_genre_page/{category_genru}', 'BooksController@category_genre_page');
+Route::get('/category_page/{category}', 'BooksController@category_page');
+

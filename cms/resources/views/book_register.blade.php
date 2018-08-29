@@ -19,7 +19,7 @@
       
 {{ csrf_field() }}
     
-<div style="background-color:#EDF7FF;">
+<div style="background-color:#FFFFEE;">
     <div class="row">    
         <div class="col-sm-3">
             <p>表紙画像:</p>
@@ -55,8 +55,10 @@
                   <p id="isbn13" class="type"</p>
                 </div>
             </div>
-        </div>
+        </div>    
     </div>
+
+    
     <div class="row">                 
         <div class="col-sm-12">
             <p>書籍概要:</p>
@@ -64,55 +66,104 @@
         </div>
     </div>
 </div>                
-      
 
-     <div class="form-group" style="margin-top:60px;">  
-          <label class="col-sm-3 control-label">所有者の名前を記入してください。</label>
-          <div class="col-sm-9">
-          <input type="text" name="owner" value="">
+
+<!--owner_info始まる-->
+
+ <div class="owner_info">
+     
+    <div class="form-group">  
+          <label>所有者の名前を記入してください。</label>
+          <div class="center">
+              <input type="text" name="owner" value="" >
           </div>
     </div> 
+    
     <div class="form-group">  
-          <p class="col-sm-3 control-label"><b>本の貸出はできますか？</b></p>
+          <p><b>本の貸出はできますか？</b></p>
+          <div class="center">
           <label class="radio-inline"><input type="radio" name="rental_flag" value=0>はい</label>
         　<label class="radio-inline"><input type="radio" name="rental_flag" value=1>いいえ</label>
+        　</div>
     </div>
+    
+   
+  
+  <div class="form-group">   
+  <p><b>カテゴリー</b><p>
+@if(count($genreCategories)>0)
+
+        @foreach($genreCategories as $genre => $categories)
+        
+        　<div>
+                <div class= "col-sm-12">  
+                @if(count($categories)>0)
+                <h3>{{$genre}}</h3>
+                @endif
+                </div>
+          </div>
+            <div class="row">
+                <div class= "col-sm-12">  
+                    @foreach($categories as $category)
+                         
+                      <p>{{$category["category_name"]}}</p>    
+                    @endforeach
+                </div>
+            </div>
+      
+        @endforeach
+    @endif
+   </div>   
+  
+  
+  
+     
+    <div class="form-group"> 
+          <p><b>こんなひとにおすすめ</b></p>
+          <div class="center">
+            <label class="checkbox-inline"><input type ="checkbox" name="person" value="1">初心者</label>
+            <label class="checkbox-inline"><input type ="checkbox" name="person" value="2">中級者</label>
+            <label class="checkbox-inline"><input type ="checkbox" name="person" value="3">上級者</label>
+            <label class="checkbox-inline"><input type ="checkbox" name="person" value="4">その他</label>
+         </div>    
+    </div>        
+     
+    <div class="form-group">
+          <p><b>評価</b></p> 
+        <div class="evaluation center">
+            <input id="star1" type="radio" name="evolution" value="5" />
+            <label for="star1"class="radio-inline"><span class="text">最高</span>★</label>
+            <input id="star2" type="radio" name="evolution" value="4" />
+            <label for="star2"class="radio-inline"><span class="text">良い</span>★</label>
+            <input id="star3" type="radio" name="evolution" value="3" />
+            <label for="star3"class="radio-inline"><span class="text">普通</span>★</label>
+            <input id="star4" type="radio" name="evolution" value="2" />
+            <label for="star4"class="radio-inline"><span class="text">悪い</span>★</label>
+            <input id="star5" type="radio" name="evolution" value="1" />
+            <label for="star5"class="radio-inline"><span class="text">最悪</span>★</label>
+        </div>
+    </div> 
+    
     <div class="form-group">  
-          <p class="col-sm-3 control-label"><b>カテゴリ</b></p>
-            @foreach($categories as $category)
-            <label class="radio-inline"><input type="checkbox" name="category_id[]" value="{{$category->id}}">{{$category->category_name}}</label>
-            @endforeach
-     </div>    
-     <div class="form-group"> 
-          <p class="col-sm-3 control-label"><b>こんなひとにおすすめ</b></p>
-            <label class="radio-inline"><input type ="radio" name="person" value="1">初心者</label>
-            <label class="radio-inline"><input type ="radio" name="person" value="2">中級者</label>
-            <label class="radio-inline"><input type ="radio" name="person" value="3">上級者</label>
-            <label class="radio-inline"><input type ="radio" name="person" value="4">その他</label>
-      </div>        
-      <div class="form-group"> 
-          <p class="col-sm-3 control-label"><b>評価</b></p>       
-            <label class="radio-inline"><input type ="radio" name="evolution" value="1">❤️</label>
-            <input type ="radio" name="evolution" value="2">❤️❤️</label>
-            <label class="radio-inline"><input type ="radio" name="evolution" value="3">❤️❤️❤️</label>
-            <label class="radio-inline"><input type ="radio" name="evolution" value="4">その他</label>
-      </div>      
-         
-      <div class="form-group">  
-          <label class="col-sm-3 control-label">おすすめポイント</label>
-          <div class="col-sm-9">
+          <label>おすすめポイント</label>
+          <div class="center">
           <textarea  rows="5" class="form-control" name="comment_text" placeholder="例）++の勉強をしたい人におすすめ" autofocu></textarea>
           </div>
     </div>      
+    
     <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
     <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9 text-right">
-        <button type="submit" >送信</button>
+            <button type="submit" >送信</button>
         </div>
-    </div>
-       
+    </div>    
+</div> 
+ </div>
+<!--owner_info終わり-->      
 
-            
+
+
+</form>            
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <script>
@@ -123,22 +174,39 @@
 
         $("#btn").on("click", function () {
             const isbn = $("#isbn").val();
-            const url = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn;
-
-            $.getJSON(url, function (data) {
+            const googleUrl = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn;
+            const openUrl   = "https://api.openbd.jp/v1/get?isbn=" + isbn;
+            $.getJSON(googleUrl, function (data) {
+        
                 if (!data.totalItems) {
-                    $("#isbn").val("");
-                    $("#BookTitle").text("");
-                    $("#BookAuthor").text("");
-                    $("#isbn10").text("");
-                    $("#isbn13").text("");
-                    $("#PublishedDate").text("");
-                    $("#BookThumbnail").text("");
-                    $("#BookDiscription").text("");
-                    $("#BookImage").text("");
-
-                    $("#message").html(' <p class = "bg-warning"id = "warning" > 該当する書籍がありません。 < /p>');
-                    $('#message > p').fadeOut(3000);
+                    $.getJSON(openUrl, function (data1) {
+                        if (!data1){
+                            $("#isbn").val("");
+                            $("#BookTitle").text("");
+                            $("#BookAuthor").text("");
+                            $("#isbn10").text("");
+                            $("#isbn13").text("");
+                            $("#PublishedDate").text("");
+                            $("#BookThumbnail").text("");
+                            $("#BookDiscription").text("");
+                            $("#BookImage").text("");
+                            $("#message").html(' <p class = "bg-warning"id = "warning" > 該当する書籍がありません。 < /p>');
+                            $('#message > p').fadeOut(3000);
+                        } else {
+                            //openのしょり
+                                $("#BookTitle").html('<input class="form-control input-lg" name="BookTitle" readonly="readonly" type="text"  value="' + data[0].summary.title +
+                                    '">');
+                                $("#isbn10").html('<input class="form-control input-sm" name ="isbn10" readonly="readonly" type="number" value="' + data[0].summary.isbn + '">');
+                                $("#isbn13").html('<input class="form-control input-sm" name ="isbn13" readonly="readonly" type="number" value="' + data[0].summary.isbn + '">');
+                                $("#BookAuthor").html('<input class="form-control input-sm" name="BookAuthor" readonly="readonly" type="text" value="' + data[0].summary.author +'">');
+                                $("#PublishedDate").html('<input class="form-control input-sm" name="PublishedDate" readonly="readonly" type="text" value="' +data[0].summary.pubdatey  + '">');
+                                $("#BookDiscription").html('<input class="form-control input-lg" name="BookDiscription"  readonly="readonly" type="text" value="' + data[0].onix.CollateralDetail[0].text + '">');
+                                $("#BookThumbnail").html(' <img src=\"' + data[0].summary.cover +'\ " />');
+                                $("#BookImage").html(' <input name="BookImage" type="hidden" value="' + data[0].summary.cover + '">');
+                            
+                            
+                        }
+                    })
                 } else {
                     $("#BookTitle").html('<input class="form-control input-lg" name="BookTitle" readonly="readonly" type="text"  value="' + data.items[0].volumeInfo.title +
                         '">');

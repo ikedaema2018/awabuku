@@ -45,7 +45,7 @@ use App\User;
     
     <!-- 登録済みの本からオススメする -->    
     <div class="col-sm-6 text-center">       
-        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#sampleModal">
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#sampleModal">
     	すでに登録済みの本からオススメする
         </button>
     </div>      
@@ -154,7 +154,7 @@ use App\User;
     
 <!-- 本を新規登録してからオススメする -->    
 <div class="col-sm-6 text-center">       
-        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#sampleModal2">
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#sampleModal2">
     	  本を新規に登録してからオススメする
         </button>
 </div>
@@ -305,31 +305,33 @@ use App\User;
 </div>  
 </div>  
 
-
+<!--コメントリストを表示する　　-->
 @if(isset($thread_comment_lists)>0)
       @foreach($thread_comment_lists as $thread_comment_list)   
-        <div class="panel panel-default">
+        <div class="panel panel-success coment_list">
         	<div class="panel-heading">
-        		<ul>
-                <!--<li><img class="avater img-circle" src="{{User::find($thread_comment_list->r->user_id)->avater}}" id=""></img></li>-->
-        		<li>{{User::find($thread_comment_list->r->user_id)->name}}さん</li>
+        		<ul style="list-style:none;">
+                <li class="user_name"><img class="thread_avater img-circle" src="{{User::find($thread_comment_list->r->user_id)->avater}}"></img></li>
+        		<li class="user_name">{{User::find($thread_comment_list->r->user_id)->name}}さん</li>
         		</ul>
         	</div>
-        	<div class="panel-body">
-                <ul>
-                    <li><img src="{{Book::find($thread_comment_list->r->book_id)->BookImage}}"></img></li>
-                    <li>
+        	<div class="panel-body hoge">
+        	    
+        	    <p>コメント</p>
+        	    <p class="well">{{$thread_comment_list->thread_comment}}</p>
+        	    
+                <ul style="list-style-type: none;" class="comment_body">
+                    <li class="comment_body_list"><img src="{{Book::find($thread_comment_list->r->book_id)->BookImage}}"></img></li>
+                    <li class="comment_body_list">
                       <div> 
-        
-                        <p>{{Book::find($thread_comment_list->r->book_id)->BookTitle}}</p>
+                        <a href="{{url('rental/'.$thread_comment_list->r->book_id)}}"></a>
+                        <h3>{{Book::find($thread_comment_list->r->book_id)->BookTitle}}</h3>
                         <p>{{Book::find($thread_comment_list->r->book_id)->BookAuthor}}</p>
+                        <p>おすすめコメント</p>
+                        <p>{{$thread_comment_list->r->comment_text}}</p>
                       </div> 
                     </li>
                 </ul>  
-        		<p>{{$thread_comment_list->r->comment_text}}</p>
-        		<p>{{$thread_comment_list->thread_comment}}</p>
-        		
-        		
         	</div>
         	<div class="panel-footer">
         	    <p>{{$thread_comment_list->updated_at}}</p>
@@ -337,7 +339,7 @@ use App\User;
         </div>        	  
       @endforeach
 @endif 
-   
+<!--コメントを表示する　終了-->
       
     
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -353,6 +355,8 @@ use App\User;
         
         console.log($('#aaa').val()); 
         });
+        
+        
    </script>
    <script>
 

@@ -8,7 +8,14 @@
     
     <title>アワブク</title>
     <link rel="stylesheet" href="{{asset('css/thread_page.css')}}">
+    <link rel="stylesheet" href="{{asset('css/book_register.css')}}">
+    
     <link rel="stylesheet" href="{{asset('css/index.css')}}">
+    <link rel="stylesheet" href="{{asset('css/mypage.css')}}">
+    <link rel="stylesheet" href="{{asset('css/category_genre_page.css')}}">
+    <link rel="stylesheet" href="{{asset('css/category_page.css')}}">
+    <link rel="stylesheet" href="{{asset('css/thread_page.css')}}">
+    <link rel="stylesheet" href="{{asset('css/threads.css')}}">
     
     <link rel="stylesheet" href="{{secure_asset('css/head.css')}}" type="text/css" />
     
@@ -30,28 +37,47 @@
     
  
 
-    <div class="container">    
+    <div class="container-fluid">    
     
     
     <header>
-      <h2>アワブク<small>Our Books</small></h2>
-      <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp~g's library~</h4>
+    <div class="row" style="display:table; width:100%; margin:5px auto;"">    
+        <div class="col-sm-6 text-left" style="display:table-cell;width:50%;"> 
+            <div class="titile_wrappert" > 
+                <h2>Our Books</h2>
+            </div>
+        </div>
+        <div class="col-sm-6 text-right search" style="display:table-cell;width:50%;">
+            <div class="input-group serach_box">
+              <input type="text" class="form-control">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="submit">
+                  <i class='glyphicon glyphicon-search'></i>
+                </button>
+              </span>
+            </div>  
+        </div>    
+    </div>
+      
+    
         <nav class="navbar navbar-default">
-        
             <div class="container-fluid">
-        
+            <div class="navbar-header">
+                <a href="{{url(' ')}}" class="navbar-brand">g's library</a>
+            </div>
+            
             <ul class="nav navbar-nav">
                 <li class="active">
-                    <a href="{{url(' ')}}"><span class="glyphincon glyphincon-home"></span>Home</a>
+                    <a href="{{url(' ')}}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a>
                 </li> 
                 <li>
-                    <a href="{{url('book')}}"><span class="glyphincon glyphincon-book"></span>本を登録する</a>
+                    <a href="{{url('book')}}"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>本を登録する</a>
                 </li>
                 <li>
-                    <a href="{{url('mypage')}}"><span class="glyphincon glyphincon-glass"></span>マイページ</a>
+                    <a href="{{url('mypage')}}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>マイページ</a>
                 </li>
                 <li>
-                    <a href="{{url('threads')}}"><span class="glyphincon glyphincon-glass"></span>スレッド</a>
+                    <a href="{{url('threads')}}"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></span>スレッド</a>
                 </li>
             </ul>        
     
@@ -68,11 +94,13 @@
                 <!--<li>-->
                 <!--    <span navbar-brand><img class="avater" src="{{Auth::user()->avater}}"></img></span>-->
                 <!--</li><br>-->
-                <li>
-                    <span navbar-brand>ID:{{Auth::user()->id}}<br>{{Auth::user()->name}}さん</span>
-                </li>
-             
-                <li>
+                    <li style="display:none">
+                        <p　style="display:none">ID:{{Auth::user()->id}}<br>{{Auth::user()->name}}さん</p>
+                    </li>    
+                    <li>
+                        <span navbar-brand><img class="avater img-circle" src="{{Auth::user()->avater}}"></img></span>                    
+                    </li>
+                    <li>
                     <a href="{{url('logout')}}">ログアウトする</a>
                 @else
                     <li><span navbar-brand>ゲストさん</span></li><br>

@@ -1,4 +1,13 @@
 .avater {
-    height: 100px;
-    width: 100px;
+    height: 45px;
+    width: 45px;
+}
+
+.search {
+    margin-top: 28px;
+}
+
+.serach_box{
+    width: 50%;
+    margin-left: auto;
 }
