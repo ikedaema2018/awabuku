@@ -56,23 +56,22 @@ use App\Book;
        
        @endif
        
- </div>      
- <div class="row">     
-    <h2>現在借りている本</h2>
-    <div class="row">
-        @if(count($rentals) > 0 )
-        @foreach($rentals as $rental)
-        
-        <div class="col-xs-2">
-            
-            <ul class="sample">
-                    <li>
-                        <img src="{{Book::find($rental->rental_books->book_id)->BookImage}}"></img> 
-                
-                    
+ 
+<!--レンタル本　はじめ-->
+<h2 class="col-xs-12">レンタルしている本</h2>　 
+    
+@if(count($rentals) > 0 )
+  <?php $i=0?>
+    @foreach($rentals as $rental)
+         @if($i == 0)
+             <div class="col-sm-12 border_bottom">
+         @endif
+        <div class="col-sm-2">
+                <ul class="sample">
+                 <li>
+                    <img src="{{Book::find($rental->rental_books->book_id)->BookImage}}"width="128" height="180"></img> 
                     <p>{{Book::find($rental->rental_books->book_id)->BookTitle}}</p>
-                    <p>返却期限：</p>-
-
+                    <p>返却期限：</p>
                     <p>{{date($rental->return_day)}}</p>
                     <p>{{Book::find($rental->rental_books->book_id)->BookAuthor}}</p>
                     <p>{{Book::find($rental->rental_books->book_id)->isbn13 }}</p>
@@ -84,73 +83,87 @@ use App\Book;
                           <input type ="hidden" name="owner_id" value="{{ $rental->owner_id }}">
                          <button type="submit" class="btn-success">返却する</button>
                         </form>
-                    </li>    
-            </ul>
-        
+                  </li>    
+                </ul>
         </div>
-        
-        @endforeach   
-        @else
+        <?php $i=$i+1?>
+      　@if($i==6 || $roop->last)  
+       　<?php $i=0?>
+       　</div>
+      　@endif
+    @endforeach
+@else
             <p>現在借りている本はありません</p>
         
-        @endif
-   </div>
-</div>
+@endif
+<!--レンタル本　終わり--> 
 
-<h2>所有している本</h2>
 
-   
+<!--所有している本-->
+<h2 class="col-xs-12">所有している本</h2>　
         @if(isset($owners)>0)
-          @foreach($owners as $owner)
-          <div class="col-sm-2">
-           <ul class="sample">
-             <li>
-                <img src="{{$owner->books->BookImage}}" class="img-responsive"" width="128" height="180"></img>
-                <a href="">{{ $owner->books->BookTitle }}</a>
-                <p>{{ $owner->books->BookAuthor }}</p>
-                <p>{{ $owner->books->Published}}</p>      
-                <a href="{{url('mypage/'.$owner->id)}}">詳細へ</a>
-
-                @foreach($owner->rentals as $aaa)
-                @if($aaa->return_flag == 1)
-                <p style="color:red">{{User::find($aaa->user_id)->name}}さんに{{$aaa->return_day}}まで貸出中</p>
-                @endif
-                @endforeach
-            </li>
-          </ul>
-         </div>
-         　  @endforeach   
-          @endif
-
-
-
-
- <h2 class="col-xs-12">レンタル履歴</h2>
- 
-        <div class="row">
-          @if(isset($returned_rentals)>0)
-          @foreach($returned_rentals as $returned_rental)
+        <?php $i=0 ?>
+            @foreach($owners as $owner)
+            
+              @if($i == 0)
+                <div class="col-sm-12 border_bottom">
+              @endif
+                <div class="col-sm-2">
+                <ul class="sample">
+                 <li>
+                    <img src="{{$owner->books->BookImage}}" class="img-responsive"" width="128" height="180"></img>
+                    <a href="">{{ $owner->books->BookTitle }}</a>
+                    <p>{{ $owner->books->BookAuthor }}</p>
+                    <p>{{ $owner->books->Published}}</p>      
+                    <a href="{{url('mypage/'.$owner->id)}}">詳細へ</a>
     
-           <div class="col-xs-2" style="backgroud:#ccc,height:250px;">
-                <ul style="list-style:none;">
-                    <li><img src="{{Book::find($returned_rental->rental_books->book_id)->BookImage}}" class="img-responsive"></img></li>
-                    <li><a href="">{{Book::find($returned_rental->rental_books->book_id)->BookTitle}}</a></li>
-                    <li><p>{{ Book::find($returned_rental->rental_books->book_id)->BookAuthor}}</p></li>
-                    <li><p>{{ Book::find($returned_rental->rental_books->book_id)->isbn13 }}</p></li>
-                    <li><p>{{ Book::find($returned_rental->rental_books->book_id)->Published}}</p></li>      
-                    <li><a href="{{url('mypage/'.$owner->id)}}">詳細へ</a></li>
-                    
-                  
-                </ul>
-                _
-     　   </div>
-          @endforeach   
-          @endif
-     　
-     　</div>
+                    @foreach($owner->rentals as $aaa)
+                    @if($aaa->return_flag == 1)
+                    <p style="color:red">{{User::find($aaa->user_id)->name}}さんに{{$aaa->return_day}}まで貸出中</p>
+                    @endif
+                    @endforeach
+                 </li>
+                 </ul>
+                </div>
+                  <?php $i=$i+1 ?>
+                  @if($i == 6 || $loop->last)
+                  <?php $i=0 ?>
+                 </div>
+                @endif
+                
+            @endforeach
+        @endif
+<!--所有している本　終わり-->
 
-
-
+<!--レンタル履歴　はじめ-->
+ <h2 class="col-xs-12">レンタル履歴</h2>
+    @if(isset($returned_rentals)>0)
+         <?php $i=0?>
+          @foreach($returned_rentals as $returned_rental)
+              @if($i=0)
+               <div class="col-sm-12 border_bottom">
+              @endif
+               <div class="col-sm-2">
+                    <ul class="sample">
+                        <li>
+                        <img src="{{Book::find($returned_rental->rental_books->book_id)->BookImage}}" class="img-responsive" width="128" height="180"></img>
+                        <a href="">{{Book::find($returned_rental->rental_books->book_id)->BookTitle}}</a>
+                        <p>{{ Book::find($returned_rental->rental_books->book_id)->BookAuthor}}</p>
+                        <p>{{ Book::find($returned_rental->rental_books->book_id)->isbn13 }}</p>
+                        <p>{{ Book::find($returned_rental->rental_books->book_id)->Published}}</p>     
+                        <a href="{{url('mypage/'.$owner->id)}}">詳細へ</a>
+                        </li>
+                    </ul>
+         　     </div>
+         
+             　    <?php $i=$i+1?>
+             　      @if($i == 6 || $loop->last)
+             　      <?php $i=0 ?>
+             　       </div>
+             　    @endif
+         @endforeach   
+    @endif
+   
 
 
 

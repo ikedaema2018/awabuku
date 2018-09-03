@@ -34,8 +34,7 @@ use App\Category_genru;
                 <ul style="list-style:none;">
                     @if(isset($thread_lists)>0)
                     @foreach($thread_lists as $thread_list)
-                    <li><h4><a href="{{url('/thread/'.$thread_list->id)}}">{{$thread_list->thread_sub}}/({{User::find($thread_list->user_name)->name}})</a></h4></li>
-        
+                        <li><h4><a href="{{url('/thread/'.$thread_list->id)}}">{{$thread_list->thread_sub}}/({{User::find($thread_list->user_name)->name}})</a></h4></li>
                     @endforeach
                     @endif
                 </ul>
@@ -53,45 +52,41 @@ use App\Category_genru;
 <!-- カテゴリ別表示 始まり -->    
 <div class="row">
     <div class= "col-sm-8">
-     @if(count($genreBooks)>0)
-        @foreach($genreBooks as $genreBookKey => $genreBookValues)
-        
-        　<div class="row">
-                <div class= "col-sm-12">  
-                @if(count($genreBookValues)>0)
-                <h3>{{$genreBookKey}}</h3>
-                @endif
-                </div>
-          </div>
-            <div class="row">
-                <div class= "col-sm-12">  
-                    @foreach($genreBookValues as $genreBookValue)
-                         
-                            @if(($loop->iteration)<5)
-                            <div class="col-sm-2" style="backgroud:#ccc,height:250px;">
-                                <ul style="list-style:none;">
-                                <li><a href="{{url('rental/'.$genreBookValue["id"])}}"><img src="{{$genreBookValue["BookImage"]}}"></img></a></li>
-                                <li><a href="{{url('rental/'.$genreBookValue["id"])}}">{{$genreBookValue["BookTitle"]}}</a></li>
-                                </ul>
-                            </div>
-                            @endif
-                            @if(($loop->iteration)==5)
-                            @break
-                            @endif
-                    @endforeach
-                </div>
+        <div class="row">
+             @if(count($genreBooks)>0)
+                @foreach($genreBooks as $genreBookKey => $genreBookValues)
                 
-                <div class= "col-sm-12 text-right">
-                    
-                    @if(count($genreBookValues)>0)
-                    <a href="{{url('category_genre_page/'.Category_genru::where('category_genruname', $genreBookKey)->first()->id)}}">もっと見る</a>
-                    @endif
-                </div>    
-            </div>
-      
-        @endforeach
-    @endif
-    
+                        <div class= "col-sm-12">  
+                            @if(count($genreBookValues)>0)
+                            <h3>{{$genreBookKey}}</h3>
+                            @endif
+                        </div>
+                
+                        
+                        @foreach($genreBookValues as $genreBookValue)
+                                @if(($loop->iteration)<6)
+                                
+                                        <div class="col-sm-2" style="backgroud:#ccc,height:250px;">
+                                            <ul style="list-style:none;">
+                                            <li><a href="{{url('rental/'.$genreBookValue["id"])}}"><img src="{{$genreBookValue["BookImage"]}}" width="128" height="180"></img></a></li>
+                                            <li><a href="{{url('rental/'.$genreBookValue["id"])}}">{{$genreBookValue["BookTitle"]}}</a></li>
+                                            </ul>
+                                        </div>
+                                @endif
+                                @if(($loop->iteration)==6)
+                                @break
+                                @endif
+                       
+                         @endforeach
+                         @if(count($genreBookValues)>0)
+                            <div class= "col-sm-12 text-right border_bottom">
+                                <a href="{{url('category_genre_page/'.Category_genru::where('category_genruname', $genreBookKey)->first()->id)}}">もっと見る</a>
+                            </div>  
+                         @endif
+           
+                @endforeach
+            @endif
+    </div>
     </div>   
 <!-- カテゴリ別表示 始まり -->   
     
@@ -103,7 +98,7 @@ use App\Category_genru;
         @foreach($rentals as $rental)
     
           <ul style="list-style:none;">
-             <li><img src="{{Book::find($rental->rental_books->book_id)->BookImage}}"></img></li>
+             <li><img src="{{Book::find($rental->rental_books->book_id)->BookImage}}" width="128" height="180"></img></li>
              <li><a href="{{url('rental/'.Book::find($rental->rental_books->book_id)->id)}}">{{Book::find($rental->rental_books->book_id)->BookTitle}}</a></li>
         
           </ul>    

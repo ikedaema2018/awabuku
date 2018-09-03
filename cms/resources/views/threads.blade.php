@@ -6,6 +6,7 @@
 use App\User;
 
 ?>
+<div class="col-sm-offset-2 col-sm-8 col-sm-offset-2">
 <div class="panel panel-warning">
 	<div class="panel-heading">
 		<h3 class="panel-title inline">
@@ -18,34 +19,64 @@ use App\User;
 		
 		    <form action="{{url('threads')}}" method="post">
                 {{ csrf_field() }}
-                <div class="form-group">             
-                    <label class="col-sm-3 control-label"><b>件名：</b></label>
-                    <div class="col-sm-9">    
-                        <input type="text" name="thread_sub">
+                <div class="row">
+                <div class="form-group">  
+                    <div class="col-sm-3 right"> 
+                    <label class="control-label"><b>スレッド名：</b></label>
                     </div>
-                </div>        
-                <div class="form-group">             
-                    <label class="col-sm-3 control-label"><b>スレッド：</b></label>
-                    <div class="col-sm-9">    
-                        <input type="text" name="thread_body">
+                    <div class="col-sm-6">    
+                        <input type="text" name="thread_sub" class="col-xs-6" placeholder="件名を入力してください。">
                     </div>
+                </div> 
                 </div>
-                <div class="form-group"> 
-                    <p class="col-sm-3 control-label"><b>カテゴリ:</b></p>
-                     @foreach($categories as $category)
-                    <label class="radio-inline">
-                    <input type="radio" name="category" value="{{$category->id}}">{{$category->category_name}}
-                    </label>
-                    @endforeach
-                </div>
-                 
                 
-           
-	            <div class="panel-footer"><button type="submit" >送信</button></div> 
-	            </form>
-	</div>
+                <div class="row">
+                <div class="form-group">  
+                
+                    <div class="col-sm-3 right">
+                    <label class="control-label"><b>内容：</b></label>
+                    </div>
+                    <div class="col-sm-6">    
+			            <textarea placeholder="質問内容を記入してください。" rows="3" class="form-control" id="InputTextarea"　name="thread_body" ></textarea>
+		        
+                        
+                    </div>
+                </div>
+                </div>
+                <div class="row">
+                <div class="form-group">   
+                      <div class="col-sm-3 right">
+                          <label class="control-label"><b>カテゴリー:</b></label>
+                      </div>
+                      <div class="col-sm-9">
+                              @if(count($genreCategories)>0)
+                              <?php $i=0 ?>
+                                    @foreach($genreCategories as $genre => $categories)
+                                  
+                                    <div  id="accordion"　class="col-sm-9">
+                                            @if(count($categories)>0)   
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#sample{{$i}}">{{$genre}}</a>
+                                            @endif    
+                                            <div class="collapsing collapse" id="sample{{$i}}">
+                                            	@foreach($categories as $category)
+                            	                 <input type="checkbox" name="category" value="{{$category["id"]}}">{{$category["category_name"]}}</input>
+                                                @endforeach
+                                            </div>
+                                    </div>  
+                                    <?php $i = $i + 1 ?>
+                                    @endforeach
+                              @endif
+                      </div>      
+                </div>  
+	            </div>
+	            <div class="panel-footer inline">
+	                <button type="submit">スレッドを投稿する</button>
+	           </div> 
+	       </form>
+    </div>
 </div>
-
+</div>
+</div>
 
   <div style="margin-top:60px;">   
     <h3>スレッド一覧</h3>    

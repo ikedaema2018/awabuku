@@ -28,6 +28,7 @@
                     <p class="h4">aaaa:</p>
                     <p id="BookImage" class="type"></p>
                 </div>
+            <p id="message" class="type"></p>    
         </div>
         <div class="col-sm-9">
             <div>
@@ -90,41 +91,38 @@
    
   
   <div class="form-group">   
-  <p><b>カテゴリー</b><p>
-@if(count($genreCategories)>0)
-
-        @foreach($genreCategories as $genre => $categories)
-        
-        　<div>
-                <div class= "col-sm-12">  
-                @if(count($categories)>0)
-                <h3>{{$genre}}</h3>
-                @endif
-                </div>
-          </div>
-            <div class="row">
-                <div class= "col-sm-12">  
-                    @foreach($categories as $category)
-                         
-                      <p>{{$category["category_name"]}}</p>    
-                    @endforeach
-                </div>
-            </div>
-      
-        @endforeach
-    @endif
+          <p><b>カテゴリー</b><p>
+          @if(count($genreCategories)>0)
+          <?php $i=0 ?>
+                @foreach($genreCategories as $genre => $categories)
+                
+                <div  id="accordion" class="center">
+                        @if(count($categories)>0)   
+                        <a data-toggle="collapse" data-parent="#accordion" href="#sample{{$i}}">
+                        {{$genre}}
+                        </a>
+                        @endif    
+                        
+                        <div class="collapsing collapse" id="sample{{$i}}">
+                    	@foreach($categories as $category)
+    	                 <input type="checkbox" name="category_id" value="{{$category["id"]}}">{{$category["category_name"]}}</input>
+                        @endforeach
+                        </div>
+                </div>      
+                <?php $i = $i + 1 ?>
+                @endforeach
+            @endif
    </div>   
-  
-  
+
   
      
     <div class="form-group"> 
           <p><b>こんなひとにおすすめ</b></p>
           <div class="center">
-            <label class="checkbox-inline"><input type ="checkbox" name="person" value="1">初心者</label>
-            <label class="checkbox-inline"><input type ="checkbox" name="person" value="2">中級者</label>
-            <label class="checkbox-inline"><input type ="checkbox" name="person" value="3">上級者</label>
-            <label class="checkbox-inline"><input type ="checkbox" name="person" value="4">その他</label>
+            <label class="radio-inline"><input type ="radio" name="person" value="1">初心者</label>
+            <label class="radio-inline"><input type ="radio" name="person" value="2">中級者</label>
+            <label class="radio-inline"><input type ="radio" name="person" value="3">上級者</label>
+            <label class="radio-inline"><input type ="radio" name="person" value="4">その他</label>
          </div>    
     </div>        
      
@@ -180,7 +178,7 @@
         
                 if (!data.totalItems) {
                     $.getJSON(openUrl, function (data1) {
-                        if (!data1){
+                        if (!data1[0]==null){
                             $("#isbn").val("");
                             $("#BookTitle").text("");
                             $("#BookAuthor").text("");
@@ -193,16 +191,17 @@
                             $("#message").html(' <p class = "bg-warning"id = "warning" > 該当する書籍がありません。 < /p>');
                             $('#message > p').fadeOut(3000);
                         } else {
-                            //openのしょり
-                                $("#BookTitle").html('<input class="form-control input-lg" name="BookTitle" readonly="readonly" type="text"  value="' + data[0].summary.title +
+                            //openURLの処理
+                            console.log(data1[0]);
+                                $("#BookTitle").html('<input class="form-control input-lg" name="BookTitle" readonly="readonly" type="text"  value="' + data1[0].summary.title +
                                     '">');
-                                $("#isbn10").html('<input class="form-control input-sm" name ="isbn10" readonly="readonly" type="number" value="' + data[0].summary.isbn + '">');
-                                $("#isbn13").html('<input class="form-control input-sm" name ="isbn13" readonly="readonly" type="number" value="' + data[0].summary.isbn + '">');
-                                $("#BookAuthor").html('<input class="form-control input-sm" name="BookAuthor" readonly="readonly" type="text" value="' + data[0].summary.author +'">');
-                                $("#PublishedDate").html('<input class="form-control input-sm" name="PublishedDate" readonly="readonly" type="text" value="' +data[0].summary.pubdatey  + '">');
-                                $("#BookDiscription").html('<input class="form-control input-lg" name="BookDiscription"  readonly="readonly" type="text" value="' + data[0].onix.CollateralDetail[0].text + '">');
-                                $("#BookThumbnail").html(' <img src=\"' + data[0].summary.cover +'\ " />');
-                                $("#BookImage").html(' <input name="BookImage" type="hidden" value="' + data[0].summary.cover + '">');
+                                $("#isbn10").html('<input class="form-control input-sm" name ="isbn10" readonly="readonly" type="number" value="' + data1[0].summary.isbn + '">');
+                                $("#isbn13").html('<input class="form-control input-sm" name ="isbn13" readonly="readonly" type="number" value="' + data1[0].summary.isbn + '">');
+                                $("#BookAuthor").html('<input class="form-control input-sm" name="BookAuthor" readonly="readonly" type="text" value="' + data1[0].summary.author +'">');
+                                $("#PublishedDate").html('<input class="form-control input-sm" name="PublishedDate" readonly="readonly" type="text" value="' +data1[0].summary.pubdatey  + '">');
+                                $("#BookDiscription").html('<input class="form-control input-lg" name="BookDiscription"  readonly="readonly" type="text" value="' + data1[0].onix.CollateralDetail.TextContent[0].Text + '">');
+                                $("#BookThumbnail").html(' <img src=\"' + data1[0].summary.cover +'\ " />');
+                                $("#BookImage").html(' <input name="BookImage" type="hidden" value="' + data1[0].summary.cover + '">');
                             
                             
                         }

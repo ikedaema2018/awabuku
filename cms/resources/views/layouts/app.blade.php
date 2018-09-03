@@ -41,14 +41,16 @@
     
     
     <header>
-    <div class="row" style="display:table; width:100%; margin:5px auto;"">    
-        <div class="col-sm-6 text-left" style="display:table-cell;width:50%;"> 
+    <div style="display:table; width:100%; margin:5px auto;">    
+        <div class="col-xs-12 col-sm-6" style="display:table-cell;width:50%;"> 
             <div class="titile_wrappert" > 
                 <h2>Our Books</h2>
             </div>
         </div>
-        <div class="col-sm-6 text-right search" style="display:table-cell;width:50%;">
-            <div class="input-group serach_box">
+        <div class="col-xs-12 col-sm-6 search" style="display:table-cell;">
+        <div class="search">
+        
+            <div class="input-group serach_box col-xs-12">
               <input type="text" class="form-control">
               <span class="input-group-btn">
                 <button class="btn btn-default" type="submit">
@@ -56,6 +58,7 @@
                 </button>
               </span>
             </div>  
+        </div>    
         </div>    
     </div>
       

@@ -359,7 +359,7 @@ class BooksController extends Controller
             ->where('category_id', $request->category_id[$i])->get()) == 0){
         $category_lists =new Category_list;
         $category_lists->book_id=$book_id;
-        $category_lists->category_id= $request->category_id[$i];
+        $category_lists->category_id= $request->category_id;
         $category_lists->save();
         }
         }
@@ -385,6 +385,8 @@ class BooksController extends Controller
         $comments->comment_text= $request->comment_text;
         $comments->save();  
     
+    
+    
         }else{
         $aiu = Book::where('isbn13', $isbn13)->first();
         $book_id = $aiu->id;
@@ -398,7 +400,7 @@ class BooksController extends Controller
         $category_lists->book_id=$book_id;
         $category_lists->category_id= $request->category_id[$i];
         $category_lists->save();
-        }
+            }
         }
         $owners = new Owner;
         $owners->book_id= $book_id;
@@ -421,17 +423,17 @@ class BooksController extends Controller
         $comments->comment_text= $request->comment_text;
         $comments->save();   
         
+}
 
-    //   dd(count(Category_list::where('book_id', 1)
-    //         ->where('category_id', 1)->get()));
         return redirect('/book_owner/'.$owners->id);
 
         // }else{
         //   return redirect('/book');
         //     }
-            
-            
-    }}}
+       
+    
+ }
+}
 
 
         public function category_list() {
@@ -650,13 +652,41 @@ class BooksController extends Controller
     //スレッド新規登録
     public function thread() {
         $threads = Thread::orderBy('id', 'asc')->get();
-        $categories=Category::orderBy('id', 'asc')->get();
+        // $categories=Category::orderBy('id', 'asc')->get();
+        
+         if(Auth::check()){
+             
+           
+            $genrus = Category_genru::all();
+            // ジャンルごとに処理.    
+            
+            foreach($genrus as $genru) {
+             $categories = [];
+            // ジャンルに紐づくカテゴリー一覧を取得.
+           
+            $tmp_categories = $genru->categories()->get()->toArray();
+            
+            if ($tmp_categories && count($tmp_categories) > 0) {
+                    // 取得できたら、$categoriesに追加.
+                    $categories = array_merge($categories, $tmp_categories);
+                }
+                
+                 $genreCategories[$genru->category_genruname] = $categories;
+              
+           
+             }
+         }
+         
+      
         return view('threads',
         ['threads' => $threads],
-        ['categories' => $categories]
+        // ['categories' => $categories],
+        ['genreCategories' =>$genreCategories]
         );
-    }
+         }
 
+  
+  
     //ポストされてきたカテゴリーをインサートする処理
     public function thread_insert(Request $request) {
       $validator = Validator::make($request->all(), [
