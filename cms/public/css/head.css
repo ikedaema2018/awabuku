@@ -9,3 +9,13 @@
     width: 80%;
     margin-left: auto;
 }
+
+.keyword_search{
+   width: 80%; 
+}
+
+.head_wrapper{
+    align-items:center;
+    justify-content:space-between;
+    
+}

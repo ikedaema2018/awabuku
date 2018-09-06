@@ -86,7 +86,7 @@ use App\User;
                                     <li class="thread_page">
                                       <div> 
                                         <p class="itemid" hidden>{{$user_comment->id}}</p>
-                                        <p>{{$user_comment->user_c->BookTitle}}</p>
+                                        <p class="itemtitle">{{$user_comment->user_c->BookTitle}}</p>
                                         <p>{{$user_comment->user_c->BookAuthor}}</p>
                                         <p>{{$user_comment->comment_text}}</p>
                                       </div> 
@@ -101,7 +101,7 @@ use App\User;
                                     <li class="thread_page">
                                       <div>  
                                         <p class="itemid" hidden>{{$user_comment->id}}</p>
-                                        <p>{{$user_comment->user_c->BookTitle}}</p>
+                                        <p class="itemtitle">{{$user_comment->user_c->BookTitle}}</p>
                                         <p>{{$user_comment->user_c->BookAuthor}}</p>
                                         <p>{{$user_comment->comment_text}}</p>
                                       </div> 
@@ -128,12 +128,13 @@ use App\User;
     <!--コメント入力  				-->
     
         	<div class="row">
-        	    <p>おすすめの本</p>
+        	    <p>あなたがチェックした本</p>
             </div>
     
     	　　<form id="aaa" action="{{url('thread_2')}}" method="post" class="horizontal">
       　　    {{csrf_field()}}
     
+      	 
       	       <input type="hidden" name="thread_id"  value="{{$thread->id}}" >
       	       <input type="textarea" name="thread_comment"  placeholder="コメントを入力" rows="10" class="form-control">
                <button type="submit" class="btn btn-primary"/ value="">投稿する</button>
@@ -306,14 +307,17 @@ use App\User;
 </div>  
 
 <!--コメントリストを表示する　　-->
+<div class="col-sm-2-offset col-sm-8 col-sm-offset-2">
 @if(isset($thread_comment_lists)>0)
       @foreach($thread_comment_lists as $thread_comment_list)   
-        <div class="panel panel-success coment_list">
+        <div class="panel panel-info coment_list">
         	<div class="panel-heading">
-        		<ul style="list-style:none;">
-                <li class="user_name"><img class="thread_avater img-circle" src="{{User::find($thread_comment_list->r->user_id)->avater}}"></img></li>
-        		<li class="user_name">{{User::find($thread_comment_list->r->user_id)->name}}さん</li>
+        		<ul style="list-style:none;" >
+                <li class="user_name panel-heading-li"><img class="thread_avater img-circle" src="{{User::find($thread_comment_list->r->user_id)->avater}}"></img></li>
+        		<li class="user_name panel-heading-li">{{User::find($thread_comment_list->r->user_id)->name}}さん</li>
+        		<li class=panel-heading-li>{{$thread_comment_list->updated_at}}</li>	
         		</ul>
+        	
         	</div>
         	<div class="panel-body hoge">
         	    
@@ -325,7 +329,7 @@ use App\User;
                     <li class="comment_body_list">
                       <div> 
                         <a href="{{url('rental/'.$thread_comment_list->r->book_id)}}"></a>
-                        <h3>{{Book::find($thread_comment_list->r->book_id)->BookTitle}}</h3>
+                        <p>{{Book::find($thread_comment_list->r->book_id)->BookTitle}}</p>
                         <p>{{Book::find($thread_comment_list->r->book_id)->BookAuthor}}</p>
                         <p>おすすめコメント</p>
                         <p>{{$thread_comment_list->r->comment_text}}</p>
@@ -333,12 +337,11 @@ use App\User;
                     </li>
                 </ul>  
         	</div>
-        	<div class="panel-footer">
-        	    <p>{{$thread_comment_list->updated_at}}</p>
-        	</div>  
+         
         </div>        	  
       @endforeach
 @endif 
+</div>
 <!--コメントを表示する　終了-->
       
     
@@ -348,10 +351,18 @@ use App\User;
    <script>
      
         $(".item").on("click",function(){
+           $("#aaa").find("[name='id']").remove();
+           $("#aaa").find("[name='BookTitle']").remove();
+           
         let id = $(this).find(".itemid").text();
-        let form = $("<input name='id'>").attr("type","text");
+        let BookTitle =$(this).find(".itemtitle").text();
+        let form = $("<input name='id'>").attr("type","hidden");
+        let form2 =$("<input name='BookTitle'>").attr("type","text");
+        
         form.val(id);
+        form2.val(BookTitle);
         $("#aaa").prepend(form);
+        $("#aaa").prepend(form2);
         
         console.log($('#aaa').val()); 
         });

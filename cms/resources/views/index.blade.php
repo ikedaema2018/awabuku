@@ -14,10 +14,29 @@ use App\Category_genru;
 
 
 
-<div class="jumbotron text-center">
-     <h1>アワブク<small>our books</small></h1>
-     <h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g's library</h2>
-</div>
+    <div class="container">
+
+        <div class="jumbotron"  style="background:url(img/topic.jpg); background-size:cover;">
+          <p><b>TOPIC</b></p> 
+             <span><img class="avater img-circle" src="{{$topic_user->avater}}"></img></span>
+             <p><b><a href="{{url('user_search_page/'.$topic_user->id)}}">{{$topic_user->name}}</a>さんのオススメ</b></p>
+             
+            <ul style="list-style:none;">
+                <li><a href="{{url('rental/'.$topic_book->id)}}"><img src="{{$topic_book->BookImage}}" width="128" height="180"></img></a></li>
+                <li><a href="{{url('rental/'.$topic_book->id)}}">{{$topic_book->BookTitle}}</a></li>
+                <li>{{$topic->comment_text}}</li>
+            </ul> 
+            <a href="">内容を見る</a>
+         
+        </div>
+    
+    </div>
+    
+    
+    
+    
+    
+    
     
     @if(Session::has('alert'))
     <div class="alert alert-danger" role="alert">
@@ -34,7 +53,7 @@ use App\Category_genru;
                 <ul style="list-style:none;">
                     @if(isset($thread_lists)>0)
                     @foreach($thread_lists as $thread_list)
-                        <li><h4><a href="{{url('/thread/'.$thread_list->id)}}">{{$thread_list->thread_sub}}/({{User::find($thread_list->user_name)->name}})</a></h4></li>
+                        <li><p><b><a href="{{url('/thread/'.$thread_list->id)}}">{{$thread_list->thread_sub}}/({{User::find($thread_list->user_name)->name}})</a></b></p></li>
                     @endforeach
                     @endif
                 </ul>

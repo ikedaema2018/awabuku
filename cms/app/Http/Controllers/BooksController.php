@@ -25,22 +25,24 @@ class BooksController extends Controller
 //index TOP画面
     public function index(){
         
+        //topics
+        
+        $topic=Comment::where('thread_comment_check',1)->first();
+        $topic_user=User::where('id',$topic->user_id)->first();
+        $topic_book=Book::where('id',$topic->book_id)->first();
+        
         $genrus = Category_genru::all();
         
         // カテゴリジャンルごとの本一覧.
         $genreBooks = [];
-        $genreBooksId = [];
     
         // ジャンルごとに処理.    
         foreach($genrus as $genru) {
-            
             $books = [];
-            
-            // ジャンルに紐づくカテゴリー一覧を取得.
-            // $ids=[];
+ // ジャンルに紐づくカテゴリー一覧を取得.
+          
             $categories = $genru->categories()->get();
             foreach($categories as $category){
-                
                 // カテゴリーごとに処理.
 
                 // カテゴリーから本を取得する.
@@ -51,25 +53,9 @@ class BooksController extends Controller
                     $books = array_merge($books, $tmpBooks);
                 }
             }
-            
             // とあるカテゴリージャンルに紐づく、本の一覧.
-           
-            
             $genreBooks[$genru->category_genruname] = $books;
-            
-            
-            
-        //   dd($genreBooks);
-
-                // カテゴリー一覧にひもづくBooksを取得.
-            // $books=Category::whereIn("Categories.id",$ids)->books()->limit(5);
-            // $books=Category::whereIn("id",$ids)->books()->get();
-            // dd($books);
-            }
-            // dd($genreBooks);
-         
-        // $categories = Category::orderBy('id', 'asc')
-        // ->get();
+        }
    
         $b = Category_list::all();
         $category_lists = $b->groupBy('category_id');
@@ -81,10 +67,14 @@ class BooksController extends Controller
          
         $rentals = Rental::all();
         
-        // dd($rentals);
+    
         
 
         return view('index', [
+            'topic'=>$topic,
+            'topic_user'=>$topic_user,
+            'topic_book'=>$topic_book,
+            
             'categories' => $categories,
             'category_lists' => $category_lists,
             'thread_lists'  =>$thread_lists,
@@ -93,6 +83,8 @@ class BooksController extends Controller
             
         ]);
     }    
+        
+    
     
 // <======カテゴリごとの紹介ページ ======>  
       

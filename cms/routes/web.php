@@ -72,3 +72,9 @@ Route::get('/thread/{thread}', 'BooksController@thread_page');
 Route::get('/category_genre_page/{category_genru}', 'BooksController@category_genre_page');
 Route::get('/category_page/{category}', 'BooksController@category_page');
 
+//検索結果ページ
+Route::get('/search', 'SearchController@getIndex');
+
+//外部の人が見るユーザー情報
+Route::get('/user_search_page/{user}','UsersearchController@user_search_page');
+

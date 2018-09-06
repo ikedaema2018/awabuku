@@ -41,29 +41,40 @@
     
     
     <header>
-    <div style="display:table; width:100%; margin:5px auto;">    
+    <div style="display:flex; width:100%; margin:5px auto;" class="head_wrapper">    
         <div class="col-xs-12 col-sm-6" style="display:table-cell;width:50%;"> 
             <div class="titile_wrappert" > 
                 <h2>Our Books</h2>
             </div>
         </div>
         <div class="col-xs-12 col-sm-6 search" style="display:table-cell;">
-        <div class="search">
         
+          <form class="form-inline" action="{{url('/search')}}">
             <div class="input-group serach_box col-xs-12">
-              <input type="text" class="form-control">
+          
+              <input type="text" class="form-control keyword_search" name="keyword" value="" placeholder="キーワードを入力してください。" >
               <span class="input-group-btn">
-                <button class="btn btn-default" type="submit">
-                  <i class='glyphicon glyphicon-search'></i>
-                </button>
+                <button type="submit"class="btn btn-info" name="search_button">
+                  <i class='glyphicon glyphicon-search'></i></button>
+                
               </span>
-            </div>  
-        </div>    
+           </div>  
+          </form>
+            
         </div>    
     </div>
-      
+
+              
     
         <nav class="navbar navbar-default">
+            
+            <!--スマホ用トグルボタンの設置-->
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
             <div class="container-fluid">
             <div class="navbar-header">
                 <a href="{{url(' ')}}" class="navbar-brand">g's library</a>
