@@ -30,6 +30,19 @@ class BooksController extends Controller
         $topic=Comment::where('thread_comment_check',1)->first();
         $topic_user=User::where('id',$topic->user_id)->first();
         $topic_book=Book::where('id',$topic->book_id)->first();
+        $topic_categories=Category_list::where('book_id',$topic_book->id)->get();
+        $topic_category_names=[];
+        
+         //カテゴリーリストのカテゴリ名を取得.
+        foreach($topic_categories as $topic_category){
+
+         $tmpCategory=$topic_category->category_Name()->get()->toArray();
+         if ($tmpCategory && count($tmpCategory) > 0) {
+                    // 取得できたら、$booksに追加.
+            $topic_category_names = array_merge($topic_category_names, $tmpCategory);  
+         }
+        }    
+    
         
         $genrus = Category_genru::all();
         
@@ -74,7 +87,8 @@ class BooksController extends Controller
             'topic'=>$topic,
             'topic_user'=>$topic_user,
             'topic_book'=>$topic_book,
-            
+            'topic_category'=>$topic_category,
+            'topic_category_names'=>$topic_category_names,
             'categories' => $categories,
             'category_lists' => $category_lists,
             'thread_lists'  =>$thread_lists,
@@ -82,9 +96,9 @@ class BooksController extends Controller
             'genreBooks'=>$genreBooks,
             
         ]);
-    }    
+     
         
-    
+    }
     
 // <======カテゴリごとの紹介ページ ======>  
       
@@ -111,7 +125,7 @@ class BooksController extends Controller
             // とあるカテゴリージャンルに紐づく、本の一覧.
            
             $genreBooks[$category_genru->category_genruname] = $books;
-                   
+           
             
        
             
@@ -179,6 +193,8 @@ class BooksController extends Controller
     public function category_genru_update(Request $request) {
         $validator = Validator::make($request->all(), [
             'id' => 'required',
+  
+  
             'category_genruname' => 'required | max:30',
         ]);
         if ($validator->fails()){
@@ -634,12 +650,16 @@ class BooksController extends Controller
         //本の登録情報をレンタルviewページに飛ばす
         public function mypage_detail(Owner $owner) {
          $book= Book::where('id',$owner->book_id)->first();
-         $comments=Comment::where('book_id',$owner->book_id)->get();
-        
-        return view('mypage_detail', ['owner'=>$owner,'book'=> $book,'comments'=>$comments]
+         $comments =Comment::where('book_id',$owner->book_id)
+         ->where('user_id',Auth::user()->id)
+         ->get();
+         
+        return view('mypage_detail', ['comments'=>$comments,'book'=> $book,]
         );
 
         }
+
+
 
     //スレッド新規登録
     public function thread() {
@@ -697,6 +717,7 @@ class BooksController extends Controller
       $threads->category_id=$request->category;
       $threads->user_name=Auth::user()->id;
       $threads->save();
+      
       return redirect('/thread/'.$threads->id);
     }
  

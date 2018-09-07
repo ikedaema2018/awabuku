@@ -21,20 +21,28 @@ use App\Category;
 </div>
 
 <div class="row">   
- 
+<?php $i=0?>
    @if(count($book_lists)>0)
      @foreach($book_lists as $book_list)
-        <div class= "col-sm-2">
-          <ul class="sample">
-           <li>
-             <a href="{{url('rental/'.$book_list->book_id)}}"><img src="{{Book::find($book_list->book_id)->BookImage}}"></img></a><br>
-             <a href="{{url('rental/'.$book_list->book_id)}}">{{Book::find($book_list->book_id)->BookTitle}}</a><br>
-           </li>          
-          </ul>
-        </div>
+      @if($i==0)
+        <div class="col-sm-12 border_bottom">
+      @endif
+            <div class= "col-sm-2">
+              <ul class="sample">
+               <li>
+                 <a href="{{url('rental/'.$book_list->book_id)}}"><img src="{{Book::find($book_list->book_id)->BookImage}}"></img></a><br>
+                 <a href="{{url('rental/'.$book_list->book_id)}}">{{Book::find($book_list->book_id)->BookTitle}}</a><br>
+               </li>          
+              </ul>
+            </div>
+      <?php $i=$i+1?>
+           @if($i == 6 || $loop->last)
+           <?php $i=0 ?>
+    　   </div> 
+    　   @endif
     @endforeach
   @endif             
  </div>     
-</div> 
+
 
 @endsection

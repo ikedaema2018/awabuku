@@ -12,6 +12,7 @@ use App\Owner;
 use App\Book;
 use App\Rental;
 use App\User;
+use App\Comment;
 
 use Validator;
 
@@ -24,23 +25,38 @@ class UsersearchController extends Controller
      public function user_search_page(User $user) {
         if(Auth::check()) {
             
-            //userが持っている本
-            $owner_books = Owner::where('user_id', $user->id)->get();
-            $books = [];
-
-        // ユーザーの所有している本のデータをBookテーブルに紐づける.    
-            foreach($owner_books as $owner_book) {
+        //     //userが持っている本
+        //     $owner_books = Owner::where('user_id', $user->id)->get();
+        //     $books = [];
+        // // ユーザーの所有している本のデータをBookテーブルに紐づける.    
+        //     foreach($owner_books as $owner_book) {
+         
+        //         // カテゴリーから本を取得する.
+        //         $tmpOwnerBooks = $owner_book->books()->get()->toArray();
+                
+        //         if ($tmpOwnerBooks && count($tmpOwnerBooks) > 0) {
+        //             // 取得できたら、$booksに追加.
+        //             $books = array_merge($books, $tmpOwnerBooks);
+        //         }
+        //     }
+        
+        
+        $user_comments=Comment::where('user_id',$user->id)->get();
+        $books =[];
+        
+         // ユーザーがコメントしている本のデータをBookテーブルに紐づける.    
+            foreach($user_comments as $user_comment) {
          
                 // カテゴリーから本を取得する.
-                $tmpOwnerBooks = $owner_book->books()->get()->toArray();
+                $tmpCommentBooks = $user_comment->user_c()->get()->toArray();
                 
-                if ($tmpOwnerBooks && count($tmpOwnerBooks) > 0) {
+                if ($tmpCommentBooks && count($tmpCommentBooks ) > 0) {
                     // 取得できたら、$booksに追加.
-                    $books = array_merge($books, $tmpOwnerBooks);
+                    $books = array_merge($books, $tmpCommentBooks);
                 }
             }
         
- 
+
             
             $returned_rentals = Rental::where('user_id', $user->id)
             ->where('returned_day','>',1)
@@ -65,6 +81,7 @@ class UsersearchController extends Controller
             return view('/user_search_page', [
                 'user' =>$user,
                 'books' => $books,
+                'user_comments'=>$user_comments,
                 'rentaled_books' => $rentaled_books,
                
                 ]);

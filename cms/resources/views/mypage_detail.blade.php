@@ -35,10 +35,12 @@ use App\Category;
        
              @if(isset($comments)>0)
              @foreach($comments as $comment)
-             
-                <p class="col-xs-1">{{$comment->evolution}}</p>
+                 
+                <p class="col-xs-1">{{$comment->user_id}}さん</p>
+                <p class="col-xs-1">{{$comment->evolution}}点</p>
                 <p class="col-xs-1">{{$comment->person}}</p>
-                <p class="col-xs-10">{{$comment->comment_text}}</p>
+                <p class="col-xs-9">{{$comment->comment_text}}</p>
+               
 
              @endforeach
              @endif

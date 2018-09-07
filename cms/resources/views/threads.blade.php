@@ -6,7 +6,7 @@
 use App\User;
 
 ?>
-<div class="col-sm-offset-2 col-sm-8 col-sm-offset-2">
+<div class="col-sm-offset-2 col-sm-8">
 <div class="panel panel-warning">
 	<div class="panel-heading">
 		<h3 class="panel-title inline">
@@ -15,40 +15,39 @@ use App\User;
 			</a>
 		</h3>
 	</div>
-	<div id="sampleCollapseListGroup1" class="panel-collapse collapse in">
+
 		
-		    <form action="{{url('threads')}}" method="post">
+    <form action="{{url('threads')}}" method="post">
+		<div id="sampleCollapseListGroup1" class="panel-collapse collapse in">
                 {{ csrf_field() }}
                 <div class="row">
-                <div class="form-group">  
-                    <div class="col-sm-3 right"> 
-                    <label class="control-label"><b>スレッド名：</b></label>
-                    </div>
-                    <div class="col-sm-6">    
-                        <input type="text" name="thread_sub" class="col-xs-6" placeholder="件名を入力してください。">
-                    </div>
-                </div> 
+                    <div class="form-group">  
+                        <div class="col-sm-3 right"> 
+                            <label class="control-label"><b>スレッド名：</b></label>
+                        </div>
+                        <div class="col-sm-6">    
+                            <input type="text" name="thread_sub" class="col-xs-6" placeholder="件名を入力してください。">
+                        </div>
+                    </div> 
                 </div>
                 
                 <div class="row">
-                <div class="form-group">  
+                    <div class="form-group">  
+                        <div class="col-sm-3 right">
+                            <label class="control-label"><b>内容：</b></label>
+                        </div>
+                        <div class="col-sm-6">    
+    			               <input type=text  placeholder="質問内容を記入してください。" rows="3" class="form-control" id="InputTextarea"　name="thread_body" ></textarea>
+                        </div>
+                    </div>
+                </div>
                 
-                    <div class="col-sm-3 right">
-                    <label class="control-label"><b>内容：</b></label>
-                    </div>
-                    <div class="col-sm-6">    
-			            <textarea placeholder="質問内容を記入してください。" rows="3" class="form-control" id="InputTextarea"　name="thread_body" ></textarea>
-		        
-                        
-                    </div>
-                </div>
-                </div>
                 <div class="row">
-                <div class="form-group">   
-                      <div class="col-sm-3 right">
-                          <label class="control-label"><b>カテゴリー:</b></label>
-                      </div>
-                      <div class="col-sm-9">
+                    <div class="form-group">   
+                          <div class="col-sm-3 right">
+                              <label class="control-label"><b>カテゴリー:</b></label>
+                          </div>
+                          <div class="col-sm-9">
                               @if(count($genreCategories)>0)
                               <?php $i=0 ?>
                                     @foreach($genreCategories as $genre => $categories)
@@ -59,26 +58,28 @@ use App\User;
                                             @endif    
                                             <div class="collapsing collapse" id="sample{{$i}}">
                                             	@foreach($categories as $category)
-                            	                 <input type="checkbox" name="category" value="{{$category["id"]}}">{{$category["category_name"]}}</input>
+                            	                 <input type="radio" name="category" value="{{$category["id"]}}">{{$category["category_name"]}}</input>
                                                 @endforeach
                                             </div>
                                     </div>  
                                     <?php $i = $i + 1 ?>
                                     @endforeach
                               @endif
-                      </div>      
-                </div>  
+                          </div>      
+                    </div>  
 	            </div>
 	            <div class="panel-footer inline">
 	                <button type="submit">スレッドを投稿する</button>
 	           </div> 
-	       </form>
-    </div>
-</div>
-</div>
-</div>
+	   </div>
+	</form>
+  </div>
+ </div>
+<div class="col-sm-2">
+</div>  
 
-  <div style="margin-top:60px;">   
+
+ <div class="col-sm-12">   
     <h3>スレッド一覧</h3>    
         @if (count($categories) > 0)
         <table class="table table-striped">
@@ -107,6 +108,6 @@ use App\User;
             </tbody>
         </table>
         @endif
-    </div>
-    </div> 
+</div>
+    
 @endsection

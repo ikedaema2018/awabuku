@@ -6,6 +6,7 @@
 
 use App\User;
 use App\Book;
+use App\Comment;
 
 
 ?>
@@ -119,14 +120,13 @@ use App\Book;
         @if(isset($owners)>0)
         <?php $i=0 ?>
             @foreach($owners as $owner)
-            
               @if($i == 0)
                 <div class="col-sm-12 border_bottom">
               @endif
                 <div class="col-sm-2">
                 <ul class="sample">
                  <li>
-                    <img src="{{$owner->books->BookImage}}" class="img-responsive"" width="128" height="180"></img>
+                    <img src="{{$owner->books->BookImage}}" class="img-responsive" width="128" height="180"></img>
                     <a href="">{{ $owner->books->BookTitle }}</a>
                     <p>{{ $owner->books->BookAuthor }}</p>
                     <p>{{ $owner->books->Published}}</p>      

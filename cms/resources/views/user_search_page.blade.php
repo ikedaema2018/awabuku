@@ -6,6 +6,7 @@
 
 use App\User;
 use App\Book;
+use App\Comment;
 
 ?>
 <!--ジャンボトロン-->
@@ -18,6 +19,7 @@ use App\Book;
     
     </div>
 <!--ジャンボトロン終わり-->
+
 
 
 <!--所有している本-->
@@ -36,11 +38,9 @@ use App\Book;
                     <img src="{{$book["BookImage"]}}" class="img-responsive" width="128" height="180"></img>
                     <a href="">{{ $book["BookTitle"] }}</a>
                     <p>{{ $book["BookAuthor"] }}</p>
-                    <p>おすすめコメントを見る</p>
-                    <a href="{{ url('rental/'.$book["id"])}}"<p>本をレンタルする</p></a>
-                   
-                 
-                    
+       
+                    <a href="{{url('mypage/'.Comment::find($book["id"])->owner_id)}}"><p>おすすめコメントを見る</p></a>
+                    <a href="{{ url('rental/'.$book["id"])}}"><p>本をレンタルする</p></a>
                  </li>
                  </ul>
                 </div>
@@ -69,8 +69,10 @@ use App\Book;
                                 
                                 <p>{{ $rentaled_book["BookTitle"] }}</p>
                                 <p>{{ $rentaled_book["BookAuthor"] }}</p>
-                                 <p>おすすめコメントを見る</p>   
+                                 <p>おすすめコメントを見る</p> 
+                                 <a href="{{url('mypage/'.Comment::find($book["id"])->owner_id)}}"><p>おすすめコメントを見る</p></a>
                                  <a href="{{ url('rental/'.$rentaled_book["id"]) }}"><p>レンタルする</p></a>
+                                
                                 </li>
                             </ul>
                  　     </div>
