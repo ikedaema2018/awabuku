@@ -102,7 +102,7 @@ use App\Comment;
                 </ul>
         </div>
         <?php $i=$i+1?>
-      　@if($i==6 || $roop->last)  
+      　@if($i==6 || $loop->last)  
        　<?php $i=0?>
        　</div>
       　@endif
@@ -178,7 +178,7 @@ use App\Comment;
              　    @endif
          @endforeach   
     @endif
-   
+ 
 
 
 

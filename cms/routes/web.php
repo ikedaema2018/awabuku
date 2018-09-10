@@ -64,6 +64,8 @@ Route::post('/return_comment/','BooksController@return_comment');
 //掲示板
 Route::get('/threads','BooksController@thread');
 Route::post('/threads','BooksController@thread_insert');
+
+
 Route::post('/thread', 'BooksController@book_insert_thread');
 Route::post('/thread_2', 'BooksController@thread_comment_insert');
 Route::get('/thread/{thread}', 'BooksController@thread_page');

@@ -499,10 +499,18 @@ class BooksController extends Controller
         public function rental_view(Book $book) {
         $owners= Owner::where('book_id',$book->id)->get();
         $comments=Comment::where('book_id',$book->id)->get();
+        $r = Rental::all();
+        $rentals = $r->groupBy('owner_id');
+      
         $category_lists=Category_list::where('book_id',$book->id)->get();        
 
-        return view('rental_view', ['book'=> $book,'owners'=>$owners,
-        'comments'=>$comments,'category_lists'=>$category_lists,
+        return view('rental_view', [
+            'book'=> $book,
+            'owners'=>$owners,
+            'comments'=>$comments,
+            'category_lists'=>$category_lists,
+            'rentals'=>$rentals,
+            
         ]
         );
     }
@@ -670,6 +678,8 @@ class BooksController extends Controller
              
            
             $genrus = Category_genru::all();
+            
+            $genreCategories = [];
             // ジャンルごとに処理.    
             
             foreach($genrus as $genru) {
@@ -687,14 +697,12 @@ class BooksController extends Controller
               
            
              }
+             return view('threads',
+                ['threads' => $threads,
+                // 'categories' => $categories,
+                'genreCategories' =>$genreCategories]
+             );
          }
-         
-      
-        return view('threads',
-        ['threads' => $threads],
-        // ['categories' => $categories],
-        ['genreCategories' =>$genreCategories]
-        );
          }
 
   
@@ -707,7 +715,7 @@ class BooksController extends Controller
           'category'    =>'required'
       ]);
       if ($validator->fails()){
-          return redirect('thread')
+          return redirect('threads')
           ->withInput()
           ->withError($validator);
       }
@@ -717,6 +725,7 @@ class BooksController extends Controller
       $threads->category_id=$request->category;
       $threads->user_name=Auth::user()->id;
       $threads->save();
+      
       
       return redirect('/thread/'.$threads->id);
     }
@@ -932,7 +941,7 @@ class BooksController extends Controller
          
         $rentals = Rental::all();
                     
-        return view('index', [
+        return view('category_genre_page', [
             'categories' => $categories,
             'category_lists' => $category_lists,
             'thread_lists'  =>$thread_lists,

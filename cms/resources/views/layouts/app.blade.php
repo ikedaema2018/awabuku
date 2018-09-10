@@ -12,6 +12,7 @@
     
     <link rel="stylesheet" href="{{asset('css/index.css')}}">
     <link rel="stylesheet" href="{{asset('css/mypage.css')}}">
+    <link rel="stylesheet" href="{{asset('css/mypage_detail.css')}}">
     <link rel="stylesheet" href="{{asset('css/category_genre_page.css')}}">
     <link rel="stylesheet" href="{{asset('css/category_page.css')}}">
     <link rel="stylesheet" href="{{asset('css/thread_page.css')}}">
@@ -64,36 +65,45 @@
         </div>    
     </div>
 
-              
-    
-        <nav class="navbar navbar-default">
+        <nav class="navbar navbar-default"style="background-color: #00CCCC;">
+          <div class="container-fluid">
+
+
+            <div class="navbar-header">
             
             <!--スマホ用トグルボタンの設置-->
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".target">
               <span class="sr-only">Toggle navigation</span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <div class="container-fluid">
-            <div class="navbar-header">
-                <a href="{{url(' ')}}" class="navbar-brand">g's library</a>
-            </div>
             
-            <ul class="nav navbar-nav">
-                <li class="active">
-                    <a href="{{url(' ')}}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a>
-                </li> 
-                <li>
-                    <a href="{{url('book')}}"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>本を登録する</a>
-                </li>
-                <li>
-                    <a href="{{url('mypage')}}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>マイページ</a>
-                </li>
-                <li>
-                    <a href="{{url('threads')}}"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></span>スレッド</a>
-                </li>
-            </ul>        
+            <!--ロゴ表示の指定-->
+            <a class="navbar-brand" href="#">g's library</a>
+          </div>
+            
+            
+            <div class="container-fluid">
+             <div class="collapse navbar-collapse target">
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href="{{url(' ')}}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a>
+                    </li> 
+                    <li>
+                        <a href="{{url(' ')}}">g's library</a>
+                    </li>
+                    <li>
+                        <a href="{{url('book')}}"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>本を登録する</a>
+                    </li>
+                    <li>
+                        <a href="{{url('mypage')}}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>マイページ</a>
+                    </li>
+                    <li>
+                        <a href="{{url('threads')}}"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></span>スレッド</a>
+                    </li>
+                </ul> 
+           
     
                
                

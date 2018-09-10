@@ -30,15 +30,7 @@ use App\User;
              <p>{{ $thread->thread_body }}</p>
         </div> 
     　</div>    
-    　<div class="row">
-          <div class="col-sm-offset-3 col-sm-9 text-right">
-            <form  action="{{url('thread/'.$thread->id)}}" method="post">
-            {{ csrf_field() }}
-            <input type="hidden" name="thread_id" value="$thread->id"/>
-            <button type="submit" class="btn btn-primary"/ value="">投稿する</button>
-            </form>
-          </div>
-      </div>
+    　
 </div>
 
 <div class="row">
@@ -320,11 +312,7 @@ use App\User;
         	
         	</div>
         	<div class="panel-body hoge">
-        	    
-        	    <p>コメント</p>
-        	    <p class="well">{{$thread_comment_list->thread_comment}}</p>
-        	    
-                <ul style="list-style-type: none;" class="comment_body">
+                  <ul style="list-style-type: none;" class="comment_body">
                     <li class="comment_body_list"><img src="{{Book::find($thread_comment_list->r->book_id)->BookImage}}"></img></li>
                     <li class="comment_body_list">
                       <div> 
@@ -336,6 +324,8 @@ use App\User;
                       </div> 
                     </li>
                 </ul>  
+            <p>コメント</p>
+        	<p class="well">{{$thread_comment_list->thread_comment}}</p>    
         	</div>
          
         </div>        	  

@@ -6,6 +6,7 @@
 
 use App\Comment;
 use App\User;
+use App\Rental;
 use App\Category;
 
 ?>
@@ -78,12 +79,12 @@ use App\Category;
                     @endif
                 </td>
                  <td>
-                   <p> aaa</a>
+                   <p>ユーザーの名前でせてない</p>
             
                    
                 </td>                
                 <td>
-                    qqq
+                　<p>返却日出せていない</p>
                 </td> 
                  <td>
                     @if($owner->return_flag == 0)

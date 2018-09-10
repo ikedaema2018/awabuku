@@ -18,8 +18,9 @@ use App\User;
 
 		
     <form action="{{url('threads')}}" method="post">
+        {{ csrf_field() }}
 		<div id="sampleCollapseListGroup1" class="panel-collapse collapse in">
-                {{ csrf_field() }}
+                
                 <div class="row">
                     <div class="form-group">  
                         <div class="col-sm-3 right"> 
@@ -37,7 +38,8 @@ use App\User;
                             <label class="control-label"><b>内容：</b></label>
                         </div>
                         <div class="col-sm-6">    
-    			               <input type=text  placeholder="質問内容を記入してください。" rows="3" class="form-control" id="InputTextarea"　name="thread_body" ></textarea>
+    			               <!--<input type="text"  placeholder="質問内容を記入してください。"  rows="3" class="form-control" id="InputTextarea"　name="thread_body" ></input>-->
+                        <input type="text" name="thread_body" class="form-control" placeholder="質問内容を記入してください。"  rows="3" id="InputTextarea" />
                         </div>
                     </div>
                 </div>
@@ -48,6 +50,7 @@ use App\User;
                               <label class="control-label"><b>カテゴリー:</b></label>
                           </div>
                           <div class="col-sm-9">
+                              @if(isset($genreCategories))
                               @if(count($genreCategories)>0)
                               <?php $i=0 ?>
                                     @foreach($genreCategories as $genre => $categories)
@@ -65,6 +68,7 @@ use App\User;
                                     <?php $i = $i + 1 ?>
                                     @endforeach
                               @endif
+                              @endif
                           </div>      
                     </div>  
 	            </div>
@@ -78,7 +82,7 @@ use App\User;
 <div class="col-sm-2">
 </div>  
 
-
+<!--スレッド一覧表示始まり-->
  <div class="col-sm-12">   
     <h3>スレッド一覧</h3>    
         @if (count($categories) > 0)
@@ -109,5 +113,5 @@ use App\User;
         </table>
         @endif
 </div>
-    
+<!--スレッド一覧表示終わり-->   
 @endsection

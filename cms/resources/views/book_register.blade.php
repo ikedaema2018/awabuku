@@ -7,10 +7,10 @@
 
  <p class="page-header">本を登録する</p>
   <div class="form-group">
-    <label  class="col-sm-3 control-label" for="isbn">ISBNを入力してください:</label>
+    <label  class="col-sm-3 control-label form-control-static" for="isbn">ISBNを入力してください:</label>
     <div class="col-sm-9">
-        <input  class="form-control-static" type="text" class="form-control" id="isbn">
-        <button id="btn">送信</button>
+        <input  class="form-control-static col-sm-9" type="text" class="form-control" id="isbn" placeholder="978で始まる13桁の数字を入力（ーハイフンは含まない）">
+        <button id="btn" class="form-control-static">検索</button>
     </div>
   </div>
 
@@ -19,7 +19,7 @@
       
 {{ csrf_field() }}
     
-<div style="background-color:#FFFFEE;">
+<div style="background-color:#DDFFFF;">
     <div class="row">    
         <div class="col-sm-3">
             <p>表紙画像:</p>
