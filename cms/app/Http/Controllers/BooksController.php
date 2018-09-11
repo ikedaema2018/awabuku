@@ -16,6 +16,8 @@ use App\Comment;
 use Validator;
 use App\Thread;
 use App\Thread_comment;
+use App\Scopes\LivingBookScope;
+
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -355,6 +357,7 @@ class BooksController extends Controller
         $books->PublishedDate = $request->PublishedDate;
         $books->BookImage = $request->BookImage;
         $books->BookDiscription= $request->BookDiscription;
+        
         $books->save();
         
         $aiu = Book::orderBy('id', 'desc')->first();
@@ -375,8 +378,15 @@ class BooksController extends Controller
         $owners = new Owner;
         $owners->book_id= $book_id;
         $owners->user_id= $request->user_id;
-        $owners->owner= $request->owner;
+        
         $owners->rental_flag= $request->rental_flag;
+        
+        if($request->gs== 1) {
+            $owners->owner = "ジーズ";
+        }else{
+            $owners->owner ="0";
+        }
+        
         $owners->save();  
         
         $eok = Owner::orderBy('id', 'desc')->first();
@@ -415,8 +425,16 @@ class BooksController extends Controller
         $owners->user_id= $request->user_id;
         $owners->owner= $request->owner;
         $owners->rental_flag= $request->rental_flag;
-        $owners->save();  
         
+        
+        if($request->gs == 1) {
+            $owners->owner = "ジーズ";
+            
+        }else{
+            $owners->owner ="0";
+        }
+        $owners->save();  
+       
         $eok = Owner::orderBy('id', 'desc')->first();
         $owner_id = $eok->id;
         
@@ -662,10 +680,38 @@ class BooksController extends Controller
          ->where('user_id',Auth::user()->id)
          ->get();
          
-        return view('mypage_detail', ['comments'=>$comments,'book'=> $book,]
+        return view('mypage_detail', [
+            'comments'=>$comments,
+            'book'=> $book,
+            'owner'=>$owner]
         );
 
         }
+
+    //ownerの本の情報を削除する（life_flag->1に変更）
+    
+        public function delete_ownbook(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+            'life_flag'=>'required',
+        ]);
+        
+        // var_dump($request->all());
+        // if ($validator->fails()){
+        //     return redirect('/book_update_view')
+        //     ->withInput(["id"=>$request->id])
+        //     ->withError($validator);
+        // }
+        
+        $owner = Owner::find($request->id);
+        $owner->life_flag = $request->life_flag;
+        $owner->save();
+
+   
+        return redirect('/mypage');        
+        
+    } 
+
 
 
 
@@ -697,6 +743,7 @@ class BooksController extends Controller
               
            
              }
+             
              return view('threads',
                 ['threads' => $threads,
                 // 'categories' => $categories,

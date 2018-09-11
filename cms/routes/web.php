@@ -51,6 +51,7 @@ Route::get('/book_rentaled_view/{rental}','BooksController@book_rentaled_view');
 //マイページ
 Route::get('/mypage','BooksController@mypage');
 Route::get('/mypage/{owner}','BooksController@mypage_detail');
+Route::post('/delete_ownbook','BooksController@delete_ownbook');
 
 //返却画面
 Route::post('/return/{rental}','BooksController@return_view');

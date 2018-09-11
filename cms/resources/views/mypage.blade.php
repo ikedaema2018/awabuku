@@ -7,6 +7,7 @@
 use App\User;
 use App\Book;
 use App\Comment;
+use App\Scopes\LivingBookScope;
 
 
 ?>
@@ -84,7 +85,7 @@ use App\Comment;
         <div class="col-sm-2">
                 <ul class="sample">
                  <li>
-                    <img src="{{Book::find($rental->rental_books->book_id)->BookImage}}"width="128" height="180"></img> 
+                    <img src="{{Book::find($rental->rental_books->book_id)->BookImage}}"></img> 
                     <p>{{Book::find($rental->rental_books->book_id)->BookTitle}}</p>
                     <p>返却期限：</p>
                     <p>{{date($rental->return_day)}}</p>

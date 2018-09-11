@@ -73,12 +73,15 @@
 
  <div class="owner_info">
      
-    <div class="form-group">  
-          <label>所有者の名前を記入してください。</label>
-          <div class="center">
-              <input type="text" name="owner" value="" >
-          </div>
-    </div> 
+   
+              <input type="hidden" name="owner" value="{{Auth::user()->name}}" >
+
+    
+    @if(Auth::user()->kanri_flag == 1)
+    <h1>ジーズ</h1>
+        <label><input type="radio" name="gs" value=0 />普通</label>
+        <label><input type="radio" name="gs" value=1 />ジーズ</label>
+    @endif
     
     <div class="form-group">  
           <p><b>本の貸出はできますか？</b></p>
@@ -203,10 +206,12 @@
                                 $("#BookThumbnail").html(' <img src=\"' + data1[0].summary.cover +'\ " />');
                                 $("#BookImage").html(' <input name="BookImage" type="hidden" value="' + data1[0].summary.cover + '">');
                             
-                            
+                            console.log(data1[0].summary.cover);
+                            console.log("test");
                         }
                     })
                 } else {
+    
                     $("#BookTitle").html('<input class="form-control input-lg" name="BookTitle" readonly="readonly" type="text"  value="' + data.items[0].volumeInfo.title +
                         '">');
                     $("#isbn10").html('<input class="form-control input-sm" name ="isbn10" readonly="readonly" type="number" value="' + data.items[0].volumeInfo.industryIdentifiers[
@@ -219,10 +224,28 @@
                         .publishedDate + '">');
                     $("#BookDiscription").html('<input class="form-control input-lg" name="BookDiscription"  readonly="readonly" type="text" value="' + data.items[0].volumeInfo
                         .description + '">');
-                    $("#BookThumbnail").html(' <img src=\"' + data.items[0].volumeInfo.imageLinks.smallThumbnail +
-                        '\ " />');
-                    $("#BookImage").html(' <input name="BookImage" type="hidden" value="' + data.items[0].volumeInfo.imageLinks.smallThumbnail +
+                 
+                    try {
+                             $("#BookThumbnail").html(' <img src=\"' + data.items[0].volumeInfo.imageLinks.smallThumbnail +
+                        '\ " />'); 
+                    } catch(e) {
+    
+                        $("#BookThumbnail").html('<img src="http://www.tatemachi.com/wp/wp-content/themes/tatemachi/img/shopimage-noimage.jpg" width="100",heigt="200">');
+                  
+                    }
+                    
+                     try {
+                        $("#BookImage").html(' <input name="BookImage" type="hidden" value="' + data.items[0].volumeInfo.imageLinks.smallThumbnail +
                         '">');
+                    } catch(e) {
+    
+                        $("#BookImage").html('<input name="BookImage" type="hidden" value="http://www.tatemachi.com/wp/wp-content/themes/tatemachi/img/shopimage-noimage.jpg">');
+                  
+                    }
+                  
+                        
+                        
+                        
                 }
                 
                 

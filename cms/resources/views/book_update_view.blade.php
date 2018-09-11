@@ -49,8 +49,8 @@
     <div class="form-group">  
         <label class="col-sm-3" for="deleate">書籍のデータを削除する。</label> 
         <div class="col-sm-9">
-          <input type="radio" name="life_flag" value="0"<?php if($owner->life_flag==1):echo 'checked="checked"';endif;?>>はい
-        　<input type="radio" name="life_flag" value="1"<?php if($owner->life_flag==0):echo 'checked="checked"';endif;?>>いいえ
+          <input type="radio" name="life_flag" value="1"<?php if($owner->life_flag==1):echo 'checked="checked"';endif;?>>はい
+        　<input type="radio" name="life_flag" value="0"<?php if($owner->life_flag==0):echo 'checked="checked"';endif;?>>いいえ
     </div> 
 
       <input type="hidden" name="id" value="{{ $owner->id }}">

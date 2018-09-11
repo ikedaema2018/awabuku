@@ -18,6 +18,7 @@ use Validator;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Scopes\LivingBookScope;
 
 class UsersearchController extends Controller
 {

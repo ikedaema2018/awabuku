@@ -2,6 +2,8 @@
 
 namespace App;
 
+
+use App\Scopes\LivingBookScope;
 use Illuminate\Database\Eloquent\Model;
 
 class Owner extends Model
@@ -22,6 +24,15 @@ class Owner extends Model
 
 
       }
+      
+      protected static function boot(){
+        parent::boot();
+
+        static::addGlobalScope(new LivingBookScope);
+    }
+      
+      
+      
       // public function users(){
       //         return $this->belongsTo('App\User', 'user_id', 'id');
       //       // return $this->belongsTo('App\User', '外部キーのカラム名', '親元のid扱いのカラム名');

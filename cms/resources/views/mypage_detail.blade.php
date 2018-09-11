@@ -12,17 +12,28 @@ use App\Category;
 
 <!--本の詳細-->
     <div class="row">
-        <div class="col-xs-3"　style="background:#CCC;height:200px;">
+        <div class="col-sm-3"　style="background:#CCCCCC;height:200px;">
             <img src="{{ $book->BookImage}}"></img>
         </div>
-        <div class="col-xs-9"　style="background:#CCC;height:200px;">
+        <div class="col-sm-6"　style="background:C;height:200px;">
             <h2>{{ $book->BookTitle }}</h2>
             <p>{{ $book->BookAuthor }}</p>
             <p>{{ $book->isbn10 }}/&nbsp;{{ $book->isbn13 }}</p>
             <p>{{ $book->PublishedDate}}</p>
-            
         </div>
-    </div> 
+        <div class="col-sm-3">  
+            <label for="deleate">登録したデータを削除する。</label> 
+                <div>
+                  <form action="{{url('delete_ownbook')}}" method="post">
+                         {{ csrf_field() }}
+                      <input type="radio" name="life_flag" value="1"<?php if($owner->life_flag==1):echo 'checked="checked"';endif;?>>はい
+                    　<input type="radio" name="life_flag" value="0"<?php if($owner->life_flag==0):echo 'checked="checked"';endif;?>>いいえ<br>
+                    　<input type="hidden" name="id" value={{"$owner->id"}}>
+                      
+                      <button type="submit" class="btn btn-info">削除する</button>
+                  </form>
+                </div>
+        </div>        
     
     <div class="row">
         <p class="col-xs-12">書籍の内容</p>

@@ -16,6 +16,7 @@ use App\Thread;
 use App\Thread_comment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Scopes\LivingBookScope;
 
 class SearchController extends Controller
 {

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use App\Scopes\LivingBookScope;
 //facebookログイン用
 use Laravel\Socialite\Contracts\Factory as Socialite;
 
