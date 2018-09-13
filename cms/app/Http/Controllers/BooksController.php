@@ -79,7 +79,7 @@ class BooksController extends Controller
         $thread_lists = Thread::orderBy('updated_at','desc')
                         ->take(5)
                         ->get();
-         
+        
         $rentals = Rental::all();
         
     
@@ -719,7 +719,7 @@ class BooksController extends Controller
     public function thread() {
         $threads = Thread::orderBy('id', 'asc')->get();
         // $categories=Category::orderBy('id', 'asc')->get();
-        
+      
          if(Auth::check()){
              
            
@@ -742,7 +742,7 @@ class BooksController extends Controller
                  $genreCategories[$genru->category_genruname] = $categories;
               
            
-             }
+            }
              
              return view('threads',
                 ['threads' => $threads,

@@ -87,11 +87,11 @@
             <div class="container-fluid">
              <div class="collapse navbar-collapse target">
                 <ul class="nav navbar-nav">
-                    <li class="active">
+                    <li>
                         <a href="{{url(' ')}}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a>
                     </li> 
                     <li>
-                        <a href="{{url(' ')}}">g's library</a>
+                        <a href="{{url('gsbooks')}}">g's library</a>
                     </li>
                     <li>
                         <a href="{{url('book')}}"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>本を登録する</a>

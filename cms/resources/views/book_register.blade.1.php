@@ -2,11 +2,9 @@
 
 @section('content')
 
-
-
 <h2>Book Register</h2>
 
-<h1>isbn以外のデータをnullでも登録できるようにする※条件は再度検討すること</h1>
+
  <p class="page-header">本を登録する</p>
   <div class="form-group">
     <label  class="col-sm-3 control-label form-control-static" for="isbn">ISBNを入力してください:</label>
@@ -172,13 +170,17 @@
     <script>
 
 
+
+
+
         $("#btn").on("click", function () {
             const isbn = $("#isbn").val();
             const googleUrl = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn;
             const openUrl   = "https://api.openbd.jp/v1/get?isbn=" + isbn;
           
-           $.getJSON(openUrl , function (data1) {
-                 if (!data1[0]==null) {
+           $.getJSON(openUrl , function (data1[0]) {
+        
+                if (!data1[0]==null) {
                     $.getJSON(googleUrl, function (data) {
                         if (!data.totalItems){
                             $("#isbn").val("");
@@ -194,7 +196,7 @@
                             $('#message > p').fadeOut(3000);
                         } else {
                             //googleURLの処理
-                           
+                            console.log(data1[0]);
                             $("#BookTitle").html('<input class="form-control input-lg" name="BookTitle" readonly="readonly" type="text"  value="' + data.items[0].volumeInfo.title +
                             '">');
                             $("#isbn10").html('<input class="form-control input-sm" name ="isbn10" readonly="readonly" type="number" value="' + data.items[0].volumeInfo.industryIdentifiers[
@@ -238,29 +240,24 @@
                         $("#isbn13").html('<input class="form-control input-sm" name ="isbn13" readonly="readonly" type="number" value="' + data1[0].summary.isbn + '">');
                         $("#BookAuthor").html('<input class="form-control input-sm" name="BookAuthor" readonly="readonly" type="text" value="' + data1[0].summary.author +'">');
                         $("#PublishedDate").html('<input class="form-control input-sm" name="PublishedDate" readonly="readonly" type="text" value="' +data1[0].summary.pubdatey  + '">');
-                        
-                        let description = "";
-                        if(data1[0].onix.CollateralDetail.TextContent){
-                            description = data1[0].onix.CollateralDetail.TextContent[0].Text;
-                        }else{
-                            description = "書誌情報なし";
-                        }
-                        $("#BookDiscription").html('<input class="form-control input-lg" name="BookDiscription"  readonly="readonly" type="text" value="' + description + '">');
-                       console.log(data1[0].summary.cover);
-                     
-                       
-                       
-                                
+                        $("#BookDiscription").html('<input class="form-control input-lg" name="BookDiscription"  readonly="readonly" type="text" value="' + data1[0].onix.CollateralDetail.TextContent[0].Text + '">');
+                        $("#BookThumbnail").html(' <img src=\"' + data1[0].summary.cover +'\ " />');
+                        $("#BookImage").html(' <input name="BookImage" type="hidden" value="' + data1[0].summary.cover + '">');
+                    
+                            console.log(data1[0].summary.cover);
+                                console.log("test");
                         try {
-                             $("#BookThumbnail").html(' <img src=\"' + data1[0].summary.cover +'\ " />');    
+                                 $("#BookThumbnail").html(' <img src=\"' + data.items[0].volumeInfo.imageLinks.smallThumbnail +
+                            '\ " />'); 
                         } catch(e) {
+        
                             $("#BookThumbnail").html('<img src="http://www.tatemachi.com/wp/wp-content/themes/tatemachi/img/shopimage-noimage.jpg" width="100",heigt="200">');
+                      
                         }
-                    
-                    
-                        try {
-                            $("#BookImage").html(' <input name="BookImage" type="hidden" value="' + data1[0].summary.cover + '">');
-                       
+                        
+                         try {
+                            $("#BookImage").html(' <input name="BookImage" type="hidden" value="' + data.items[0].volumeInfo.imageLinks.smallThumbnail +
+                            '">');
                         } catch(e) {
         
                             $("#BookImage").html('<input name="BookImage" type="hidden" value="http://www.tatemachi.com/wp/wp-content/themes/tatemachi/img/shopimage-noimage.jpg">');
@@ -275,13 +272,6 @@
                 
             });
         });
-
-
-
-
-
-
-
 
 
 

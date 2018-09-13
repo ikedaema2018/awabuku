@@ -85,7 +85,7 @@ use App\User;
 <!--スレッド一覧表示始まり-->
  <div class="col-sm-12">   
     <h3>スレッド一覧</h3>    
-        @if (count($categories) > 0)
+        @if (count($threads) > 0)
         <table class="table table-striped">
             <tr>
                 <th>教えてほしい人！</th>　

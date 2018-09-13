@@ -81,3 +81,6 @@ Route::get('/search', 'SearchController@getIndex');
 //外部の人が見るユーザー情報
 Route::get('/user_search_page/{user}','UsersearchController@user_search_page');
 
+//gs画面
+Route::get('/gsbooks', 'GsController@gsbooks');
+Route::get('/gsbook/{owner}','GsController@gsbook_view');
