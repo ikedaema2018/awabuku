@@ -9,11 +9,6 @@ use App\Book;
 use App\Category;
 ?>
 
-<div class="jumbotron text-center">
-     <h1>アワブク<small>our books</small></h1>
-     <h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g's library</h2>
-</div>
- 
  <div class="row"> 
  
    <h2><a href=""><p>{{$category->category_name}}</a></h2>

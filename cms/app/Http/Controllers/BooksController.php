@@ -216,6 +216,10 @@ class BooksController extends Controller
     public function category() {
         $categories = Category::orderBy('id', 'asc')->get();
         $category_genrus=Category_genru::orderBy('id', 'asc')->get();
+       
+        
+        
+        
         return view('category',
         ['categories' => $categories],
         ['category_genrus' => $category_genrus]
@@ -381,8 +385,12 @@ class BooksController extends Controller
         
         $owners->rental_flag= $request->rental_flag;
         
-        if($request->gs== 1) {
-            $owners->owner = "ジーズ";
+        
+        if($request->gs == true  || Auth::user()->kanri_flag == 1) {
+            //ここで$request->gsをもとにユーザー情報を検策
+            $id= User::find($request->gs);
+            $owners->user_id = $id->id;
+        
         }else{
             $owners->owner ="0";
         }
@@ -427,12 +435,15 @@ class BooksController extends Controller
         $owners->rental_flag= $request->rental_flag;
         
         
-        if($request->gs == 1) {
-            $owners->owner = "ジーズ";
-            
+      if($request->gs == true  || Auth::user()->kanri_flag == 1) {
+            //ここで$request->gsをもとにユーザー情報を検策
+            $id= User::find($request->gs);
+            $owners->user_id = $id->id;
+        
         }else{
             $owners->owner ="0";
         }
+        
         $owners->save();  
        
         $eok = Owner::orderBy('id', 'desc')->first();

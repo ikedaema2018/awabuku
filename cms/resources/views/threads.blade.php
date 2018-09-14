@@ -83,7 +83,9 @@ use App\User;
 </div>  
 
 <!--スレッド一覧表示始まり-->
- <div class="col-sm-12">   
+
+ <div class="col-sm-offset-2 col-sm-8"> 
+
     <h3>スレッド一覧</h3>    
         @if (count($threads) > 0)
         <table class="table table-striped">
@@ -91,7 +93,6 @@ use App\User;
                 <th>教えてほしい人！</th>　
                 <th>スレッド名</th>
 
-                <th>更新/削除</th>
             </tr>
      
             <tbody>
@@ -99,19 +100,11 @@ use App\User;
                 <tr>
                     <td>{{User::find($thread->user_name)->name }}</td>
                     <td><a href="{{url('thread/'.$thread->id)}}">{{ $thread->thread_sub }}</a></td>
-                    
-                
-                    <td>
-                        <form action="{{url('thread/'.$thread->id)}}" method="post">
-                            {{ csrf_field() }}
-                            <button type="submit">更新</button>
-                        </form>
-                    </td>
-                </tr>
+                 </tr>
                 @endforeach
             </tbody>
         </table>
         @endif
-</div>
+
 <!--スレッド一覧表示終わり-->   
 @endsection

@@ -67,7 +67,7 @@ use App\Category;
             <p>{{$owner->id}}</p>
         </td>
                 <td>
-                    <p>{{$owner->owner}}</p>
+                    <p>{{User::find($owner->user_id)->name}}</p>
                 </td>  
                 <td class="warning">
                     @if ($owner->rental_flag === 1)

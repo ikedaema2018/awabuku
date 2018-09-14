@@ -18,11 +18,15 @@
             @endforeach
             
         </div>
-           　<div class="form-group">
-        　　<div class="col-sm-offset-6 col-sm-6 text-left">
-            　<button type="submit" >送信</button>
-            </div>
-    </div>
+        <div class="form-group">
+            　　<div class="col-sm-offset-6 col-sm-6 text-left">
+                　<button type="submit" >送信</button>
+                </div>
+        </div>
+        
+    　　<div>
+    　　<a href="{{url('category_genru')}}">カテゴリジャンル登録ページへ</a>
+    　　</div>
        
     </form>
     
@@ -40,14 +44,14 @@
                 @foreach ($categories as $category)
                 <tr>
                     <td>{{ $category->id }}</td>
+                    <td>{{ $category->category_genre->category_genruname }}</td>
                     <td>{{ $category->category_name }}</td>
-                    <td>{{ $category->category_genru_relation->category_genruname }}</td>
                     
                 
                     <td>
                         <form action="{{url('category/'.$category->id)}}" method="post">
                             {{ csrf_field() }}
-                            <button type="submit">変更</button>
+                    　　<button type="submit">変更</button>
                         </form>
                     </td>
                 </tr>

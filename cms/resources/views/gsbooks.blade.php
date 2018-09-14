@@ -12,7 +12,26 @@ use App\Category_genru;
 
 ?>
 
-<!-- G'sの本一覧 -->    
+<!-- G'sの本一覧 -->   
+
+<div class="container">
+        <div class="jumbotron"  style="background:url(img/topic.jpg); background-size:cover;">
+          
+           <div style="background-color:#FFFFFF;"> 
+                <ul style="list-style:none; justify-content:between;" class="row">
+                     
+                    <li class="col-sm-2"><img src="{{asset('img/gs_03.jpg')}}"></img></a></li>
+                    <li class="col-sm-10">
+                        <p><b>g's Library</b></p><br>
+                        <p>g's libraryの本はg'sの生徒であれば、１週間レンタルすることが可能です</p>
+                        
+                    </li>
+                </ul> 
+           </div>
+          
+        </div>
+    </div>
+
 <div class= "col-sm-12">  
     @if(count($owners)>0)
        </div>
@@ -25,7 +44,7 @@ use App\Category_genru;
                 <ul style="list-style:none;">
                     <li><a href="{{url('rental/'.$owner["id"])}}"><img src="{{Book::find($owner->book_id)->BookImage}}" width="128" height="180"></img></a></li>
                     <li><a href="{{url('rental/'.$owner["id"])}}">{{Book::find($owner->book_id)->BookTitle}}</a></li>
-                    <li><a href="{{url('gsbook/'.$owner->id)}}"><button type="button" class="btn-success"n>コメントを読む/書く</button></a></li>
+                    <li><a href="{{url('gsbook/'.$owner->id)}}"><button type="button" class="btn-success">コメントを読む/書く</button></a></li>
                 </ul>
                 
             </div>

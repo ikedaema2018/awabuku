@@ -81,8 +81,9 @@
     
     @if(Auth::user()->kanri_flag == 1)
     <h1>ジーズ</h1>
-        <label><input type="radio" name="gs" value=0 />普通</label>
-        <label><input type="radio" name="gs" value=1 />ジーズ</label>
+        <label>入力：<input type="number" name="gs" /></label>
+
+   
     @endif
     
     <div class="form-group">  

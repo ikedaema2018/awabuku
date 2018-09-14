@@ -102,6 +102,7 @@
                     <li>
                         <a href="{{url('threads')}}"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></span>スレッド</a>
                     </li>
+                
                 </ul> 
            
     

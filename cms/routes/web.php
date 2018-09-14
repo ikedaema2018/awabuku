@@ -84,3 +84,4 @@ Route::get('/user_search_page/{user}','UsersearchController@user_search_page');
 //gs画面
 Route::get('/gsbooks', 'GsController@gsbooks');
 Route::get('/gsbook/{owner}','GsController@gsbook_view');
+Route::post('/gsbook/','GsController@gsbook_comment_insert');
