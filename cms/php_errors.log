@@ -7,3 +7,7 @@
 [27-Jul-2018 07:36:41 UTC] PHP Fatal error:  Can't use function return value in write context in /home/ubuntu/workspace/cms/storage/framework/views/03f556b74e1d675c4e669483e038ec5e496e069c.php on line 40
 [27-Jul-2018 07:36:41 UTC] PHP Fatal error:  Can't use function return value in write context in /home/ubuntu/workspace/cms/storage/framework/views/03f556b74e1d675c4e669483e038ec5e496e069c.php on line 40
 [31-Jul-2018 15:45:41 UTC] PHP Fatal error:  Can't use function return value in write context in /home/ubuntu/workspace/cms/storage/framework/views/fb9a9887123ad36fad06d0055d2f26d3b77a3eee.php on line 42
+[14-Sep-2018 12:56:42 Asia/Tokyo] PHP Warning:  Unterminated comment starting line 2 in /home/ubuntu/workspace/cms/routes/web.php on line 2
+[14-Sep-2018 12:57:45 Asia/Tokyo] PHP Warning:  Unterminated comment starting line 2 in /home/ubuntu/workspace/cms/routes/web.php on line 2
+[14-Sep-2018 12:58:03 Asia/Tokyo] PHP Warning:  Unterminated comment starting line 2 in /home/ubuntu/workspace/cms/routes/web.php on line 2
+[14-Sep-2018 12:58:46 Asia/Tokyo] PHP Warning:  Unterminated comment starting line 2 in /home/ubuntu/workspace/cms/routes/web.php on line 2

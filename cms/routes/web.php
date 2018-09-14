@@ -9,6 +9,11 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
+use App\Http\Middleware\LoginMiddleware;
+
+
 Route::get('/login', 'UserController@login_view');
 Route::get('logout', 'UserController@logout');
 Route::get('facebook', 'UserController@loginFacebook');
@@ -41,8 +46,13 @@ Route::post('/book_update', 'BooksController@book_update');
 /////カテゴリの表示
 //変更
 //Route::get('/book', 'BooksController@category_list');
+
+
 //TOP画面
-Route::get('/', 'BooksController@index');
+Route::get('/', 'BooksController@index')
+->middleware('login');
+
+
 //貸出機能画面
 Route::get('/rental/{book}','BooksController@rental_view');
 Route::post('/book_rental','BooksController@book_rental');
