@@ -24,3 +24,16 @@
 background-color: #65baad;
 border-color: #3e6962;
 }
+
+footer{
+    font-size: 80%;
+    width: 100%;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #313131;
+}
+footer address{
+    color: #fff;
+    letter-spacing: 5px;
+}

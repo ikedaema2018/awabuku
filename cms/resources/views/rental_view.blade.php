@@ -48,7 +48,7 @@ use App\Category;
                  
                  
                     
-<table class="table table-striped">
+<table class="table table-striped" style="display: table"; >
     <tr>
         <th>本のowner_id</th>
         <th>本のowner</th>
@@ -57,19 +57,19 @@ use App\Category;
         <th>返却予定</th>
         <th>借ります！</th>
     </tr>
-    
-            @if(isset($owners)>0)
-            @foreach($owners as $owner)
-            <tbody>
-
-    <tr>
-        <td>
-            <p>{{$owner->id}}</p>
-        </td>
-                <td>
+            
+    @if(isset($owners)>0)
+    @foreach($owners as $owner)
+     <tbody>
+        
+            <tr>
+                <td style="vertical-align: middle;">
+                  <p>{{$owner->id}}</p>
+                </td>
+                <td style="vertical-align: middle;">
                     <p>{{User::find($owner->user_id)->name}}</p>
                 </td>  
-                <td class="warning">
+                <td class="warning" style="vertical-align: middle;">
                     @if ($owner->rental_flag === 1)
                     <p>不可</p>
                     @elseif ($owner->rental_flag == 0 && $owner->return_flag == 0)
@@ -78,30 +78,43 @@ use App\Category;
                     <p>貸出中</p>
                     @endif
                 </td>
-                 <td>
-                   <p>ユーザーの名前でせてない</p>
+                 <td style="vertical-align: middle;">
+                   
+                   <p>
+                    @foreach($rentals as $rental)
+                    @if($rental->owner_id == $owner->id)
+                    {{User::find($rental->user_id)->name}}
+                    @endif
+                    @endforeach
+                   </p>
             
                    
                 </td>                
-                <td>
-                　<p>返却日出せていない</p>
+                <td style="vertical-align: middle;">
+                　<p>
+                　  @foreach($rentals as $rental)
+                    @if($rental->owner_id == $owner->id)
+                    {{$rental->return_day->format('Y-m-d')}}
+                    @endif
+                    @endforeach
+                　</p>
                 </td> 
-                 <td>
+                 <td style="vertical-align: middle; text-align: center;">
                     @if($owner->return_flag == 0)
                     <form action="{{ url('book_rental') }}" method="post">
                         {{ csrf_field() }} 
                      <input type="hidden" name="return_flag" value="{{ $owner->return_flag }}">
                      <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                      <input type="hidden" name="owner_id" value="{{ $owner->id }}">
-                    <button type="submit">本を借りる</button>
+                     <button type="submit">本を借りる</button>
                     </form>
                     @elseif($owner->return_flag == 1)
-                    <p>&nbsp;</p>
+                    <p>---</p>
                     
                     @endif
                 </td>   
-                </tr>
-                </tbody>
+            </tr>
+        </tbody>
             
             @endforeach
             @endif

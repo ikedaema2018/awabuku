@@ -2,11 +2,13 @@
 
 @section('content')
 
-<h2>Book Register</h2>
 
 
+
+<div class="owner_info">
+<h2>Book Register</h2>    
  <p class="page-header">本を登録する</p>
-  <div class="form-group">
+  <div class="form-group row">
     <label  class="col-sm-3 control-label form-control-static" for="isbn">ISBNを入力してください:</label>
     <div class="col-sm-9">
         <input  class="form-control-static col-sm-9" type="text" class="form-control" id="isbn" placeholder="978で始まる13桁の数字を入力（ーハイフンは含まない）">
@@ -71,10 +73,9 @@
 
 <!--owner_info始まる-->
 
- <div class="owner_info">
-     
+ 
    
-              <input type="hidden" name="owner" value="{{Auth::user()->name}}" >
+     <input type="hidden" name="owner" value="{{Auth::user()->name}}" >
 
     
     @if(Auth::user()->kanri_flag == 1)
@@ -158,13 +159,16 @@
             <button type="submit" >送信</button>
         </div>
     </div>    
-</div> 
- </div>
+
+ 
 <!--owner_info終わり-->      
 
 
 
-</form>            
+</form>    
+</div>
+</div>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <script>
@@ -282,3 +286,4 @@
 
 
 @endsection
+@section('footer')

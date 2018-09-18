@@ -23,7 +23,7 @@ use App\Comment;
 
 
 <!--所有している本-->
-<h2 class="col-xs-12">所有している本</h2>　
+<h2 class="col-xs-12">{{$user->name}}さんがコメントをいれた書籍</h2>　
         @if(isset($books)>0)
         <?php $i=0 ?>
             @foreach($books as $book)
@@ -39,9 +39,46 @@ use App\Comment;
                     <a href="">{{ $book["BookTitle"] }}</a>
                     <p>{{ $book["BookAuthor"] }}</p>
        
-                    <a href="{{url('mypage/'.Comment::find($book["id"])->owner_id)}}"><p>おすすめコメントを見る</p></a>
-                    <a href="{{ url('rental/'.$book["id"])}}"><p>本をレンタルする</p></a>
+                   <div class="col-sm-6 text-center">
+                       
+                 <li>              
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#sampleModal1">
+            	  コメントを見る
+                </button>
+
+        <!-- コメント入力モーダル -->
+        <div class="modal fade" id="sampleModal1" tabindex="-1">
+              <div class="modal-dialog">
+                <div class="modal-content">
+            <!--モーダルヘッダー2    -->
+                	<div class="modal-header">
+                		<button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+                	    <h3 class="modal-title">{{ $book["BookTitle"] }}</h3>
+                	</div>
+        
+            <!--モーダルボディー2    -->
+                	<div class="modal-body" style="padding:43px;">
+                		<h4 style="text-decoration:underline; text-decoration-color:#FFFF00;">おすすめコメント</h4>
+                        @foreach($user_comments as $user_comment)
+                        @if($user_comment->book_id == $book["id"])
+                                <p>{{$user_comment->comment_text}}</p>
+        
+                        @endif
+                        @endforeach
+                    </div>
+              <!--モーダルフッター    -->
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+              </div>
+        
+            </div>
+        </div>
+        </div>
+
                  </li>
+                 <li>
+                     <a href="{{url('/rental/'.$book["id"])}}">レンタルする</a>
+                 </li>     
                  </ul>
                 </div>
                   <?php $i=$i+1 ?>

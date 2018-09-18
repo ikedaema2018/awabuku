@@ -59,11 +59,11 @@ use App\User;
         		
     <!--カルーセル開始   -->     		
         		<div id="sampleCarousel" class="carousel slide" data-interval="false" data-ride="carousel">
-              <ol class="carousel-indicators">
+              <ul class="carousel-indicators" style="list-style:none;">
             		<li class="active" data-target="#sampleCarousel" data-slide-to="0"></li>
             		<li data-target="#sampleCarousel" data-slide-to="1"></li>
             		<li data-target="#sampleCarousel" data-slide-to="2"></li>
-              </ol>
+              </ul>
                 
                 <div class="carousel-inner" role="listbox">
                   <?php $i=0;?>
@@ -72,33 +72,33 @@ use App\User;
                     	    <?php $i++;?>
                             @if($i==1)
       <!--カルーセルactiive   -->                        
-                        		  <div class="item active">
-                                <ul>
-                                    <li class="thread_page"><img src="{{$user_comment->user_c->BookImage}}"></img></li>
-                                    <li class="thread_page">
+                        	  <div class="item active">
+                                <ul style="list-style:none;" class="row">
+                                    <li class="thread_page carousel_book_info col-sm-4"><img src="{{$user_comment->user_c->BookImage}}"></img></li>
+                                    <li class="thread_page carousel_book_info col-sm-8">
                                       <div> 
                                         <p class="itemid" hidden>{{$user_comment->id}}</p>
-                                        <p class="itemtitle">{{$user_comment->user_c->BookTitle}}</p>
+                                        <h3 class="itemtitle">{{$user_comment->user_c->BookTitle}}</h3>
                                         <p>{{$user_comment->user_c->BookAuthor}}</p>
                                         <p>{{$user_comment->comment_text}}</p>
                                       </div> 
                                     </li>
                                 </ul>    
-                        		  </div>
+                        	  </div>
                             @else
       <!--カルーセルnon actiive   -->                         
                           		<div class="item">
-                          		    <ul>                                                                                       
-                                    <li class="thread_page"><img src="{{$user_comment->user_c->BookImage}}" alt="送信する"></img></li>
-                                    <li class="thread_page">
+                          		 <ul style="list-style:none;">                                                                                       
+                                    <li class="thread_page carousel_book_info col-sm-4"><img src="{{$user_comment->user_c->BookImage}}" alt="送信する"></img></li>
+                                    <li class="thread_page carousel_book_info col-sm-8">
                                       <div>  
                                         <p class="itemid" hidden>{{$user_comment->id}}</p>
-                                        <p class="itemtitle">{{$user_comment->user_c->BookTitle}}</p>
+                                        <h3 class="itemtitle">{{$user_comment->user_c->BookTitle}}</h3>
                                         <p>{{$user_comment->user_c->BookAuthor}}</p>
                                         <p>{{$user_comment->comment_text}}</p>
                                       </div> 
                                     </li>
-                                </ul>      
+                                 </ul>      
                           		</div>                          
                            @endif
                         @endforeach
@@ -311,21 +311,21 @@ use App\User;
         		</ul>
         	
         	</div>
-        	<div class="panel-body hoge">
+        	<div class="panel-body hoge row">
                   <ul style="list-style-type: none;" class="comment_body">
-                    <li class="comment_body_list"><img src="{{Book::find($thread_comment_list->r->book_id)->BookImage}}"></img></li>
-                    <li class="comment_body_list">
-                      <div> 
+                    <li class="comment_body_list col-xs-4"><img src="{{Book::find($thread_comment_list->r->book_id)->BookImage}}"></img></li>
+                    <li class="comment_body_list col-xs-8">
                         <a href="{{url('rental/'.$thread_comment_list->r->book_id)}}"></a>
-                        <p>{{Book::find($thread_comment_list->r->book_id)->BookTitle}}</p>
+                        <h3>{{Book::find($thread_comment_list->r->book_id)->BookTitle}}</h3>
                         <p>{{Book::find($thread_comment_list->r->book_id)->BookAuthor}}</p>
+                        <p>{{Book::find($thread_comment_list->r->book_id)->id}}</p>
                         <p>おすすめコメント</p>
                         <p>{{$thread_comment_list->r->comment_text}}</p>
-                      </div> 
+                      
                     </li>
                 </ul>  
-            <p>コメント</p>
-        	<p class="well">{{$thread_comment_list->thread_comment}}</p>    
+                <p>コメント</p>
+            	<p class="well">{{$thread_comment_list->thread_comment}}</p>    
         	</div>
          
         </div>        	  
@@ -407,3 +407,4 @@ use App\User;
 
 
     @endsection
+    @section('footer')

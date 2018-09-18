@@ -528,8 +528,10 @@ class BooksController extends Controller
         public function rental_view(Book $book) {
         $owners= Owner::where('book_id',$book->id)->get();
         $comments=Comment::where('book_id',$book->id)->get();
-        $r = Rental::all();
-        $rentals = $r->groupBy('owner_id');
+    //     $r = Rental::all();
+    //   $rentals = $r->where('return_flag',1)->first();
+       $rentals=Rental::where('return_flag',1)->get();
+
       
         $category_lists=Category_list::where('book_id',$book->id)->get();        
 
@@ -561,7 +563,7 @@ class BooksController extends Controller
         $b = Book::all();
         $books = $b->groupBy('category_id');
      
-        return redirect('/')->with('alert', '返却期限を過ぎている書籍があります。大至急ご返却ください');
+        return redirect('/mypage')->with('alert', '返却期限を過ぎている書籍があります。大至急ご返却ください');
         }
             
             
@@ -684,7 +686,7 @@ class BooksController extends Controller
         return redirect('/mypage');    
         }
 
-        //本の登録情報をレンタルviewページに飛ばす
+        //mypageの詳細情報
         public function mypage_detail(Owner $owner) {
          $book= Book::where('id',$owner->book_id)->first();
          $comments =Comment::where('book_id',$owner->book_id)

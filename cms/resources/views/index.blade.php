@@ -138,5 +138,7 @@ use App\Category_genru;
     
     
     
-</div>    
+</div> 
+
 @endsection
+@section('footer')

@@ -42,6 +42,8 @@
     
     
     <header>
+        
+        
     <div style="display:flex; width:100%; margin:5px auto;" class="head_wrapper">    
         <div class="col-xs-12 col-sm-6" style="display:table-cell;width:50%;"> 
             <div class="titile_wrappert" > 
@@ -80,7 +82,7 @@
             </button>
             
             <!--ロゴ表示の指定-->
-            <a class="navbar-brand" href="#">g's library</a>
+           
           </div>
             
             
@@ -136,13 +138,21 @@
             </div>
         </nav>    
     </header>
+    @yield('content')
     
-        @yield('content')
+
+
+    
+        
         
     </div>
-
-
-   
-    
 </body>
+<footer>
+<div class="row">
+  <div class="col-lg-12">
+    <address>Copyright(C)OurBooks,Allright Reserved.</address>
+    @section('footer')
+   @show
+ </div>
+</div>
 </html>

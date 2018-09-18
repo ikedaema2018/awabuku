@@ -70,7 +70,7 @@ use App\Scopes\LivingBookScope;
              @endforeach   
        
        @endif
-       
+  </div>     
  
 <!--レンタル本　はじめ-->
  
@@ -117,41 +117,44 @@ use App\Scopes\LivingBookScope;
 
 
 <!--所有している本-->
+<div>
 <h2 class="col-xs-12">所有している本</h2>　
         @if(isset($owners)>0)
         <?php $i=0 ?>
             @foreach($owners as $owner)
               @if($i == 0)
                 <div class="col-sm-12 border_bottom">
-              @endif
-                <div class="col-sm-2">
-                <ul class="sample">
-                 <li>
-                    <img src="{{$owner->books->BookImage}}" class="img-responsive" width="128" height="180"></img>
-                    <a href="">{{ $owner->books->BookTitle }}</a>
-                    <p>{{ $owner->books->BookAuthor }}</p>
-                    <p>{{ $owner->books->Published}}</p>      
-                    <a href="{{url('mypage/'.$owner->id)}}">詳細へ</a>
-    
-                    @foreach($owner->rentals as $aaa)
-                    @if($aaa->return_flag == 1)
-                    <p style="color:red">{{User::find($aaa->user_id)->name}}さんに{{$aaa->return_day->format('Y-m-d')}}まで貸出中</p>
-                    @endif
-                    @endforeach
-                 </li>
-                 </ul>
-                </div>
-                  <?php $i=$i+1 ?>
-                  @if($i == 6 || $loop->last)
-                  <?php $i=0 ?>
-                 </div>
-                @endif
+                      @endif
+                            <div class="col-sm-2">
+                            <ul class="sample">
+                             <li>
+                                <img src="{{$owner->books->BookImage}}" class="img-responsive" width="128" height="180"></img>
+                                <a href="">{{ $owner->books->BookTitle }}</a>
+                                <p>{{ $owner->books->BookAuthor }}</p>
+                                <p>{{ $owner->books->Published}}</p>      
+                                <a href="{{url('mypage/'.$owner->id)}}">詳細へ</a>
+                
+                                @foreach($owner->rentals as $aaa)
+                                @if($aaa->return_flag == 1)
+                                <p style="color:red">{{User::find($aaa->user_id)->name}}さんに{{$aaa->return_day->format('Y-m-d')}}まで貸出中</p>
+                                @endif
+                                @endforeach
+                             </li>
+                             </ul>
+                            </div>
+                              <?php $i=$i+1 ?>
+                              @if($i == 6 || $loop->last)
+                              <?php $i=0 ?>
+                             </div>
+                        @endif
                 
             @endforeach
         @endif
+</div>
 <!--所有している本　終わり-->
 
 <!--レンタル履歴　はじめ-->
+<div>
  <h2 class="col-xs-12">レンタル履歴</h2>
     @if(isset($returned_rentals)>0)
          <?php $i=0?>
@@ -176,16 +179,9 @@ use App\Scopes\LivingBookScope;
                      　      @if($i == 6 || $loop->last)
                      　      <?php $i=0 ?>
             　</div>
-             　    @endif
-         @endforeach   
+              @endif
+          @endforeach   
     @endif
- 
+</div>
 
-
-
-
-
-
-
- @endsection
-  
+@endsection

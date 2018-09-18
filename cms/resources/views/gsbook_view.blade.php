@@ -116,6 +116,7 @@ use App\Category_genru;
                           <textarea  rows="5" class="form-control" name="comment_text" placeholder="例）++の勉強をしたい人におすすめ" autofocu></textarea>
                           </div>
                     </div>      
+                    
     
                 <div class="form-group">
                   <div class="col-sm-offset-3 col-sm-9 text-right">

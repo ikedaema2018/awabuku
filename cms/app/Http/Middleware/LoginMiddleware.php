@@ -20,7 +20,7 @@ class LoginMiddleware
             $r->merge(['user'=>$user]);
         }else{
             
-        return redirect('login');  
+        return redirect('/login');  
         }
         
         return $next($r);  
