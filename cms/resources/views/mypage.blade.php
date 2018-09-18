@@ -88,7 +88,7 @@ use App\Scopes\LivingBookScope;
                     <img src="{{Book::find($rental->rental_books->book_id)->BookImage}}"></img> 
                     <p>{{Book::find($rental->rental_books->book_id)->BookTitle}}</p>
                     <p>返却期限：</p>
-                    <p>{{date($rental->return_day)}}</p>
+                    <p>{{date($rental->return_day->format('Y-m-d'))}}</p>
                     <p>{{Book::find($rental->rental_books->book_id)->BookAuthor}}</p>
                     <p>{{Book::find($rental->rental_books->book_id)->isbn13 }}</p>
                     <p>{{$rental->rental_books->owner}}さんの本</p>

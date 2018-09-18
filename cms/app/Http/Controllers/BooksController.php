@@ -484,8 +484,27 @@ class BooksController extends Controller
    
        //本の登録情報をを更新viewページに飛ばす
         public function book_update_view(Owner $owner) {
-        $categories = Category::orderBy('id', 'asc')->get(); 
-        return view('book_update_view',['owner'=>$owner])->with(["categories"=>$categories]);
+        // $categories = Category::orderBy('id', 'asc')->get(); 
+        $genrus = Category_genru::all();
+            // ジャンルごとに処理.    
+            
+            foreach($genrus as $genru) {
+             $categories = [];
+            // ジャンルに紐づくカテゴリー一覧を取得.
+           
+            $tmp_categories = $genru->categories()->get()->toArray();
+            
+            if ($tmp_categories && count($tmp_categories) > 0) {
+                    // 取得できたら、$categoriesに追加.
+                    $categories = array_merge($categories, $tmp_categories);
+                }
+                 $genreCategories[$genru->category_genruname] = $categories;
+            }
+        return view('book_update_view',['owner'=>$owner])
+        ->with([
+            'categories' => $categories,
+            'genreCategories' =>$genreCategories,
+            ]);
     }
     
     

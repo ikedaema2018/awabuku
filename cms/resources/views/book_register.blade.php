@@ -14,6 +14,7 @@
         <input  class="form-control-static col-sm-9" type="text" class="form-control" id="isbn" placeholder="978で始まる13桁の数字を入力（ーハイフンは含まない）">
         <button id="btn" class="form-control-static">検索</button>
     </div>
+    <div id="message"></div>
   </div>
 
              
@@ -191,7 +192,7 @@
                             $("#BookThumbnail").text("");
                             $("#BookDiscription").text("");
                             $("#BookImage").text("");
-                            $("#message").html(' <p class = "bg-warning"id = "warning" > 該当する書籍がありません。 < /p>');
+                            $("#message").html(' <p class = "bg-warning" id = "warning" > 該当する書籍がありません。 < /p>');
                             $('#message > p').fadeOut(3000);
                         } else {
                             //googleURLの処理
