@@ -281,31 +281,35 @@ class BooksController extends Controller
     public function book_register() {
         
         if(Auth::check()){
-            // $categories = Category::orderBy('id', 'asc')->get();       
-           
+            // $categories = Category::orderBy('id', 'asc')->get(); 
+
             $genres = Category_genre::all();
             // ジャンルごとに処理.    
             
-            foreach($genres as $genre) {
-             $categories = [];
-            // ジャンルに紐づくカテゴリー一覧を取得.
+            // foreach($genres as $genre) {
+            //  $categories = [];
+            // // ジャンルに紐づくカテゴリー一覧を取得.
            
-            $tmp_categories = $genre->categories()->get()->toArray();
+            // $tmp_categories = $genre->categories()->get()->toArray();
             
-            if ($tmp_categories && count($tmp_categories) > 0) {
-                    // 取得できたら、$categoriesに追加.
-                    $categories = array_merge($categories, $tmp_categories);
-                }
-                 $genreCategories[$genre->category_genrename] = $categories;
-            }
+            // if ($tmp_categories && count($tmp_categories) > 0) {
+            //         // 取得できたら、$categoriesに追加.
+            //         $categories = array_merge($categories, $tmp_categories);
+            //     }
+            //      $genreCategories[$genre->category_genrename] = $categories;
+            // }
            
-            $keys= key::orderBy('id','asc') ->get(); 
+            $keys= Key::orderBy('id','asc') ->get(); 
+            // $tags= Tag::orderBy('id','asc') ->get();
 
 
             return view('book_register',
-            ['categories' => $categories,
-            'genreCategories' =>$genreCategories,
+            [
+            'genres'=>$genres,  
+            // 'categories' => $categories,
+            // 'genreCategories' =>$genreCategories,
             'keys'=>$keys,
+            // 'tags'=>$tags,
             ]
           
             );
@@ -1074,8 +1078,8 @@ class BooksController extends Controller
 
 public function tag() {
         $categories = Category::orderBy('id', 'asc')->get();
-        $tags=Category_genre::orderBy('id', 'asc')->get();
-       
+        $tags=Tag::orderBy('id', 'asc')->get();
+   
         
         
         
@@ -1088,48 +1092,48 @@ public function tag() {
     //ポストされてきたカテゴリーをインサートする処理
     public function tag_insert(Request $request) {
       $validator = Validator::make($request->all(), [
-          'category_name' => 'required | max: 20',
-          'category_genre' =>'required',
+          'tags' => 'required | max: 20',
+          'category_id' =>'required',
       ]);
       if ($validator->fails()){
-          return redirect('category')
+          return redirect('tag')
           ->withInput()
           ->withError($validator);
       }
-      $categories = new Category;
-      $categories->category_name = $request->category_name;
-      $categories->category_genre = $request->category_genre;
+      $tag = new Tag;
+      $tag->tags = $request->tags;
+      $tag->category_id = $request->category_id;
       
-      $categories->save();
-      return redirect('category');
+      $tag->save();
+      return redirect('tag');
     }
     
     //カテゴリーを消す
-    public function tag_delete(Category $category) {
-        $category->delete();
-        return redirect('category');
+    public function tag_delete(Tag $tag) {
+        $tag->delete();
+        return redirect('tag');
     }
     
     //カテゴリーを更新viewページに飛ばす
-    public function tag_update_view(Category $category) {
-        return view('category_update_view', ['category'=> $category]);
+    public function tag_update_view(Tag $tag) {
+        return view('tag_update_view', ['tag'=> $tag]);
     }
     // カテゴリーを更新する
     public function tag_update(Request $request) {
         $validator = Validator::make($request->all(), [
             'id' => 'required',
-            'category_name' => 'required | max:20',
+            'tags' => 'required | max:20',
         ]);
         if ($validator->fails()){
-            return redirect('/category')
+            return redirect('/')
             ->withInput()
             ->withError($validator);
         }
         
-        $category = Category::find($request->id);
-        $category->category_name = $request->category_name;
-        $category->save();
-        return redirect('/category'); 
+        $tag = Tag::find($request->id);
+        $tag->tags = $request->tags;
+        $tag->save();
+        return redirect('/tag'); 
         
     }
 

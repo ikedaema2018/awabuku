@@ -26,9 +26,9 @@ Route::get('/category_genre','BooksController@category_genre')
 ->middleware('login');
 Route::post('/category_genre','BooksController@category_genre_insert')
 ->middleware('login');
-Route::delete('/category_genre/{category_genre}', 'BooksController@category_genre_delete')
+Route::delete('/category_genre/{tag_genre}', 'BooksController@category_genre_delete')
 ->middleware('login');
-Route::post('/category_genre/{category_genre}', 'BooksController@category_genre_update_view')
+Route::post('/category_genre/{tag_genre}', 'BooksController@category_genre_update_view')
 ->middleware('login');
 Route::post('/category_genre_update', 'BooksController@category_genre_update')
 ->middleware('login');
@@ -38,9 +38,9 @@ Route::get('/category','BooksController@category')
 ->middleware('login');
 Route::post('/category', 'BooksController@category_insert')
 ->middleware('login');
-Route::delete('/category/{category}', 'BooksController@category_delete')
+Route::delete('/category/{tag}', 'BooksController@category_delete')
 ->middleware('login');
-Route::post('/category/{category}', 'BooksController@category_update_view')
+Route::post('/category/{tag}', 'BooksController@category_update_view')
 ->middleware('login');
 Route::post('/category_update', 'BooksController@category_update')
 ->middleware('login');
@@ -55,7 +55,7 @@ Route::get('/book_owner/{owner}', 'BooksController@book_update_view');
 Route::post('/book_update', 'BooksController@book_update');
 /////カテゴリの表示
 //変更
-//Route::get('/book', 'BooksController@category_list');
+//Route::get('/book', 'BooksController@tag_list');
 
 
 //TOP画面
@@ -105,9 +105,9 @@ Route::get('/thread/{thread}', 'BooksController@thread_page')
 ->middleware('login');
 
 //カテゴリジャンル別ページ
-Route::get('/category_genre_page/{category_genre}', 'BooksController@category_genre_page')
+Route::get('/tag_genre_page/{tag_genre}', 'BooksController@tag_genre_page')
 ->middleware('login');
-Route::get('/category_page/{category}', 'BooksController@category_page')
+Route::get('/tag_page/{tag}', 'BooksController@tag_page')
 ->middleware('login');
 
 //検索結果ページ
@@ -136,4 +136,10 @@ Route::post('/key_insert', 'BooksController@key_insert')
 Route::get('/tag','BooksController@tag')
 ->middleware('login');
 Route::post('/tag_insert', 'BooksController@tag_insert')
+->middleware('login');
+Route::delete('/tag/{tag}', 'BooksController@tag_delete')
+->middleware('login');
+Route::post('/tag/{tag}', 'BooksController@tag_update_view')
+->middleware('login');
+Route::post('/tag_update', 'BooksController@tag_update')
 ->middleware('login');

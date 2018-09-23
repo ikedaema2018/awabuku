@@ -18,3 +18,6 @@
 [19-Sep-2018 13:38:22 Asia/Tokyo] PHP Fatal error:  Cannot redeclare App\Http\Controllers\BooksController::category_genre_page() in /home/ubuntu/workspace/cms/app/Http/Controllers/BooksController.php on line 1020
 [19-Sep-2018 13:38:28 Asia/Tokyo] PHP Fatal error:  Cannot redeclare App\Http\Controllers\BooksController::category_genre_page() in /home/ubuntu/workspace/cms/app/Http/Controllers/BooksController.php on line 1020
 [19-Sep-2018 13:38:32 Asia/Tokyo] PHP Fatal error:  Cannot redeclare App\Http\Controllers\BooksController::category_genre_page() in /home/ubuntu/workspace/cms/app/Http/Controllers/BooksController.php on line 1020
+[23-Sep-2018 11:21:31 Asia/Tokyo] PHP Fatal error:  Cannot use App\Tag as Tag because the name is already in use in /home/ubuntu/workspace/cms/app/Http/Controllers/BooksController.php on line 20
+[23-Sep-2018 11:23:03 Asia/Tokyo] PHP Fatal error:  Cannot redeclare App\Http\Controllers\BooksController::tag() in /home/ubuntu/workspace/cms/app/Http/Controllers/BooksController.php on line 1075
+[23-Sep-2018 11:28:23 Asia/Tokyo] PHP Fatal error:  Cannot redeclare App\Http\Controllers\BooksController::tag() in /home/ubuntu/workspace/cms/app/Http/Controllers/BooksController.php on line 1075

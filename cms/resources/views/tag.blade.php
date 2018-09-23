@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-    <form action="{{url('tag')}}" method="post">
+    <form action="{{url('tag_insert')}}" method="post">
                 {{ csrf_field() }}
         <div class="form-group">             
             <label class="col-sm-3 control-label"><b>タグ：</b></label>
             <div class="col-sm-9">    
-                <input type="text" name="category_name">
+                <input type="text" name="tags">
             </div>
         </div>
         <div class="form-group"> 

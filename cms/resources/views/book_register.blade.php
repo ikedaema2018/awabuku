@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-
-
+<?php
+use App\Tag;
+?>
 
 <h2>Book Register</h2>
 
@@ -99,32 +100,82 @@
         　</div>
     </div>
     
-   
-  
-  <div class="form-group">   
+   <div class="form-group">   
           <p><b>カテゴリー</b><p>
-          @if(count($genreCategories)>0)
-          <?php $i=0 ?>
-                @foreach($genreCategories as $genre => $categories)
+          
+            <?php $i=0 ?>
+                @foreach($genres as $genre)
+              
                 
                 <div  id="accordion" class="center" style="margin-top:20px;">
-                        @if(count($categories)>0)   
+                        @if(count($genres)>0)   
                         <a data-toggle="collapse" data-parent="#accordion" href="#sample{{$i}}">
-                        {{$genre}}
+                        {{$genre->category_genrename}}
                         </a>
                         @endif    
                         
                         <div class="collapsing collapse " id="sample{{$i}}" style="margin-top:20px;">
-                    	@foreach($categories as $category)
-    	                 <input type="checkbox" name="category_id" value="{{$category["id"]}}">{{$category["category_name"]}}</input>
-                        @endforeach
-                        </div>
-                </div>      
-                <?php $i = $i + 1 ?>
-                @endforeach
-            @endif
-   </div>   
+                    	@foreach($genre->categories as $category)
+                    	
+    	                 <input type="radio" onClick="aaa()" name="category_id" value="{{$category->id}}" >{{$category->category_name}}</input>
+    	                    			    @foreach($category->tags as $tag)
 
+                                            ({{$tag->tags}})
+    
+                            		    
+                            	            @endforeach
+                         <!-- モーダル・ダイアログ -->
+                            <div class="modal fade" id="sampleModal" tabindex="-1">
+                            	<div class="modal-dialog">
+                            		<div class="modal-content">
+                            			<div class="modal-header">
+                            				<button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+                            				<h4 class="modal-title">関連するタグリスト</h4>
+                                    	</div>
+                                    			
+                            		   
+                            			<div class="modal-body">
+                            			    
+                            			    @foreach($category->tags as $tag)
+
+                                            {{$tag->tags}}
+    
+                            		    
+                            	            @endforeach
+                            	       	</div>
+                            			<div class="modal-footer">
+                            				<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+                            				<button type="button" class="btn btn-primary">ボタン</button>
+                    			        </div>
+                            		</div>
+                            	</div>
+                            </div>   
+                     @endforeach
+                    </div>
+                </div>  
+                <?php $i = $i + 1 ?>
+                 @endforeach
+                
+               
+           
+   </div>   
+  
+  
+@foreach($genres as $genre)
+{{$genre->category_genrename}}
+
+@foreach($genre->categories as $category)
+
+{{$category->category_name}}
+ @foreach ($category->tags as $tag) 
+{{$tag->tags}}
+@endforeach
+@endforeach
+@endforeach
+
+  
+  
+  
   
      
     <div class="form-group"> 
@@ -132,7 +183,7 @@
           <div class="center">
               @if(count($keys)>0)
               @foreach($keys as $key)
-                <label class="radio-inline"><input type ="radio" name="key" value="$key->id">{{$key->key}}</label>
+                <label class="radio-inline"><input type ="radio" name="key" value="{{$key->id}}">{{$key->key}}</label>
             　@endforeach
               @endif
          </div>    
@@ -175,8 +226,10 @@
 </div>
 </div>
 
-</form>            
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</form>  
+
+
+
 
     <script>
 
@@ -286,6 +339,17 @@
         });
 
 
+function aaa(){
+    $('#sampleModal').modal('show');
+}
+
+
+
+
+
+
+
+</script>
 
 
 
