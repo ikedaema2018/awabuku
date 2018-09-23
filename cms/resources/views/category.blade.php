@@ -11,9 +11,9 @@
         </div>
         <div class="form-group"> 
             <p class="col-sm-3 control-label"><b>ジャンル:</b></p>
-             @foreach($category_genrus as $category_genru)
+             @foreach($category_genres as $category_genre)
             <label class="radio-inline">
-            <input type="radio" name="category_genru" value="{{$category_genru->id}}">{{$category_genru->category_genruname}}
+            <input type="radio" name="category_genre" value="{{$category_genre->id}}">{{$category_genre->category_genrename}}
             </label>
             @endforeach
             
@@ -25,7 +25,7 @@
         </div>
         
     　　<div>
-    　　<a href="{{url('category_genru')}}">カテゴリジャンル登録ページへ</a>
+    　　<a href="{{url('category_genre')}}">カテゴリジャンル登録ページへ</a>
     　　</div>
        
     </form>
@@ -44,7 +44,7 @@
                 @foreach ($categories as $category)
                 <tr>
                     <td>{{ $category->id }}</td>
-                    <td>{{ $category->category_genre->category_genruname }}</td>
+                    <td>{{ $category->category_Genre->category_genrename }}</td>
                     <td>{{ $category->category_name }}</td>
                     
                 

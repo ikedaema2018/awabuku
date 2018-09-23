@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Category;
-use App\Category_genru;
+use App\Category_genre;
 use App\Category_list;
 
 use App\Owner;
@@ -13,7 +13,7 @@ use App\Book;
 use App\Rental;
 use App\User;
 use App\Comment;
-
+use App\Key;
 use Validator;
 
 use Illuminate\Support\Facades\Auth;

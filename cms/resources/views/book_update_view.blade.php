@@ -33,10 +33,6 @@
 
 <div id="sampleCollapseListGroup1" class="panel-collapse collapse in">    　
 
-    <div class="form-group">
-        <label class="col-sm-3" for="name">所有者の名前を記入してください。</label>
-        <div class="col-sm-9"><input type="text" name="owner" value="{{ $owner->owner}}"></div>
-    </div> 
     
     <div class="form-group">
         <label class="col-sm-3" for="rental">本を貸し出せますか？</label>

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Category;
-use App\Category_genru;
+use App\Category_genre;
 use App\Category_list;
 
 use App\Owner;
@@ -16,6 +16,8 @@ use App\Comment;
 use Validator;
 use App\Thread;
 use App\Thread_comment;
+use App\Key;
+use App\Tag;
 use App\Scopes\LivingBookScope;
 
 
@@ -29,7 +31,7 @@ class BooksController extends Controller
         
         //topics
         
-        $topic=Comment::where('thread_comment_check',1)->first();
+        $topic=Comment::where('today_book',1)->first();
         $topic_user=User::where('id',$topic->user_id)->first();
         $topic_book=Book::where('id',$topic->book_id)->first();
         $topic_categories=Category_list::where('book_id',$topic_book->id)->get();
@@ -46,17 +48,17 @@ class BooksController extends Controller
         }    
     
         
-        $genrus = Category_genru::all();
+        $genres = Category_genre::all();
         
         // カテゴリジャンルごとの本一覧.
         $genreBooks = [];
     
         // ジャンルごとに処理.    
-        foreach($genrus as $genru) {
+        foreach($genres as $genre) {
             $books = [];
  // ジャンルに紐づくカテゴリー一覧を取得.
           
-            $categories = $genru->categories()->get();
+            $categories = $genre->categories()->get();
             foreach($categories as $category){
                 // カテゴリーごとに処理.
 
@@ -69,7 +71,7 @@ class BooksController extends Controller
                 }
             }
             // とあるカテゴリージャンルに紐づく、本の一覧.
-            $genreBooks[$genru->category_genruname] = $books;
+            $genreBooks[$genre->category_genrename] = $books;
         }
    
         $b = Category_list::all();
@@ -105,9 +107,9 @@ class BooksController extends Controller
 // <======カテゴリごとの紹介ページ ======>  
       
       
-   public function category_genre_page(Category_genru $category_genru) { 
+   public function category_genre_page(Category_genre $category_genre) { 
     
-     $categories=Category::where('category_genru',$category_genru->id)
+     $categories=Category::where('category_genre',$category_genre->id)
                         ->get();
      $book_lists= Category_list::all();
      $books = [];
@@ -126,14 +128,14 @@ class BooksController extends Controller
             
             // とあるカテゴリージャンルに紐づく、本の一覧.
            
-            $genreBooks[$category_genru->category_genruname] = $books;
+            $genreBooks[$category_genre->category_genrename] = $books;
            
             
        
             
         return view('category_genre_page', [
             
-             'category_genru' => $category_genru,
+             'category_genre' => $category_genre,
              'categories' =>$categories,
              'genreBooks'=>$genreBooks,
              'book_lists' =>$book_lists
@@ -160,69 +162,69 @@ class BooksController extends Controller
     // <======ここからカテゴリーの処理 ======>
   
       //カテゴリージャンル登録
-    public function category_genru() {
-        $category_genrus = Category_genru::orderBy('id', 'asc')->get();
-        return view('category_genru', ['category_genrus' => $category_genrus]);
+    public function category_genre() {
+        $category_genres = Category_genre::orderBy('id', 'asc')->get();
+        return view('category_genre', ['category_genres' => $category_genres]);
     }
     
     //ポストされてきたカテゴリージャンルをインサートする処理
-    public function category_genru_insert(Request $request) {
+    public function category_genre_insert(Request $request) {
       $validator = Validator::make($request->all(), [
-          'category_genruname' => 'required | max: 30',
+          'category_genrename' => 'required | max: 30',
       ]);
       if ($validator->fails()){
           return redirect('category')
           ->withInput()
           ->withError($validator);
       }
-      $category_genru = new Category_genru;
-      $category_genru->category_genruname = $request->category_genruname;
-      $category_genru->save();
-      return redirect('category_genru');
+      $category_genre = new Category_genre;
+      $category_genre->category_genrename = $request->category_genrename;
+      $category_genre->save();
+      return redirect('category_genre');
     }
     
     //カテゴリージャンルを消す
-    public function category_genru_delete(Category_genru $category_genru) {
+    public function category_genre_delete(Category_genre $category_genre) {
         $category->delete();
-        return redirect('category_genru');
+        return redirect('category_genre');
     }
     
     //カテゴリージャンルを更新viewページに飛ばす
-    public function category_genru_update_view(Category_genru $category_genru) {
-        return view('category_genru_update_view', ['category_genru'=> $category_genru]);
+    public function category_genre_update_view(Category_genre $category_genre) {
+        return view('category_genre_update_view', ['category_genre'=> $category_genre]);
     }
     // カテゴリージャンルを更新する
-    public function category_genru_update(Request $request) {
+    public function category_genre_update(Request $request) {
         $validator = Validator::make($request->all(), [
             'id' => 'required',
   
   
-            'category_genruname' => 'required | max:30',
+            'category_genrename' => 'required | max:30',
         ]);
         if ($validator->fails()){
-            return redirect('/category_genru')
+            return redirect('/category_genre')
             ->withInput()
             ->withError($validator);
         }
         
-        $category_genru = Category_genru::find($request->id);
-        $category_genru->category_genruname = $request->category_genruname;
-        $category_genru->save();
-        return redirect('/category_genru'); 
+        $category_genre = Category_genre::find($request->id);
+        $category_genre->category_genrename = $request->category_genrename;
+        $category_genre->save();
+        return redirect('/category_genre'); 
         
     }
     
     //カテゴリー表示＆新規カテゴリー送信
     public function category() {
         $categories = Category::orderBy('id', 'asc')->get();
-        $category_genrus=Category_genru::orderBy('id', 'asc')->get();
+        $category_genres=Category_genre::orderBy('id', 'asc')->get();
        
         
         
         
         return view('category',
         ['categories' => $categories],
-        ['category_genrus' => $category_genrus]
+        ['category_genres' => $category_genres]
         );
     }
     
@@ -230,7 +232,7 @@ class BooksController extends Controller
     public function category_insert(Request $request) {
       $validator = Validator::make($request->all(), [
           'category_name' => 'required | max: 20',
-          'category_genru' =>'required',
+          'category_genre' =>'required',
       ]);
       if ($validator->fails()){
           return redirect('category')
@@ -239,7 +241,7 @@ class BooksController extends Controller
       }
       $categories = new Category;
       $categories->category_name = $request->category_name;
-      $categories->category_genru = $request->category_genru;
+      $categories->category_genre = $request->category_genre;
       
       $categories->save();
       return redirect('category');
@@ -281,30 +283,29 @@ class BooksController extends Controller
         if(Auth::check()){
             // $categories = Category::orderBy('id', 'asc')->get();       
            
-            $genrus = Category_genru::all();
+            $genres = Category_genre::all();
             // ジャンルごとに処理.    
             
-            foreach($genrus as $genru) {
+            foreach($genres as $genre) {
              $categories = [];
             // ジャンルに紐づくカテゴリー一覧を取得.
            
-            $tmp_categories = $genru->categories()->get()->toArray();
+            $tmp_categories = $genre->categories()->get()->toArray();
             
             if ($tmp_categories && count($tmp_categories) > 0) {
                     // 取得できたら、$categoriesに追加.
                     $categories = array_merge($categories, $tmp_categories);
                 }
-                 $genreCategories[$genru->category_genruname] = $categories;
+                 $genreCategories[$genre->category_genrename] = $categories;
             }
            
-                
-        
-            // $genreCategories[$genru->category_genruname] = $categories;
+            $keys= key::orderBy('id','asc') ->get(); 
 
 
             return view('book_register',
             ['categories' => $categories,
             'genreCategories' =>$genreCategories,
+            'keys'=>$keys,
             ]
           
             );
@@ -392,7 +393,7 @@ class BooksController extends Controller
             $owners->user_id = $id->id;
         
         }else{
-            $owners->owner ="0";
+            $owners->user_id =$request->user_id;
         }
         
         $owners->save();  
@@ -406,8 +407,8 @@ class BooksController extends Controller
         $comments->owner_id =$owner_id;
         $comments->user_id= $request->user_id;
         $comments->comment_text= $request->comment_text;
-        $comments->evolution= $request->evolution;
-        $comments->person= $request->person;
+        $comments->evaluation= $request->evaluation;
+        $comments->key= $request->key;
         $comments->comment_text= $request->comment_text;
         $comments->save();  
     
@@ -431,7 +432,7 @@ class BooksController extends Controller
         $owners = new Owner;
         $owners->book_id= $book_id;
         $owners->user_id= $request->user_id;
-        $owners->owner= $request->owner;
+      
         $owners->rental_flag= $request->rental_flag;
         
         
@@ -441,7 +442,7 @@ class BooksController extends Controller
             $owners->user_id = $id->id;
         
         }else{
-            $owners->owner ="0";
+          $owners->user_id =$request->user_id; 
         }
         
         $owners->save();  
@@ -455,8 +456,8 @@ class BooksController extends Controller
         $comments->owner_id =$owner_id;
         $comments->user_id= $request->user_id;
         $comments->comment_text= $request->comment_text;
-        $comments->evolution= $request->evolution;
-        $comments->person= $request->person;
+        $comments->evaluation= $request->evaluation;
+        $comments->key= $request->key;
         $comments->comment_text= $request->comment_text;
         $comments->save();   
         
@@ -485,20 +486,20 @@ class BooksController extends Controller
        //本の登録情報をを更新viewページに飛ばす
         public function book_update_view(Owner $owner) {
         // $categories = Category::orderBy('id', 'asc')->get(); 
-        $genrus = Category_genru::all();
+        $genres = Category_genre::all();
             // ジャンルごとに処理.    
             
-            foreach($genrus as $genru) {
+            foreach($genres as $genre) {
              $categories = [];
             // ジャンルに紐づくカテゴリー一覧を取得.
            
-            $tmp_categories = $genru->categories()->get()->toArray();
+            $tmp_categories = $genre->categories()->get()->toArray();
             
             if ($tmp_categories && count($tmp_categories) > 0) {
                     // 取得できたら、$categoriesに追加.
                     $categories = array_merge($categories, $tmp_categories);
                 }
-                 $genreCategories[$genru->category_genruname] = $categories;
+                 $genreCategories[$genre->category_genrename] = $categories;
             }
         return view('book_update_view',['owner'=>$owner])
         ->with([
@@ -515,7 +516,7 @@ class BooksController extends Controller
         public function book_update(Request $request) {
         $validator = Validator::make($request->all(), [
             'id' => 'required',
-            'owner' =>'required|min:1|max:50',
+           
             'category_id'=>'required',
             'rental_flag'=>'required',
             'life_flag'=>'required',
@@ -530,15 +531,28 @@ class BooksController extends Controller
         // }
         
         $owner = Owner::find($request->id);
-        $owner->owner = $request->owner;
+        
         $owner->rental_flag = $request->rental_flag;
         $owner->life_flag = $request->life_flag;
         $owner->save();
 
         
         $book = Book::find($request->book_id);
-        $book->category_id = $request->category_id;
         $book->save();
+        
+        
+        $category = $request->category_id;
+        
+        for ($i = 0; $i < count($request->category_id); $i++){
+        if(count(Category_list::where('book_id', $request->book_id)
+            ->where('category_id', $request->category_id[$i])->get()) == 0){
+        $category_lists =new Category_list;
+        $category_lists->book_id=$request->book_id;
+        $category_lists->category_id= $request->category_id;
+        $category_lists->save();
+            } 
+            }
+        
         return redirect('/book');        
         
     }  
@@ -547,8 +561,7 @@ class BooksController extends Controller
         public function rental_view(Book $book) {
         $owners= Owner::where('book_id',$book->id)->get();
         $comments=Comment::where('book_id',$book->id)->get();
-    //     $r = Rental::all();
-    //   $rentals = $r->where('return_flag',1)->first();
+ 
        $rentals=Rental::where('return_flag',1)->get();
 
       
@@ -667,8 +680,8 @@ class BooksController extends Controller
         //       'user_id' => 'required',
         //       'owner_id' => 'required',
         //       'comment_text' => 'required',
-        //       'evolution' => 'required',
-        //       'person' =>'required',
+        //       'evaluation' => 'required',
+        //       'key' =>'required',
 
         // ]);
         // if ($validator->fails()){
@@ -682,8 +695,8 @@ class BooksController extends Controller
         $comments->owner_id = $request->owner_id;
         $comments->book_id = $request->book_id;
         $comments->comment_text= $request->comment_text;
-        $comments->evolution= $request->evolution;
-        $comments->person= $request->person;
+        $comments->evaluation= $request->evaluation;
+        $comments->key= $request->key;
         $comments->save();
         
         $rental = [
@@ -755,23 +768,23 @@ class BooksController extends Controller
          if(Auth::check()){
              
            
-            $genrus = Category_genru::all();
+            $genres = Category_genre::all();
             
             $genreCategories = [];
             // ジャンルごとに処理.    
             
-            foreach($genrus as $genru) {
+            foreach($genres as $genre) {
              $categories = [];
             // ジャンルに紐づくカテゴリー一覧を取得.
            
-            $tmp_categories = $genru->categories()->get()->toArray();
+            $tmp_categories = $genre->categories()->get()->toArray();
             
             if ($tmp_categories && count($tmp_categories) > 0) {
                     // 取得できたら、$categoriesに追加.
                     $categories = array_merge($categories, $tmp_categories);
                 }
                 
-                 $genreCategories[$genru->category_genruname] = $categories;
+                 $genreCategories[$genre->category_genrename] = $categories;
               
            
             }
@@ -910,7 +923,7 @@ class BooksController extends Controller
         $owners = new Owner;
         $owners->book_id= $book_id;
         $owners->user_id= $request->user_id;
-        $owners->owner= $request->owner;
+       
         $owners->rental_flag= $request->rental_flag;
         $owners->save();  
         
@@ -923,8 +936,8 @@ class BooksController extends Controller
         $comments->owner_id =$owner_id;
         $comments->user_id= $request->user_id;
         $comments->comment_text= $request->comment_text;
-        $comments->evolution= $request->evolution;
-        $comments->person= $request->person;
+        $comments->evaluation= $request->evaluation;
+        $comments->key= $request->key;
         $comments->comment_text= $request->comment_text;
         $comments->save();  
     
@@ -962,7 +975,7 @@ class BooksController extends Controller
         $owners = new Owner;
         $owners->book_id= $book_id;
         $owners->user_id= $request->user_id;
-        $owners->owner= $request->owner;
+      
         $owners->rental_flag= $request->rental_flag;
         $owners->save();  
         
@@ -975,8 +988,8 @@ class BooksController extends Controller
         $comments->owner_id =$owner_id;
         $comments->user_id= $request->user_id;
         $comments->comment_text= $request->comment_text;
-        $comments->evolution= $request->evolution;
-        $comments->person= $request->person;
+        $comments->evaluation= $request->evaluation;
+        $comments->key= $request->key;
         $comments->comment_text= $request->comment_text;
         $comments->save();   
         
@@ -1004,32 +1017,121 @@ class BooksController extends Controller
     }
 
   //index TOP画面
-    public function category_genru_page(){
+    // public function category_genre_page(){
 
-        $category_genrus=Category_genru::
-        $categories = Category::orderBy('id', 'asc')
-        ->get();
+    //     $category_genres=Category_genre::
+    //     $categories = Category::orderBy('id', 'asc')
+    //     ->get();
         
-        $b = Category_list::all();
-        $category_lists = $b->groupBy('category_id');
+    //     $b = Category_list::all();
+    //     $category_lists = $b->groupBy('category_id');
         
         
-        $thread_lists = Thread::orderBy('updated_at','desc')
-                        ->take(5)
-                        ->get();
+    //     $thread_lists = Thread::orderBy('updated_at','desc')
+    //                     ->take(5)
+    //                     ->get();
          
-        $rentals = Rental::all();
+    //     $rentals = Rental::all();
                     
-        return view('category_genre_page', [
-            'categories' => $categories,
-            'category_lists' => $category_lists,
-            'thread_lists'  =>$thread_lists,
-            'rentals'=>$rentals
-        ]);
-    }    
+    //     return view('category_genre_page', [
+    //         'categories' => $categories,
+    //         'category_lists' => $category_lists,
+    //         'thread_lists'  =>$thread_lists,
+    //         'rentals'=>$rentals
+    //     ]);
+    // }    
     
 
+  
+      //カテゴリージャンル登録
+    public function key() {
+        $keys = key::orderBy('id', 'asc')->get();
+        return view('key', ['keys' => $keys]);
+    }
+    
+    //ポストされてきたカテゴリージャンルをインサートする処理
+    public function key_insert(Request $request) {
+      $validator = Validator::make($request->all(), [
+          'key' => 'required | max: 30',
+      ]);
+      if ($validator->fails()){
+          return redirect('key')
+          ->withInput()
+          ->withError($validator);
+      }
+      $key = new key;
+      $key->key = $request->key;
+      $key->save();
+      return redirect('key');
+    }
 
+
+
+
+
+
+
+
+public function tag() {
+        $categories = Category::orderBy('id', 'asc')->get();
+        $tags=Category_genre::orderBy('id', 'asc')->get();
+       
+        
+        
+        
+        return view('tag',
+        ['categories' => $categories],
+        ['tags' => $tags]
+        );
+    }
+    
+    //ポストされてきたカテゴリーをインサートする処理
+    public function tag_insert(Request $request) {
+      $validator = Validator::make($request->all(), [
+          'category_name' => 'required | max: 20',
+          'category_genre' =>'required',
+      ]);
+      if ($validator->fails()){
+          return redirect('category')
+          ->withInput()
+          ->withError($validator);
+      }
+      $categories = new Category;
+      $categories->category_name = $request->category_name;
+      $categories->category_genre = $request->category_genre;
+      
+      $categories->save();
+      return redirect('category');
+    }
+    
+    //カテゴリーを消す
+    public function tag_delete(Category $category) {
+        $category->delete();
+        return redirect('category');
+    }
+    
+    //カテゴリーを更新viewページに飛ばす
+    public function tag_update_view(Category $category) {
+        return view('category_update_view', ['category'=> $category]);
+    }
+    // カテゴリーを更新する
+    public function tag_update(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+            'category_name' => 'required | max:20',
+        ]);
+        if ($validator->fails()){
+            return redirect('/category')
+            ->withInput()
+            ->withError($validator);
+        }
+        
+        $category = Category::find($request->id);
+        $category->category_name = $request->category_name;
+        $category->save();
+        return redirect('/category'); 
+        
+    }
 
 
 
@@ -1037,9 +1139,6 @@ class BooksController extends Controller
 
 
 }
-
-
-
 ?>
 
 

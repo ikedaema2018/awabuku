@@ -7,6 +7,11 @@
 <h2>Book Register</h2>
 
 <h1>isbn以外のデータをnullでも登録できるようにする※条件は再度検討すること</h1>
+
+
+<div class="row">
+<div class="col-sm-offset-2 col-sm-8 col-sm-offset-2">
+
  <p class="page-header">本を登録する</p>
   <div class="form-group">
     <label  class="col-sm-3 control-label form-control-static" for="isbn">ISBNを入力してください:</label>
@@ -77,16 +82,15 @@
  <div class="owner_info">
      
    
-              <input type="hidden" name="owner" value="{{Auth::user()->name}}" >
-
-    
-    @if(Auth::user()->kanri_flag == 1)
-    <h1>ジーズ</h1>
-        <label>入力：<input type="number" name="gs" /></label>
-
-   
-    @endif
-    
+　<input type="hidden" name="owner" value="{{Auth::user()->name}}" >
+            @if(Auth::user()->kanri_flag == 1)
+                <div class="form-group"> 
+                <p>ジーズの本の入力</p>
+                <div class="center">
+                        <label>入力：<input type="number" name="gs" /></label>
+                 </div>
+                </div>
+            @endif
     <div class="form-group">  
           <p><b>本の貸出はできますか？</b></p>
           <div class="center">
@@ -103,14 +107,14 @@
           <?php $i=0 ?>
                 @foreach($genreCategories as $genre => $categories)
                 
-                <div  id="accordion" class="center">
+                <div  id="accordion" class="center" style="margin-top:20px;">
                         @if(count($categories)>0)   
                         <a data-toggle="collapse" data-parent="#accordion" href="#sample{{$i}}">
                         {{$genre}}
                         </a>
                         @endif    
                         
-                        <div class="collapsing collapse" id="sample{{$i}}">
+                        <div class="collapsing collapse " id="sample{{$i}}" style="margin-top:20px;">
                     	@foreach($categories as $category)
     	                 <input type="checkbox" name="category_id" value="{{$category["id"]}}">{{$category["category_name"]}}</input>
                         @endforeach
@@ -124,33 +128,35 @@
   
      
     <div class="form-group"> 
-          <p><b>こんなひとにおすすめ</b></p>
+          <p><b>特徴</b></p>
           <div class="center">
-            <label class="radio-inline"><input type ="radio" name="person" value="1">初心者</label>
-            <label class="radio-inline"><input type ="radio" name="person" value="2">中級者</label>
-            <label class="radio-inline"><input type ="radio" name="person" value="3">上級者</label>
-            <label class="radio-inline"><input type ="radio" name="person" value="4">その他</label>
+              @if(count($keys)>0)
+              @foreach($keys as $key)
+                <label class="radio-inline"><input type ="radio" name="key" value="$key->id">{{$key->key}}</label>
+            　@endforeach
+              @endif
          </div>    
     </div>        
      
     <div class="form-group">
           <p><b>評価</b></p> 
         <div class="evaluation center">
-            <input id="star1" type="radio" name="evolution" value="5" />
+            <input id="star1" type="radio" name="evaluation" value="5" />
             <label for="star1"class="radio-inline"><span class="text">最高</span>★</label>
-            <input id="star2" type="radio" name="evolution" value="4" />
+            <input id="star2" type="radio" name="evaluation" value="4" />
             <label for="star2"class="radio-inline"><span class="text">良い</span>★</label>
-            <input id="star3" type="radio" name="evolution" value="3" />
+            <input id="star3" type="radio" name="evaluation" value="3" />
             <label for="star3"class="radio-inline"><span class="text">普通</span>★</label>
-            <input id="star4" type="radio" name="evolution" value="2" />
+            <input id="star4" type="radio" name="evaluation" value="2" />
             <label for="star4"class="radio-inline"><span class="text">悪い</span>★</label>
-            <input id="star5" type="radio" name="evolution" value="1" />
+            <input id="star5" type="radio" name="evaluation" value="1" />
             <label for="star5"class="radio-inline"><span class="text">最悪</span>★</label>
         </div>
     </div> 
     
     <div class="form-group">  
           <label>おすすめポイント</label>
+          
           <div class="center">
           <textarea  rows="5" class="form-control" name="comment_text" placeholder="例）++の勉強をしたい人におすすめ" autofocu></textarea>
           </div>
@@ -158,15 +164,16 @@
     
     <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
     <div class="form-group">
-        <div class="col-sm-offset-3 col-sm-9 text-right">
-            <button type="submit" >送信</button>
+        <div class="center">
+            <button type="submit" class="btn btn-info"  style="width: 145px; font-size: 21px;">送信</button>
         </div>
     </div>    
 </div> 
  </div>
 <!--owner_info終わり-->      
 
-
+</div>
+</div>
 
 </form>            
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

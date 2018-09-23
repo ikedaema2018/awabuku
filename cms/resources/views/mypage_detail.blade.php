@@ -12,7 +12,7 @@ use App\Category;
 
 <!--本の詳細-->
     <div class="row">
-        <div class="col-sm-3"　style="background:#CCCCCC;height:200px;">
+        <div class="col-sm-3"　style="background:#CCCCCC height:200px;" style="text-align:center;">
             <img src="{{ $book->BookImage}}"></img>
         </div>
         <div class="col-sm-6"　style="background:C;height:200px;">
@@ -111,6 +111,7 @@ use App\Category;
           </tbody> 
          </table> 
         @endif
+    </div>
     </div>
 <!--おすすめコメント一覧終わり-->               
  @endsection

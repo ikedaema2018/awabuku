@@ -8,7 +8,7 @@ use App\Comment;
 use App\User;
 use App\Rental;
 use App\Category;
-use App\Category_genru;
+use App\Category_genre;
 
 ?>
 <div class=row>
@@ -36,7 +36,7 @@ use App\Category_genru;
             <td>
                  <ul style="list-style:none; justify-content:between;">
                 @foreach($category_names as $category_name)
-                   <li style="display: inline-block;"><a href="{{url('category_genre_page/'.Category_genru::find($category_name["category_genru"])->id)}}">{{Category_genru::find($category_name["category_genru"])->category_genruname}}&nbsp;&nbsp</a></li>
+                   <li style="display: inline-block;"><a href="{{url('category_genre_page/'.Category_genre::find($category_name["category_genre"])->id)}}">{{Category_genre::find($category_name["category_genre"])->category_genrename}}&nbsp;&nbsp</a></li>
                  @endforeach 
                   <ul>
             </td>
@@ -61,9 +61,10 @@ use App\Category_genru;
   </div>
 </div> 
 
-<!-- 本を新規登録してからオススメする -->    
+<!-- 本を新規登録してからオススメする -->  
+<div class="row">
 <div class="col-sm-6 text-center">       
-        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#sampleModal1">
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#sampleModal1" style="width:300px;">
     	  おすすめコメントを入力する
         </button>
 </div>
@@ -141,13 +142,11 @@ use App\Category_genru;
 </div>
 
 <div class="col-sm-6 text-center"> 
-
-        
     	 <a href="{{url('rental/'.$book->id)}}">
-    	     <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#sampleModal2">本をレンタルする</button>
+    	     <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#sampleModal2" style="width:300px;">本をレンタルする</button>
         </a>
 </div>
-
+</div>
 
 <p class="col-xs-12">おすすめコメント</p>
         

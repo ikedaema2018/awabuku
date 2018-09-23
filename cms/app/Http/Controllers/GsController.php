@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Category;
-use App\Category_genru;
+use App\Category_genre;
 use App\Category_list;
 
 use App\Owner;
@@ -15,6 +15,7 @@ use App\Comment;
 use Validator;
 use App\Thread;
 use App\Thread_comment;
+use App\Key;
 use App\Scopes\LivingBookScope;
 
 
@@ -26,19 +27,19 @@ class GsController extends Controller
  //index TOP画面
     public function gsbooks(){  
         
-    $owners = Owner::where('user_id',"4")->get();  
+    $owners = Owner::where('user_id',"2")->get();  
    
    
-//   $genrus = Category_genru::all(); 
+//   $genres = Category_genre::all(); 
 //   $genreBooks = [];
    
     
 //     // ジャンルごとに処理.    
-//     foreach($genrus as $genru) {
+//     foreach($genres as $genre) {
 //         $books = [];
 //     // ジャンルに紐づくカテゴリー一覧を取得.
       
-//         $categories = $genru->categories()->get();
+//         $categories = $genre->categories()->get();
 //         foreach($categories as $category){
 //             // カテゴリーごとに処理.
 
@@ -51,7 +52,7 @@ class GsController extends Controller
 //             }
 //         }
 //         // とあるカテゴリージャンルに紐づく、本の一覧.
-//         $genreBooks[$genru->category_genruname] = $books;
+//         $genreBooks[$genre->category_genrename] = $books;
        
        
         

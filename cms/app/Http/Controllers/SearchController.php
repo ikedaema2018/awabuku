@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Category;
-use App\Category_genru;
+use App\Category_genre;
 use App\Category_list;
 use App\Owner;
 use App\Book;
@@ -17,6 +17,7 @@ use App\Thread_comment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Scopes\LivingBookScope;
+use App\Key;
 
 class SearchController extends Controller
 {

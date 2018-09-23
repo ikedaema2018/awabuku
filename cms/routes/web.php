@@ -22,15 +22,15 @@ Route::get('/loginCheck', 'UserController@loginCheck');
 
 ///////カテゴリ登録
 //カテゴリジャンル
-Route::get('/category_genru','BooksController@category_genru')
+Route::get('/category_genre','BooksController@category_genre')
 ->middleware('login');
-Route::post('/category_genru','BooksController@category_genru_insert')
+Route::post('/category_genre','BooksController@category_genre_insert')
 ->middleware('login');
-Route::delete('/category_genru/{category_genru}', 'BooksController@category_genru_delete')
+Route::delete('/category_genre/{category_genre}', 'BooksController@category_genre_delete')
 ->middleware('login');
-Route::post('/category_genru/{category_genru}', 'BooksController@category_genru_update_view')
+Route::post('/category_genre/{category_genre}', 'BooksController@category_genre_update_view')
 ->middleware('login');
-Route::post('/category_genru_update', 'BooksController@category_genru_update')
+Route::post('/category_genre_update', 'BooksController@category_genre_update')
 ->middleware('login');
 
 //カテゴリ
@@ -105,7 +105,7 @@ Route::get('/thread/{thread}', 'BooksController@thread_page')
 ->middleware('login');
 
 //カテゴリジャンル別ページ
-Route::get('/category_genre_page/{category_genru}', 'BooksController@category_genre_page')
+Route::get('/category_genre_page/{category_genre}', 'BooksController@category_genre_page')
 ->middleware('login');
 Route::get('/category_page/{category}', 'BooksController@category_page')
 ->middleware('login');
@@ -124,4 +124,16 @@ Route::get('/gsbooks', 'GsController@gsbooks')
 Route::get('/gsbook/{owner}','GsController@gsbook_view')
 ->middleware('login');
 Route::post('/gsbook/','GsController@gsbook_comment_insert')
+->middleware('login');
+
+//person入力画面
+Route::get('/key','BooksController@key')
+->middleware('login');
+Route::post('/key_insert', 'BooksController@key_insert')
+->middleware('login');
+
+//tag入力画面
+Route::get('/tag','BooksController@tag')
+->middleware('login');
+Route::post('/tag_insert', 'BooksController@tag_insert')
 ->middleware('login');

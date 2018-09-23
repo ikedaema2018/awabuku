@@ -19,11 +19,11 @@ class CreateCommentsTable extends Migration
             $table->integer('owner_id');
             $table->integer('book_id');
             $table->string('comment_text');
-            $table->integer('evolution');
-            $table->integer('person');
-            $table->integer('rental_id');
+            $table->integer('evaluation');
+            $table->integer('key');
+            $table->integer('rental_id')->nullable();
             $table->integer('today_book')->default(0);
-            $table->integer('thread_comment_check')->default(0);
+           
             $table->timestamps();
         });
     }

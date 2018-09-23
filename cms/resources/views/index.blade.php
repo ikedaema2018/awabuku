@@ -6,7 +6,7 @@
 
 use App\User;
 use App\Book;
-use App\Category_genru;
+use App\Category_genre;
 
 
 
@@ -30,7 +30,7 @@ use App\Category_genru;
                         <a href="{{url('rental/'.$topic_book->id)}}"><p><b>{{$topic_book->BookTitle}}</b></></a>
                         <p>{{$topic->comment_text}}</p>
                         @foreach($topic_category_names as $topic_category_name)
-                        <a href="{{url('category_genre_page/'.Category_genru::find($topic_category_name["category_genru"])->id)}}"><p>ジャンル：{{Category_genru::find($topic_category_name["category_genru"])->category_genruname}}</p></a>
+                        <a href="{{url('category_genre_page/'.Category_genre::find($topic_category_name["category_genre"])->id)}}"><p>ジャンル：{{Category_genre::find($topic_category_name["category_genre"])->category_genrename}}</p></a>
                         <a href="{{url('category_page/'.$topic_category_name["id"])}}"><p>カテゴリ：{{$topic_category_name["category_name"]}}</p></a>
                         @endforeach
                     </li>
@@ -106,7 +106,7 @@ use App\Category_genru;
                          @endforeach
                          @if(count($genreBookValues)>0)
                             <div class= "col-sm-12 text-right border_bottom">
-                                <a href="{{url('category_genre_page/'.Category_genru::where('category_genruname', $genreBookKey)->first()->id)}}">もっと見る</a>
+                                <a href="{{url('category_genre_page/'.Category_genre::where('category_genrename', $genreBookKey)->first()->id)}}">もっと見る</a>
                             </div>  
                          @endif
            

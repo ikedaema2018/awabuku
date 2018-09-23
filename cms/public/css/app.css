@@ -1,20 +1,4 @@
 
-.titile_wrapper{
-    position: relative;
-}
-.titile_wrapper a {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    text-indent:-999px;
-}
-   
-.navbar-default {
-background-color: #65baad;
-border-color: #3e6962;
-}
 
 @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);/*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)

@@ -15,9 +15,9 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('facebook_id')->unique();
+            $table->string('facebook_id')->unique()->nullable();
             $table->string('name');
-            $table->string('avater');
+            $table->string('avater')->nullable();
             $table->string('password')->nullable()->change();
             $table->integer('kanri_flag')->default(0);
             $table->rememberToken();

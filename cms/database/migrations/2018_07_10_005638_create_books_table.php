@@ -20,10 +20,9 @@ class CreateBooksTable extends Migration
             $table->string('isbn10');
             $table->string('isbn13');
             $table->string('PublishedDate');
-            $table->integer('category_id');
+            // $table->integer('category_id');
             $table->string('BookImage');
-            $table->string('BookDiscription');
-
+            $table->string('BookDiscription',1000);
  
             $table->timestamps();
         });

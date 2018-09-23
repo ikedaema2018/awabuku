@@ -6,7 +6,7 @@
 
 use App\User;
 use App\Book;
-use App\Category_genru;
+use App\Category_genre;
 
 
 

@@ -17,8 +17,12 @@ class Category extends Model
             // return $this->belongsTo('App\User', '外部キーのカラム名', '親元のid扱いのカラム名');
           }
           
-          public function category_genre(){
-              return $this->belongsTo('App\Category_genru', 'category_genru', 'id');
+        //   public function category_genre(){
+        //       return $this->belongsTo('App\Category_genre', 'category_genre', 'id');
+        //     // return $this->belongsTo('App\User', '外部キーのカラム名', '親元のid扱いのカラム名');
+        //   }
+         public function category_Genre(){
+              return $this->belongsTo('App\Category_genre', 'category_genre', 'id');
             // return $this->belongsTo('App\User', '外部キーのカラム名', '親元のid扱いのカラム名');
           }
     

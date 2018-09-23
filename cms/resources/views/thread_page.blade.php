@@ -226,12 +226,7 @@ use App\User;
                   </div>                
                         
             <!--オーナー情報開始   -->                   
-              <div class="form-group" style="margin-top:60px;">  
-                    <label class="col-sm-3 control-label">所有者の名前を記入してください。</label>
-                    <div class="col-sm-9">
-                    <input type="text" name="owner" value="">
-                    </div>
-              </div> 
+          
             　<div class="form-group">  
             　　　　<p class="col-sm-3 control-label"><b>本の貸出はできますか？</b></p>
             　　　　<label class="radio-inline"><input type="radio" name="rental_flag" value=0>はい</label>
@@ -255,10 +250,10 @@ use App\User;
             
             　<div class="form-group"> 
                 <p class="col-sm-3 control-label"><b>評価</b></p>       
-                      <label class="radio-inline"><input type ="radio" name="evolution" value="1">❤️</label>
-                      <input type ="radio" name="evolution" value="2">❤️❤️</label>
-                      <label class="radio-inline"><input type ="radio" name="evolution" value="3">❤️❤️❤️</label>
-                      <label class="radio-inline"><input type ="radio" name="evolution" value="4">その他</label>
+                      <label class="radio-inline"><input type ="radio" name="evaluation" value="1">❤️</label>
+                      <input type ="radio" name="evaluation" value="2">❤️❤️</label>
+                      <label class="radio-inline"><input type ="radio" name="evaluation" value="3">❤️❤️❤️</label>
+                      <label class="radio-inline"><input type ="radio" name="evaluation" value="4">その他</label>
         　　　</div>      
              <!--bookcomment開始   -->           
         　　　<div class="form-group">  

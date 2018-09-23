@@ -10,7 +10,10 @@ class Comment extends Model
               return $this->belongsTo('App\Owner', 'owner_id', 'id');
          }
          public function user_c(){
-              return $this->belongsTo('App\Book', 'book_id', 'id');     
+              return $this->belongsTo('App\Book', 'book_id', 'id'); 
+         }     
+         public function person_c(){
+              return $this->belongsTo('App\Person', 'person', 'id');       
   
               
             // return $this->belongsTo('App\User', '外部キーのカラム名', '親元のid扱いのカラム名');

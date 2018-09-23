@@ -55,6 +55,8 @@ class UserController extends Controller
             'name' => $facebookUser->name,
             'facebook_id' => $facebookUser->id,
             'avater' => $facebookUser->avatar_original
+            
+            //createするのではなく、上記３点をredirectでviewページに飛ばして一括処理する。
         ]);
     
     }

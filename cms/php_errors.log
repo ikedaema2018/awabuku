@@ -11,3 +11,10 @@
 [14-Sep-2018 12:57:45 Asia/Tokyo] PHP Warning:  Unterminated comment starting line 2 in /home/ubuntu/workspace/cms/routes/web.php on line 2
 [14-Sep-2018 12:58:03 Asia/Tokyo] PHP Warning:  Unterminated comment starting line 2 in /home/ubuntu/workspace/cms/routes/web.php on line 2
 [14-Sep-2018 12:58:46 Asia/Tokyo] PHP Warning:  Unterminated comment starting line 2 in /home/ubuntu/workspace/cms/routes/web.php on line 2
+[19-Sep-2018 13:33:51 Asia/Tokyo] PHP Fatal error:  Cannot redeclare App\Http\Controllers\BooksController::category_genre_page() in /home/ubuntu/workspace/cms/app/Http/Controllers/BooksController.php on line 1020
+[19-Sep-2018 13:36:58 Asia/Tokyo] PHP Fatal error:  Cannot redeclare App\Http\Controllers\BooksController::category_genre_page() in /home/ubuntu/workspace/cms/app/Http/Controllers/BooksController.php on line 1020
+[19-Sep-2018 13:37:10 Asia/Tokyo] PHP Fatal error:  Cannot redeclare App\Http\Controllers\BooksController::category_genre_page() in /home/ubuntu/workspace/cms/app/Http/Controllers/BooksController.php on line 1020
+[19-Sep-2018 13:37:23 Asia/Tokyo] PHP Fatal error:  Cannot redeclare App\Http\Controllers\BooksController::category_genre_page() in /home/ubuntu/workspace/cms/app/Http/Controllers/BooksController.php on line 1020
+[19-Sep-2018 13:38:22 Asia/Tokyo] PHP Fatal error:  Cannot redeclare App\Http\Controllers\BooksController::category_genre_page() in /home/ubuntu/workspace/cms/app/Http/Controllers/BooksController.php on line 1020
+[19-Sep-2018 13:38:28 Asia/Tokyo] PHP Fatal error:  Cannot redeclare App\Http\Controllers\BooksController::category_genre_page() in /home/ubuntu/workspace/cms/app/Http/Controllers/BooksController.php on line 1020
+[19-Sep-2018 13:38:32 Asia/Tokyo] PHP Fatal error:  Cannot redeclare App\Http\Controllers\BooksController::category_genre_page() in /home/ubuntu/workspace/cms/app/Http/Controllers/BooksController.php on line 1020

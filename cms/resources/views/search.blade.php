@@ -9,12 +9,7 @@ use App\Book;
 
 
 ?>
- <div class="jumbotron text-center">
-     
-     <span navbar-brand><img class="avater img-circle" src="{{Auth::user()->avater}}"></img></span>
-     <h3>{{Auth::user()->name}}さんのマイページ</h3>
 
-</div>
 
 <!--所有している本-->
 
@@ -54,14 +49,14 @@ use App\Book;
                  @endif
                 
             @endforeach
-        
+    
 
 
 <!--検索結果　終わり-->
 
 
-
- 
+</div>
+</div>  
 
  @endsection
   
