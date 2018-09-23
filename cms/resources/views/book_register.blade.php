@@ -117,7 +117,7 @@ use App\Tag;
                         <div class="collapsing collapse " id="sample{{$i}}" style="margin-top:20px;">
                     	@foreach($genre->categories as $category)
                     	
-    	                 <input type="radio" onClick="aaa()" name="category_id" value="{{$category->id}}" >{{$category->category_name}}</input>
+    	                 <input type="radio" onClick="aaa({{$category->id}})" name="category_id" value="{{$category->id}}" >{{$category->category_name}}</input>
     	                    			    @foreach($category->tags as $tag)
 
                                             ({{$tag->tags}})
@@ -125,31 +125,31 @@ use App\Tag;
                             		    
                             	            @endforeach
                          <!-- モーダル・ダイアログ -->
-                            <div class="modal fade" id="sampleModal" tabindex="-1">
-                            	<div class="modal-dialog">
-                            		<div class="modal-content">
-                            			<div class="modal-header">
-                            				<button type="button" class="close" data-dismiss="modal"><span>×</span></button>
-                            				<h4 class="modal-title">関連するタグリスト</h4>
-                                    	</div>
+                         <!--   <div class="modal fade" id="sampleModal" tabindex="-1">-->
+                         <!--   	<div class="modal-dialog">-->
+                         <!--   		<div class="modal-content">-->
+                         <!--   			<div class="modal-header">-->
+                         <!--   				<button type="button" class="close" data-dismiss="modal"><span>×</span></button>-->
+                         <!--   				<h4 class="modal-title">関連するタグリスト</h4>-->
+                         <!--           	</div>-->
                                     			
                             		   
-                            			<div class="modal-body">
+                         <!--   			<div class="modal-body">-->
                             			    
-                            			    @foreach($category->tags as $tag)
+                         <!--   			    @foreach($category->tags as $tag)-->
 
-                                            {{$tag->tags}}
+                         <!--                   {{$tag->tags}}-->
     
                             		    
-                            	            @endforeach
-                            	       	</div>
-                            			<div class="modal-footer">
-                            				<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-                            				<button type="button" class="btn btn-primary">ボタン</button>
-                    			        </div>
-                            		</div>
-                            	</div>
-                            </div>   
+                         <!--   	            @endforeach-->
+                         <!--   	       	</div>-->
+                         <!--   			<div class="modal-footer">-->
+                         <!--   				<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>-->
+                         <!--   				<button type="button" class="btn btn-primary">ボタン</button>-->
+                    			  <!--      </div>-->
+                         <!--   		</div>-->
+                         <!--   	</div>-->
+                         <!--   </div>   -->
                      @endforeach
                     </div>
                 </div>  
@@ -226,8 +226,29 @@ use App\Tag;
 </div>
 </div>
 
+<!--モーダル・ダイアログ -->
+                            <div class="modal fade" id="sampleModal" tabindex="-1">
+                            	<div class="modal-dialog">
+                            		<div class="modal-content">
+                            			<div class="modal-header">
+                            				<button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+                            				<h4 class="modal-title">関連するタグリスト</h4>
+                                    	</div>
+                                    			
+                            		   
+                            			<div class="modal-body" id="ajax_data">
+                            			    
+                            		    
+                            	       	</div>
+                            			<div class="modal-footer">
+                            				<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+                            				<button type="button" class="btn btn-primary">ボタン</button>
+                    			        </div>
+                            		</div>
+                            	</div>
+                            </div>   
 </form>  
-
+ 
 
 
 
@@ -339,8 +360,30 @@ use App\Tag;
         });
 
 
-function aaa(){
-    $('#sampleModal').modal('show');
+function aaa($id){
+    
+        var request = $.ajax({
+            type: 'GET',
+            url: "{{url('ajax')}}" + "/" + $id,
+            cache: false,
+            dataType: 'json',
+            timeout: 1000
+        });
+
+    /* 成功時 */
+        request.done(function(data){
+            $("#ajax_data").empty();
+            for(var i = 0; data.length > i; i++){
+                console.log(data[i]);
+                $("#ajax_data").append("<p>"+data[i].tags+"</p>");
+            }
+            $('#sampleModal').modal('show');
+        });
+
+    /* 失敗時 */
+        request.fail(function(){
+            console.log(data);
+        });
 }
 
 
