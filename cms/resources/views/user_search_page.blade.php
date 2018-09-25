@@ -59,12 +59,10 @@ use App\Comment;
             <!--モーダルボディー2    -->
                 	<div class="modal-body" style="padding:43px;">
                 		<h4 style="text-decoration:underline; text-decoration-color:#FFFF00;">おすすめコメント</h4>
-                        @foreach($user_comments as $user_comment)
-                        @if($user_comment->book_id == $book["id"])
+                          <div id="ajax_data"></div>
                                 <p>{{$user_comment->comment_text}}</p>
         
-                        @endif
-                        @endforeach
+                       
                     </div>
               <!--モーダルフッター    -->
               <div class="modal-footer">

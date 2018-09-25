@@ -21,3 +21,5 @@
 [23-Sep-2018 11:21:31 Asia/Tokyo] PHP Fatal error:  Cannot use App\Tag as Tag because the name is already in use in /home/ubuntu/workspace/cms/app/Http/Controllers/BooksController.php on line 20
 [23-Sep-2018 11:23:03 Asia/Tokyo] PHP Fatal error:  Cannot redeclare App\Http\Controllers\BooksController::tag() in /home/ubuntu/workspace/cms/app/Http/Controllers/BooksController.php on line 1075
 [23-Sep-2018 11:28:23 Asia/Tokyo] PHP Fatal error:  Cannot redeclare App\Http\Controllers\BooksController::tag() in /home/ubuntu/workspace/cms/app/Http/Controllers/BooksController.php on line 1075
+[25-Sep-2018 13:26:58 Asia/Tokyo] PHP Fatal error:  Cannot use [] for reading in /home/ubuntu/workspace/cms/app/Http/Controllers/BooksController.php on line 389
+[25-Sep-2018 13:27:16 Asia/Tokyo] PHP Fatal error:  Cannot use [] for reading in /home/ubuntu/workspace/cms/app/Http/Controllers/BooksController.php on line 389

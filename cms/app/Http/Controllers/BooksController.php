@@ -18,6 +18,7 @@ use App\Thread;
 use App\Thread_comment;
 use App\Key;
 use App\Tag;
+use App\Book_tag;
 use App\Scopes\LivingBookScope;
 
 
@@ -339,7 +340,9 @@ class BooksController extends Controller
         //         'category_id'=>'required',
         //         'rental_flag'=>'required',
         //         'user_id'=>'required',
-        //         'life_flag'=>'required',
+        //         'life_flag'=>'required',        
+        //         'tags[]'=>'required',
+    
             
         // ]);
         
@@ -383,6 +386,20 @@ class BooksController extends Controller
         $category_lists->save();
         }
         }
+        
+        $tag = $request->tag_id;
+        for ($i = 0; $i < count($request->tag_id); $i++){
+            if(count(Book_tag::where('book_id', $book_id)
+            ->where('tag_id', $request->tag_id[$i])->get()) == 0){
+        $book_tag =new Book_tag;
+        $book_tag ->book_id=$book_id;
+        $book_tag ->tag_id= $request->tag_id[$i];
+        $book_tag ->save();
+        }
+        }
+
+        
+        
 
         $owners = new Owner;
         $owners->book_id= $book_id;
@@ -433,6 +450,21 @@ class BooksController extends Controller
         $category_lists->save();
             }
         }
+        
+          
+        $tag = $request->tag_id;
+        for ($i = 0; $i < count($request->tag_id); $i++){
+            if(count(Book_tag::where('book_id', $book_id)
+            ->where('tag_id', $request->tag_id[$i])->get()) == 0){
+        $book_tag =new Book_tag;
+        $book_tag ->book_id=$book_id;
+        $book_tag ->tag_id= $request->tag_id[$i];
+        $book_tag ->save();
+        }
+        }
+        
+        
+        
         $owners = new Owner;
         $owners->book_id= $book_id;
         $owners->user_id= $request->user_id;

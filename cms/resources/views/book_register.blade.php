@@ -118,38 +118,29 @@ use App\Tag;
                     	@foreach($genre->categories as $category)
                     	
     	                 <input type="radio" onClick="aaa({{$category->id}})" name="category_id" value="{{$category->id}}" >{{$category->category_name}}</input>
-    	                    			    @foreach($category->tags as $tag)
-
-                                            ({{$tag->tags}})
-    
-                            		    
-                            	            @endforeach
-                         <!-- モーダル・ダイアログ -->
-                         <!--   <div class="modal fade" id="sampleModal" tabindex="-1">-->
-                         <!--   	<div class="modal-dialog">-->
-                         <!--   		<div class="modal-content">-->
-                         <!--   			<div class="modal-header">-->
-                         <!--   				<button type="button" class="close" data-dismiss="modal"><span>×</span></button>-->
-                         <!--   				<h4 class="modal-title">関連するタグリスト</h4>-->
-                         <!--           	</div>-->
-                                    			
-                            		   
-                         <!--   			<div class="modal-body">-->
-                            			    
-                         <!--   			    @foreach($category->tags as $tag)-->
-
-                         <!--                   {{$tag->tags}}-->
-    
-                            		    
-                         <!--   	            @endforeach-->
-                         <!--   	       	</div>-->
-                         <!--   			<div class="modal-footer">-->
-                         <!--   				<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>-->
-                         <!--   				<button type="button" class="btn btn-primary">ボタン</button>-->
-                    			  <!--      </div>-->
-                         <!--   		</div>-->
-                         <!--   	</div>-->
-                         <!--   </div>   -->
+    	                    	
+                                             <!--モーダル・ダイアログ -->
+                                                <div class="modal fade" id="sampleModal" tabindex="-1">
+                                                	<div class="modal-dialog">
+                                                		<div class="modal-content">
+                                                			<div class="modal-header">
+                                                				<button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+                                                				<h4 class="modal-title">関連するタグリスト</h4>
+                                                        	</div>
+                                                        			
+                                                		   
+                                                			<div class="modal-body">
+                                                			    <div id="ajax_data"></div>
+                                                		        <input type="text" name=""/>
+                                                	       	</div>
+                                                			<div class="modal-footer">
+                                                				<button type="button" class="btn btn-default" data-dismiss="modal" >閉じる</button>
+                                                				<button type="button" class="btn btn-primary"  id="closebtn">ボタン</button>
+                                        			        </div>
+                                                		</div>
+                                                	</div>
+                                                </div>   
+                            
                      @endforeach
                     </div>
                 </div>  
@@ -159,20 +150,15 @@ use App\Tag;
                
            
    </div>   
+     <div class="form-group"> 
+          <p><b>タグ</b></p>
+          <div class="center" id="tags">
+              
+                <label class="radio-inline"><p id="taglist"></p>
+
+         </div>    
+    </div> 
   
-  
-@foreach($genres as $genre)
-{{$genre->category_genrename}}
-
-@foreach($genre->categories as $category)
-
-{{$category->category_name}}
- @foreach ($category->tags as $tag) 
-{{$tag->tags}}
-@endforeach
-@endforeach
-@endforeach
-
   
   
   
@@ -226,27 +212,8 @@ use App\Tag;
 </div>
 </div>
 
-<!--モーダル・ダイアログ -->
-                            <div class="modal fade" id="sampleModal" tabindex="-1">
-                            	<div class="modal-dialog">
-                            		<div class="modal-content">
-                            			<div class="modal-header">
-                            				<button type="button" class="close" data-dismiss="modal"><span>×</span></button>
-                            				<h4 class="modal-title">関連するタグリスト</h4>
-                                    	</div>
-                                    			
-                            		   
-                            			<div class="modal-body" id="ajax_data">
-                            			    
-                            		    
-                            	       	</div>
-                            			<div class="modal-footer">
-                            				<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-                            				<button type="button" class="btn btn-primary">ボタン</button>
-                    			        </div>
-                            		</div>
-                            	</div>
-                            </div>   
+                    
+                            
 </form>  
  
 
@@ -366,6 +333,8 @@ function aaa($id){
             type: 'GET',
             url: "{{url('ajax')}}" + "/" + $id,
             cache: false,
+            
+            
             dataType: 'json',
             timeout: 1000
         });
@@ -375,7 +344,9 @@ function aaa($id){
             $("#ajax_data").empty();
             for(var i = 0; data.length > i; i++){
                 console.log(data[i]);
-                $("#ajax_data").append("<p>"+data[i].tags+"</p>");
+               
+                $("#ajax_data").append('<input type="checkbox" value="'+data[i].id+'" class="check" name="check[]" data-name="'+data[i].tags+'">'+data[i].tags+"</input>");
+
             }
             $('#sampleModal').modal('show');
         });
@@ -384,7 +355,30 @@ function aaa($id){
         request.fail(function(){
             console.log(data);
         });
-}
+};
+
+$("#closebtn").on("click",function(){
+    const selectedvalue =[];
+    const selectedname =[];
+   $(".check:checked").each(function(){
+       selectedvalue.push($(this).val());
+       selectedname.push($(this).data("name"));
+       
+   });
+   
+    console.log(selectedvalue);   
+    let hiddenTag ='';
+    
+    selectedvalue.forEach(function(item){
+        hiddenTag += '<input type="hidden" name="tag_id[]" value="'+item+'">';
+    });
+    const name = selectedname.join(',');//"php python"
+  
+   
+    $("#tags").append(hiddenTag);
+    $("#taglist").append(name);
+    
+});
 
 
 
