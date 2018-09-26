@@ -94,7 +94,7 @@ use App\Tag;
             @endif
     <div class="form-group">  
           <p><b>本の貸出はできますか？</b></p>
-          <div class="category-contents">
+          <div class="block-contents">
           <label class="radio-inline"><input type="radio" name="rental_flag" value=0>はい</label>
         　<label class="radio-inline"><input type="radio" name="rental_flag" value=1>いいえ</label>
         　</div>
@@ -106,7 +106,7 @@ use App\Tag;
             <?php $i=0 ?>
             @foreach($genres as $genre)
               
-                <div  id="accordion-{{$i}}}" class="category-contents" style="margin-top:20px;">
+                <div  id="accordion-{{$i}}}" class="block-contents" style="margin-top:20px;">
                     @if(count($genres)>0)   
                     <a data-toggle="collapse" data-parent="#accordion-{{$i}}" href="#sample{{$i}}">
                     {{$genre->category_genrename}}
@@ -116,29 +116,9 @@ use App\Tag;
                     <div class="collapsing collapse " id="sample{{$i}}" style="margin-top:20px;">
                 	@foreach($genre->categories as $category)
                 	
-    	                <input type="radio" onClick="aaa({{$category->id}})" name="category_id" value="{{$category->id}}" >{{$category->category_name}}</input>
+    	                <input type="checkbox" class="category" onClick="aaa({{$category->id}})" name="category_id" value="{{$category->id}}" >{{$category->category_name}}</input>
 
-                        <!--モーダル・ダイアログ -->
-                        <div class="modal fade" id="sampleModal" tabindex="-1">
-                        	<div class="modal-dialog">
-                        		<div class="modal-content">
-                        			<div class="modal-header">
-                        				<button type="button" class="close" data-dismiss="modal"><span>×</span></button>
-                        				<h4 class="modal-title">関連するタグリスト</h4>
-                                	</div>
-                                			
-                        		   
-                        			<div class="modal-body">
-                        			    <div id="ajax_data"></div>
-                        		        <input type="text" name=""/>
-                        	       	</div>
-                        			<div class="modal-footer">
-                        				<button type="button" class="btn btn-default" data-dismiss="modal" >閉じる</button>
-                        				<button type="button" class="btn btn-primary"  id="closebtn">ボタン</button>
-                			        </div>
-                        		</div>
-                        	</div>
-                        </div>
+                        
                     @endforeach
                 </div>
             </div>  
@@ -148,7 +128,7 @@ use App\Tag;
    </div>   
      <div class="form-group"> 
           <p><b>タグ</b></p>
-          <div class="center" id="tags">
+          <div class="block-contents" id="tags">
               	<div class="modal-body">
                   <div id="ajax_data"></div>
                   <input type="text" name=""/>
@@ -219,6 +199,7 @@ use App\Tag;
 
 
     <script>
+        var selected_tag_ids = [];
 
 
         $("#btn").on("click", function () {
@@ -326,33 +307,52 @@ use App\Tag;
         });
 
 
-function aaa($id){
+function aaa(){
+    let category_ids = $("input[type=checkbox].category:checked").toArray().map((i) => {
+        return Number(i.value);
+    });
+    console.log('category_ids', category_ids);
     
-        var request = $.ajax({
-            type: 'GET',
-            url: "{{url('ajax')}}" + "/" + $id,
-            cache: false,
-            
-            
-            dataType: 'json',
-            timeout: 1000
-        });
+    var request = $.ajax({
+        type: 'GET',
+        url: "{{url('ajax')}}" + "/" + category_ids.join(","),
+        cache: false,
+        
+        
+        dataType: 'json',
+        timeout: 1000
+    });
 
     /* 成功時 */
         request.done(function(data){
+            console.log(data);
             $("#ajax_data").empty();
             for(var i = 0; data.length > i; i++){
                 console.log(data[i]);
                
-                $("#ajax_data").append('<input type="checkbox" value="'+data[i].id+'" class="check" name="check[]" data-name="'+data[i].tags+'">'+data[i].tags+"</input>");
+                $("#ajax_data").append('<input type="checkbox" value="'+data[i].id+'" class="check" name="tag_id[]" data-name="'+data[i].tags+'">'+data[i].tags+"</input>");
 
             }
+            // クリック時に選択済みのタグIdをglobal変数に保存する
+            $("input[name='tag_id[]']").on('click', (i) => {
+                selected_tag_ids = $("input[name='tag_id[]']:checked").toArray().map((i) => {
+                    return i.value;
+                });
+            });
+            // ajax_dataにinputをappendした後、選択済みのタグにチェックを入れる
+            $("input[name='tag_id[]']").each((idx, i) => {
+                var isSelected = selected_tag_ids.indexOf(Number(i.value)) >= 0;
+                console.log('isSelected=%O, tag id=%O, selected tag ids=%O', isSelected, i.value, selected_tag_ids)
+                if (isSelected) {
+                    i.checked = true;
+                }
+            })
             $('#sampleModal').modal('show');
         });
 
     /* 失敗時 */
-        request.fail(function(){
-            console.log(data);
+        request.fail(function(e){
+            console.error(e);
         });
 };
 

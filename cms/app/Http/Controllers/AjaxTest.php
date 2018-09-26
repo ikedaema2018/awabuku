@@ -9,11 +9,10 @@ use App\Comment;
 class AjaxTest extends Controller
 {
     //
-    public function ajax($id)
-        {
-        $tags = Tag::where('category_id', $id)->get();
+    public function ajax($category_ids) {
+        $tags = Tag::whereIn('category_id', explode(',', $category_ids))->get();
         return response()->json($tags);
-    }  
+    }
     
     public function ajax_comment($book_id, $user_id)
         {
