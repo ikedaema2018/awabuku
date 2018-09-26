@@ -94,7 +94,7 @@ use App\Tag;
             @endif
     <div class="form-group">  
           <p><b>本の貸出はできますか？</b></p>
-          <div class="center">
+          <div class="category-contents">
           <label class="radio-inline"><input type="radio" name="rental_flag" value=0>はい</label>
         　<label class="radio-inline"><input type="radio" name="rental_flag" value=1>いいえ</label>
         　</div>
@@ -104,56 +104,55 @@ use App\Tag;
           <p><b>カテゴリー</b><p>
           
             <?php $i=0 ?>
-                @foreach($genres as $genre)
+            @foreach($genres as $genre)
               
-                
-                <div  id="accordion" class="center" style="margin-top:20px;">
-                        @if(count($genres)>0)   
-                        <a data-toggle="collapse" data-parent="#accordion" href="#sample{{$i}}">
-                        {{$genre->category_genrename}}
-                        </a>
-                        @endif    
-                        
-                        <div class="collapsing collapse " id="sample{{$i}}" style="margin-top:20px;">
-                    	@foreach($genre->categories as $category)
-                    	
-    	                 <input type="radio" onClick="aaa({{$category->id}})" name="category_id" value="{{$category->id}}" >{{$category->category_name}}</input>
-    	                    	
-                                             <!--モーダル・ダイアログ -->
-                                                <div class="modal fade" id="sampleModal" tabindex="-1">
-                                                	<div class="modal-dialog">
-                                                		<div class="modal-content">
-                                                			<div class="modal-header">
-                                                				<button type="button" class="close" data-dismiss="modal"><span>×</span></button>
-                                                				<h4 class="modal-title">関連するタグリスト</h4>
-                                                        	</div>
-                                                        			
-                                                		   
-                                                			<div class="modal-body">
-                                                			    <div id="ajax_data"></div>
-                                                		        <input type="text" name=""/>
-                                                	       	</div>
-                                                			<div class="modal-footer">
-                                                				<button type="button" class="btn btn-default" data-dismiss="modal" >閉じる</button>
-                                                				<button type="button" class="btn btn-primary"  id="closebtn">ボタン</button>
-                                        			        </div>
-                                                		</div>
-                                                	</div>
-                                                </div>   
-                            
-                     @endforeach
-                    </div>
-                </div>  
-                <?php $i = $i + 1 ?>
-                 @endforeach
-                
-               
-           
+                <div  id="accordion-{{$i}}}" class="category-contents" style="margin-top:20px;">
+                    @if(count($genres)>0)   
+                    <a data-toggle="collapse" data-parent="#accordion-{{$i}}" href="#sample{{$i}}">
+                    {{$genre->category_genrename}}
+                    </a>
+                    @endif    
+                    
+                    <div class="collapsing collapse " id="sample{{$i}}" style="margin-top:20px;">
+                	@foreach($genre->categories as $category)
+                	
+    	                <input type="radio" onClick="aaa({{$category->id}})" name="category_id" value="{{$category->id}}" >{{$category->category_name}}</input>
+
+                        <!--モーダル・ダイアログ -->
+                        <div class="modal fade" id="sampleModal" tabindex="-1">
+                        	<div class="modal-dialog">
+                        		<div class="modal-content">
+                        			<div class="modal-header">
+                        				<button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+                        				<h4 class="modal-title">関連するタグリスト</h4>
+                                	</div>
+                                			
+                        		   
+                        			<div class="modal-body">
+                        			    <div id="ajax_data"></div>
+                        		        <input type="text" name=""/>
+                        	       	</div>
+                        			<div class="modal-footer">
+                        				<button type="button" class="btn btn-default" data-dismiss="modal" >閉じる</button>
+                        				<button type="button" class="btn btn-primary"  id="closebtn">ボタン</button>
+                			        </div>
+                        		</div>
+                        	</div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>  
+            <?php $i = $i + 1 ?>
+             @endforeach
+
    </div>   
      <div class="form-group"> 
           <p><b>タグ</b></p>
           <div class="center" id="tags">
-              
+              	<div class="modal-body">
+                  <div id="ajax_data"></div>
+                  <input type="text" name=""/>
+                 </div>
                 <label class="radio-inline"><p id="taglist"></p>
 
          </div>    
@@ -170,7 +169,7 @@ use App\Tag;
               @if(count($keys)>0)
               @foreach($keys as $key)
                 <label class="radio-inline"><input type ="radio" name="key" value="{{$key->id}}">{{$key->key}}</label>
-            　@endforeach
+              @endforeach
               @endif
          </div>    
     </div>        

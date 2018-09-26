@@ -42,9 +42,16 @@ class UsersearchController extends Controller
         //     }
         
         
-        $user_comments=Comment::where('user_id',$user->id)->get();
-        $books =[];
+        $user_comments = Comment::where('user_id',$user->id)
+                        ->join('books', 'comments.book_id', '=', 'books.id')
+                        ->get();
+        // SELECT b.*, c.* FROM books as b JOIN comments as c ON b.id = c.book_id WHERE c.user_id = 1
+        // $user_books = DB::select('SELECT b.* FROM books as b INNER JOIN comments as c ON b.id = c.book_id WHERE c.user_id = ' . $user->id);
+        $user_books = DB::select('SELECT b.* FROM books as b WHERE b.id IN (SELECT book_id FROM comments WHERE user_id = '.$user->id.')');
+                          
         
+        $books =[];
+
          // ユーザーがコメントしている本のデータをBookテーブルに紐づける.    
             foreach($user_comments as $user_comment) {
          
@@ -82,6 +89,8 @@ class UsersearchController extends Controller
             return view('/user_search_page', [
                 'user' =>$user,
                 'books' => $books,
+                'user_books'=>$user_books,    
+        
                 'user_comments'=>$user_comments,
                 'rentaled_books' => $rentaled_books,
                

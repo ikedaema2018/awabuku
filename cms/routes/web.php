@@ -145,3 +145,4 @@ Route::post('/tag_update', 'BooksController@tag_update')
 ->middleware('login');
 
 Route::get('/ajax/{id}', 'AjaxTest@ajax');
+Route::get('/ajax_comment/{book_id}/{user_id}', 'AjaxTest@ajax_comment');

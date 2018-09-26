@@ -24,9 +24,9 @@ use App\Comment;
 
 <!--所有している本-->
 <h2 class="col-xs-12">{{$user->name}}さんがコメントをいれた書籍</h2>　
-        @if(isset($books)>0)
+        @if(isset($user_books)>0)
         <?php $i=0 ?>
-            @foreach($books as $book)
+            @foreach($user_books as $user_book)
 
             
               @if($i == 0)
@@ -35,14 +35,14 @@ use App\Comment;
                 <div class="col-sm-2">
                 <ul class="sample">
                  <li>
-                    <img src="{{$book["BookImage"]}}" class="img-responsive" width="128" height="180"></img>
-                    <a href="">{{ $book["BookTitle"] }}</a>
-                    <p>{{ $book["BookAuthor"] }}</p>
+                    <img src="{{$user_book->BookImage}}" class="img-responsive" width="128" height="180"></img>
+                    <a href="">{{ $user_book->BookTitle }}</a>
+                    <p>{{ $user_book->BookAuthor }}</p>
        
                    <div class="col-sm-6 text-center">
                        
                  <li>              
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#sampleModal1">
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#sampleModal1" onClick="aaa({{$user_book->id}},{{$user->id}})">
             	  コメントを見る
                 </button>
 
@@ -53,15 +53,14 @@ use App\Comment;
             <!--モーダルヘッダー2    -->
                 	<div class="modal-header">
                 		<button type="button" class="close" data-dismiss="modal"><span>×</span></button>
-                	    <h3 class="modal-title">{{ $book["BookTitle"] }}</h3>
+                	    <h3 class="modal-title">{{ $user_book->BookTitle }}</h3>
                 	</div>
         
             <!--モーダルボディー2    -->
                 	<div class="modal-body" style="padding:43px;">
                 		<h4 style="text-decoration:underline; text-decoration-color:#FFFF00;">おすすめコメント</h4>
-                          <div id="ajax_data"></div>
-                                <p>{{$user_comment->comment_text}}</p>
-        
+                       <div id="ajax_data"></div>
+                         
                        
                     </div>
               <!--モーダルフッター    -->
@@ -75,7 +74,7 @@ use App\Comment;
 
                  </li>
                  <li>
-                     <a href="{{url('/rental/'.$book["id"])}}">レンタルする</a>
+                     <a href="{{url('/rental/'.$user_book->id)}}">レンタルする</a>
                  </li>     
                  </ul>
                 </div>
@@ -119,6 +118,44 @@ use App\Comment;
              　    @endif
          @endforeach   
     @endif
+    
+<script>
+
+
+
+
+function aaa(book_id, user_id){
+    
+        var request = $.ajax({
+            type: 'GET',
+            url: "{{url('ajax_comment')}}" + "/" + book_id + "/" + user_id,
+            cache: false,
+            
+            
+            dataType: 'json',
+            timeout: 1000
+        });
+
+    /* 成功時 */
+        request.done(function(data){
+            console.log("data = %O", data);
+            $("#ajax_data").empty();
+            for(var i = 0; data.length > i; i++){
+                console.log(data[i]);
+               
+                $("#ajax_data").append('<p>'+data[i].comment_text+"<p>");
+
+            }
+            $('#sampleModal').modal('show');
+        });
+
+    /* 失敗時 */
+        request.fail(function(e){
+            console.error(e);
+        });
+};
+
+</script>
 
 
 
