@@ -18,6 +18,7 @@ use App\Category_genre;
         <div class="jumbotron"  style="background:url(img/topic.jpg); background-size:cover;">
           <p><b>TOPIC</b></p> 
            <div style="background-color:#EEFFFF;"> 
+             
                 <ul style="list-style:none;" class="sample">
                  <li><span><img class="avater img-circle" src="{{$topic_user->avater}}"></img></span></li>
                  <li><p><b><a href="{{url('user_search_page/'.$topic_user->id)}}">{{$topic_user->name}}</a>さんのオススメ</b></p></li>
@@ -25,13 +26,11 @@ use App\Category_genre;
     
                 <ul style="list-style:none;"class="book_info" style="justify-content:between;">
                     <li><a href="{{url('rental/'.$topic_book->id)}}"><img src="{{$topic_book->BookImage}}" width="128" height="180"></img></a></li>
-                    <li style="width: 30
-                    %;">
+                    <li style="width: 30%;">
                         <a href="{{url('rental/'.$topic_book->id)}}"><p><b>{{$topic_book->BookTitle}}</b></></a>
-                        <p>{{$topic->comment_text}}</p>
+                        <span style="font-size: 20px;"><p>{{$topic->comment_text}}</p></span>
                         @foreach($topic_category_names as $topic_category_name)
-                        <a href="{{url('category_genre_page/'.Category_genre::find($topic_category_name["category_genre"])->id)}}"><p>ジャンル：{{Category_genre::find($topic_category_name["category_genre"])->category_genrename}}</p></a>
-                        <a href="{{url('category_page/'.$topic_category_name["id"])}}"><p>カテゴリ：{{$topic_category_name["category_name"]}}</p></a>
+                        <a href="{{url('category_page/'.$topic_category_name["id"])}}">{{$topic_category_name["category_name"]}}&nbsp;&nbsp;/&nbsp;&nbsp;</a>
                         @endforeach
                     </li>
                 </ul> 

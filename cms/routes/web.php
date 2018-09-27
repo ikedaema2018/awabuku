@@ -105,9 +105,9 @@ Route::get('/thread/{thread}', 'BooksController@thread_page')
 ->middleware('login');
 
 //カテゴリジャンル別ページ
-Route::get('/tag_genre_page/{tag_genre}', 'BooksController@tag_genre_page')
+Route::get('/category_genre_page/{category_genre}', 'BooksController@category_genre_page')
 ->middleware('login');
-Route::get('/tag_page/{tag}', 'BooksController@tag_page')
+Route::get('/category_page/{category}', 'BooksController@category_page')
 ->middleware('login');
 
 //検索結果ページ
@@ -145,4 +145,5 @@ Route::post('/tag_update', 'BooksController@tag_update')
 ->middleware('login');
 
 Route::get('/ajax/{category_ids}', 'AjaxTest@ajax');
+
 Route::get('/ajax_comment/{book_id}/{user_id}', 'AjaxTest@ajax_comment');

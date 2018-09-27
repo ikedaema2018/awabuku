@@ -387,13 +387,23 @@ class BooksController extends Controller
         }
         }
         
-        $tag = $request->tag_id;
+        
+        $tag =new Tag;
+        $category_id = $request->tag_category_id;
+        $tags =$request->tag_add;
+        $tag ->save();
+        
+        $newTag = Tag::orderBy('id', 'desc')->first();
+        $newTagsId=$newTag->id;
+       
         for ($i = 0; $i < count($request->tag_id); $i++){
             if(count(Book_tag::where('book_id', $book_id)
             ->where('tag_id', $request->tag_id[$i])->get()) == 0){
         $book_tag =new Book_tag;
         $book_tag ->book_id=$book_id;
         $book_tag ->tag_id= $request->tag_id[$i];
+        $book_tag ->tag_id=$newTagsId;
+        
         $book_tag ->save();
         }
         }
@@ -452,17 +462,27 @@ class BooksController extends Controller
         }
         
           
-        $tag = $request->tag_id;
+        $tag =new Tag;
+        
+        $tag->category_id = $request->tag_category_id;
+        $tag->tags =$request->tags;
+        $tag ->save();
+        
+        $newTag = Tag::orderBy('id', 'desc')->first();
+        $newTagsId=$newTag->id;
+       
         for ($i = 0; $i < count($request->tag_id); $i++){
             if(count(Book_tag::where('book_id', $book_id)
             ->where('tag_id', $request->tag_id[$i])->get()) == 0){
         $book_tag =new Book_tag;
         $book_tag ->book_id=$book_id;
         $book_tag ->tag_id= $request->tag_id[$i];
+        $book_tag ->tag_id=$newTagsId;
+        
         $book_tag ->save();
         }
         }
-        
+
         
         
         $owners = new Owner;
@@ -1079,7 +1099,7 @@ class BooksController extends Controller
     
 
   
-      //カテゴリージャンル登録
+      //特徴登録
     public function key() {
         $keys = key::orderBy('id', 'asc')->get();
         return view('key', ['keys' => $keys]);
@@ -1140,17 +1160,17 @@ public function tag() {
       return redirect('tag');
     }
     
-    //カテゴリーを消す
+    //タグを消す
     public function tag_delete(Tag $tag) {
         $tag->delete();
         return redirect('tag');
     }
     
-    //カテゴリーを更新viewページに飛ばす
+    //タグを更新viewページに飛ばす
     public function tag_update_view(Tag $tag) {
         return view('tag_update_view', ['tag'=> $tag]);
     }
-    // カテゴリーを更新する
+    // タグを更新する
     public function tag_update(Request $request) {
         $validator = Validator::make($request->all(), [
             'id' => 'required',

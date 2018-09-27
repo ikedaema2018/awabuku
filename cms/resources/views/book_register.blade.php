@@ -101,7 +101,7 @@ use App\Tag;
     </div>
     
    <div class="form-group">   
-          <p><b>カテゴリー</b><p>
+          <p><b>カテゴリーを選択する</b><p>
           
             <?php $i=0 ?>
             @foreach($genres as $genre)
@@ -109,16 +109,13 @@ use App\Tag;
                 <div  id="accordion-{{$i}}}" class="block-contents" style="margin-top:20px;">
                     @if(count($genres)>0)   
                     <a data-toggle="collapse" data-parent="#accordion-{{$i}}" href="#sample{{$i}}">
-                    {{$genre->category_genrename}}
+                    ・{{$genre->category_genrename}}
                     </a>
                     @endif    
                     
-                    <div class="collapsing collapse " id="sample{{$i}}" style="margin-top:20px;">
+                    <div class="collapsing collapse block-contents_2" id="sample{{$i}}" style="margin-top:20px margin-left:10px;">
                 	@foreach($genre->categories as $category)
-                	
-    	                <input type="checkbox" class="category" onClick="aaa({{$category->id}})" name="category_id" value="{{$category->id}}" >{{$category->category_name}}</input>
-
-                        
+    	                <input type="checkbox" class="category" onClick="aaa({{$category->id}})" name="category_id" value="{{$category->id}}" id="check" data-name="{{$category->category_name}}">{{$category->category_name}}</input>
                     @endforeach
                 </div>
             </div>  
@@ -126,26 +123,32 @@ use App\Tag;
              @endforeach
 
    </div>   
-     <div class="form-group"> 
-          <p><b>タグ</b></p>
-          <div class="block-contents" id="tags">
+    
+    <div class="form-group"> 
+          <p><b>関連するタグ</b></p>
+          <div class="block-contents">
+              <p id="tagslist"></p>
               	<div class="modal-body">
                   <div id="ajax_data"></div>
-                  <input type="text" name=""/>
+                  
+                   <div style="margin-top:20px; margin-bottom:20px;">
+                        <p>タグを追加する</p>
+             
+                        <select id="tags" name="tag_category_id">
+                        <option value="" >カテゴリを選択</option>
+                        </select>
+                        <input type="text" name="tags" value=""></input>
+                      
+                    </div>
                  </div>
-                <label class="radio-inline"><p id="taglist"></p>
-
+         
          </div>    
     </div> 
-  
-  
-  
-  
-  
+
      
     <div class="form-group"> 
           <p><b>特徴</b></p>
-          <div class="center">
+          <div class="block-contents">
               @if(count($keys)>0)
               @foreach($keys as $key)
                 <label class="radio-inline"><input type ="radio" name="key" value="{{$key->id}}">{{$key->key}}</label>
@@ -267,7 +270,7 @@ use App\Tag;
                         $("#isbn10").html('<input class="form-control input-sm" name ="isbn10" readonly="readonly" type="number" value="' + data1[0].summary.isbn + '">');
                         $("#isbn13").html('<input class="form-control input-sm" name ="isbn13" readonly="readonly" type="number" value="' + data1[0].summary.isbn + '">');
                         $("#BookAuthor").html('<input class="form-control input-sm" name="BookAuthor" readonly="readonly" type="text" value="' + data1[0].summary.author +'">');
-                        $("#PublishedDate").html('<input class="form-control input-sm" name="PublishedDate" readonly="readonly" type="text" value="' +data1[0].summary.pubdatey  + '">');
+                        $("#PublishedDate").html('<input class="form-control input-sm" name="PublishedDate" readonly="readonly" type="text" value="' +data1[0].summary.pubdate  + '">');
                         
                         let description = "";
                         if(data1[0].onix.CollateralDetail.TextContent){
@@ -305,8 +308,7 @@ use App\Tag;
                 
             });
         });
-
-
+// tag ajax
 function aaa(){
     let category_ids = $("input[type=checkbox].category:checked").toArray().map((i) => {
         return Number(i.value);
@@ -317,8 +319,6 @@ function aaa(){
         type: 'GET',
         url: "{{url('ajax')}}" + "/" + category_ids.join(","),
         cache: false,
-        
-        
         dataType: 'json',
         timeout: 1000
     });
@@ -356,30 +356,33 @@ function aaa(){
         });
 };
 
-$("#closebtn").on("click",function(){
+
+$(".category").on("click",function(){
+   
+
     const selectedvalue =[];
     const selectedname =[];
-   $(".check:checked").each(function(){
+
+   $(".category:checked").each(function(){
+       
        selectedvalue.push($(this).val());
        selectedname.push($(this).data("name"));
-       
    });
    
-    console.log(selectedvalue);   
-    let hiddenTag ='';
+    console.log(selectedvalue);  
+    let selectBox ='';
     
-    selectedvalue.forEach(function(item){
-        hiddenTag += '<input type="hidden" name="tag_id[]" value="'+item+'">';
-    });
-    const name = selectedname.join(',');//"php python"
+    for(let i=0;i<selectedvalue.length;i++){
+        selectBox += '<option value="'+selectedvalue[i]+'" >'+selectedname[i]+'</option>';
+    };
+    const name = selectedname.join(',');//"php python"  
+      console.log(selectBox);
+
+    $("#tags").empty();
+    $("#tags").append(selectBox);
   
-   
-    $("#tags").append(hiddenTag);
-    $("#taglist").append(name);
     
 });
-
-
 
 
 

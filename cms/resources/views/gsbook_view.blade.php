@@ -9,11 +9,12 @@ use App\User;
 use App\Rental;
 use App\Category;
 use App\Category_genre;
+use App\Tag;
 
 ?>
 <div class=row>
  <div class="col-sm-offset-2 col-sm-8 col-sm-offset-2">    
-    <h1>personテーブル作成</h1>
+    
     <div class="row">
         <div class="col-xs-3"　style="background:#CCC;height:200px;">
             <img src="{{ $book["BookImage"]}}"></img>
@@ -54,6 +55,22 @@ use App\Category_genre;
                      </a>
                 </li>
                  @endforeach 
+                </ul>
+            </td>
+        </tr>    
+        
+        <tr>
+           <th>タグ</th>
+            <td>
+                <ul style="list-style:none; justify-content:between;">
+             
+                 <li style="display: inline-block;">
+                   
+                       <p>{{$book->tag->tags}}&nbsp;&nbsp</p>
+                       
+                     </a>
+                 </li>
+              
                 </ul>
             </td>
         </tr>

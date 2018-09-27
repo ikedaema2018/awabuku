@@ -9,11 +9,9 @@ use App\Book;
 use App\Category;
 ?>
 
- <div class="row"> 
  
-   <h2><a href=""><p>{{$category->category_name}}</a></h2>
+   <h2>{{$category->category_name}}</h2>
 
-</div>
 
 <div class="row">   
 <?php $i=0?>

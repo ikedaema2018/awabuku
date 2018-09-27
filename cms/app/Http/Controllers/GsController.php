@@ -9,6 +9,7 @@ use App\Category_list;
 
 use App\Owner;
 use App\Book;
+use App\Book_tag;
 use App\Rental;
 use App\User;
 use App\Comment;
@@ -16,6 +17,7 @@ use Validator;
 use App\Thread;
 use App\Thread_comment;
 use App\Key;
+use App\Tag;
 use App\Scopes\LivingBookScope;
 
 
@@ -79,8 +81,11 @@ class GsController extends Controller
          }
         }    
 
+     
+   
         return view('gsbook_view', [
             'book'=> $book,
+           
             'owner'=>$owner,
             'comments'=>$comments,
             'category_names'=>$category_names,
