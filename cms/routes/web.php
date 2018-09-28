@@ -104,10 +104,12 @@ Route::post('/thread_2', 'BooksController@thread_comment_insert')
 Route::get('/thread/{thread}', 'BooksController@thread_page')
 ->middleware('login');
 
-//カテゴリジャンル別ページ
+//ジャンル別/カテゴリ別/タグ別ページ
 Route::get('/category_genre_page/{category_genre}', 'BooksController@category_genre_page')
 ->middleware('login');
 Route::get('/category_page/{category}', 'BooksController@category_page')
+->middleware('login');
+Route::get('/tag_page/{tag}', 'BooksController@tag_page')
 ->middleware('login');
 
 //検索結果ページ

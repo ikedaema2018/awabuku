@@ -1189,7 +1189,20 @@ public function tag() {
         
     }
 
+public function tag_page(Tag $tag) { 
 
+    //  $tags= Category_list::where('category_id',$category->id)
+    //             ->get();
+  
+        return view('tag_page', [
+          
+             'tag' =>$tag,
+            //  'book_lists' =>$book_lists
+      
+        ]);
+  
+  
+   } 
 
 
 

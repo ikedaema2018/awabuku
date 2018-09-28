@@ -330,7 +330,7 @@ function aaa(){
             for(var i = 0; data.length > i; i++){
                 console.log(data[i]);
                
-                $("#ajax_data").append('<input type="checkbox" value="'+data[i].id+'" class="check" name="tag_id[]" data-name="'+data[i].tags+'">'+data[i].tags+"</input>");
+                $("#ajax_data").append('<label><input type="checkbox" value="'+data[i].id+'" class="check" name="tag_id[]" ></input>'+data[i].tags+"</label>");
 
             }
             // クリック時に選択済みのタグIdをglobal変数に保存する

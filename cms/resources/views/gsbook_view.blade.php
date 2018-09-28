@@ -66,9 +66,11 @@ use App\Tag;
              
                  <li style="display: inline-block;">
                    
-                       <p>{{$book->tag->tags}}&nbsp;&nbsp</p>
-                       
-                     </a>
+                  
+                        @foreach ($book->tags as $tag) 
+                        {{ $tag->tags }}
+                        @endforeach
+                   
                  </li>
               
                 </ul>

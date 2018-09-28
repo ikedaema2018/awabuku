@@ -14,7 +14,7 @@ class Book extends Model
      return $this->hasMany('App\Category_list');
      // return $this->belongsTo('App\User', '外部キーのカラム名', '親元のid扱いのカラム名'); 
      }
-     public function tag(){
+     public function tags(){
      return $this->belongsToMany('App\Tag');
      // return $this->belongsTo('App\User', '外部キーのカラム名', '親元のid扱いのカラム名');
      

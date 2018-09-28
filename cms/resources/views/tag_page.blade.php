@@ -7,25 +7,23 @@
 use App\User;
 use App\Book;
 use App\Category;
-use App\Tag;
 ?>
 
  
-   <h2>{{$category->category_name}}</h2>
-
-
+<h2>{{$tag->tags}}</h2>
 <div class="row">   
 <?php $i=0?>
-   @if(count($book_lists)>0)
-     @foreach($book_lists as $book_list)
+   @if(count($tag)>0)
+     @foreach($tag->books as $book)
+     
       @if($i==0)
         <div class="col-sm-12 border_bottom">
       @endif
             <div class= "col-sm-2">
               <ul class="sample">
                <li>
-                 <a href="{{url('rental/'.$book_list->book_id)}}"><img src="{{Book::find($book_list->book_id)->BookImage}}"></img></a><br>
-                 <a href="{{url('rental/'.$book_list->book_id)}}">{{Book::find($book_list->book_id)->BookTitle}}</a><br>
+                 <a href="{{url('rental/'.$book->id)}}"><img src="{{$book->BookImage}}"></img></a><br>
+                 <a href="{{url('rental/'.$book->id)}}">{{$book->BookTitle}}</a><br>
                </li>          
               </ul>
             </div>
@@ -34,6 +32,7 @@ use App\Tag;
            <?php $i=0 ?>
     　   </div> 
     　   @endif
+    　 
     @endforeach
   @endif             
  </div>     

@@ -31,7 +31,12 @@ use App\Category_genre;
                         <span style="font-size: 20px;"><p>{{$topic->comment_text}}</p></span>
                         @foreach($topic_category_names as $topic_category_name)
                         <a href="{{url('category_page/'.$topic_category_name["id"])}}">{{$topic_category_name["category_name"]}}&nbsp;&nbsp;/&nbsp;&nbsp;</a>
+                        @endforeach 
+                        @foreach($topic_book -> tags as $tag)
+                        <a href="{{url('tag_page/'.$tag->id)}}">{{$tag->tags}}&nbsp;&nbsp;/&nbsp;&nbsp;</a>
                         @endforeach
+                        
+             
                     </li>
                 </ul> 
            </div>
