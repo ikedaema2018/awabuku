@@ -7,9 +7,6 @@ use App\Tag;
 
 <h2>Book Register</h2>
 
-<h1>isbn以外のデータをnullでも登録できるようにする※条件は再度検討すること</h1>
-
-
 <div class="row">
 <div class="col-sm-offset-2 col-sm-8 col-sm-offset-2">
 
@@ -53,6 +50,10 @@ use App\Tag;
                 <div class="col-sm-6">
                     <p>出版日:</p>
                     <p id="PublishedDate" class="type"></p>
+                </div>      
+                <div class="col-sm-6">
+                    <p>出版社:</p>
+                    <p id="Publisher" class="type"></p>
                 </div>
             </div>
             <div>
@@ -115,7 +116,7 @@ use App\Tag;
                     
                     <div class="collapsing collapse block-contents_2" id="sample{{$i}}" style="margin-top:20px margin-left:10px;">
                 	@foreach($genre->categories as $category)
-    	                <input type="checkbox" class="category" onClick="aaa({{$category->id}})" name="category_id" value="{{$category->id}}" id="check" data-name="{{$category->category_name}}">{{$category->category_name}}</input>
+    	               <label> <input type="checkbox" class="category" onClick="aaa({{$category->id}})" name="category_id" value="{{$category->id}}" id="check" data-name="{{$category->category_name}}">{{$category->category_name}}</input></label>
                     @endforeach
                 </div>
             </div>  
@@ -130,14 +131,18 @@ use App\Tag;
               <p id="tagslist"></p>
               	<div class="modal-body">
                   <div id="ajax_data"></div>
-                  
+                  <div id ="new_tag"></div>
                    <div style="margin-top:20px; margin-bottom:20px;">
                         <p>タグを追加する</p>
-             
-                        <select id="tags" name="tag_category_id">
-                        <option value="" >カテゴリを選択</option>
-                        </select>
-                        <input type="text" name="tags" value=""></input>
+                         <form id="form_id">
+                            <select id="tags" form="form_id">
+                            <option>カテゴリを選択</option>
+                            </select>
+                            <input type="text" name="tags" id="new_tag_name" form="form_id"></input>
+                            <button id="bbb" form="form_id">タグを追加する</button>
+                        </form>    
+                        
+                        
                       
                     </div>
                  </div>
@@ -231,15 +236,17 @@ use App\Tag;
                             $("#BookTitle").html('<input class="form-control input-lg" name="BookTitle" readonly="readonly" type="text"  value="' + data.items[0].volumeInfo.title +
                             '">');
                             $("#isbn10").html('<input class="form-control input-sm" name ="isbn10" readonly="readonly" type="number" value="' + data.items[0].volumeInfo.industryIdentifiers[
-                                1].identifier + '">');
-                            $("#isbn13").html('<input class="form-control input-sm" name ="isbn13" readonly="readonly" type="number" value="' + data.items[0].volumeInfo.industryIdentifiers[
                                 0].identifier + '">');
+                            $("#isbn13").html('<input class="form-control input-sm" name ="isbn13" readonly="readonly" type="number" value="' + data.items[0].volumeInfo.industryIdentifiers[
+                                1].identifier + '">');
                             $("#BookAuthor").html('<input class="form-control input-sm" name="BookAuthor" readonly="readonly" type="text" value="' + data.items[0].volumeInfo.authors +
                                 '">');
                             $("#PublishedDate").html('<input class="form-control input-sm" name="PublishedDate" readonly="readonly" type="text" value="' + data.items[0].volumeInfo
                                 .publishedDate + '">');
                             $("#BookDiscription").html('<input class="form-control input-lg" name="BookDiscription"  readonly="readonly" type="text" value="' + data.items[0].volumeInfo
                                 .description + '">');
+                            $("#Publisher").html('<input class="form-control input-lg" name="Publisher"  readonly="readonly" type="text" value="' + data.items[0].volumeInfo
+                                .publisher + '">');
                                  
                             try {
                                      $("#BookThumbnail").html(' <img src=\"' + data.items[0].volumeInfo.imageLinks.smallThumbnail +
@@ -263,14 +270,14 @@ use App\Tag;
                     })
                 } else {
     
-                    //openURLの処理
-                    console.log(data1[0]);
+                  
                         $("#BookTitle").html('<input class="form-control input-lg" name="BookTitle" readonly="readonly" type="text"  value="' + data1[0].summary.title +
                             '">');
                         $("#isbn10").html('<input class="form-control input-sm" name ="isbn10" readonly="readonly" type="number" value="' + data1[0].summary.isbn + '">');
                         $("#isbn13").html('<input class="form-control input-sm" name ="isbn13" readonly="readonly" type="number" value="' + data1[0].summary.isbn + '">');
                         $("#BookAuthor").html('<input class="form-control input-sm" name="BookAuthor" readonly="readonly" type="text" value="' + data1[0].summary.author +'">');
                         $("#PublishedDate").html('<input class="form-control input-sm" name="PublishedDate" readonly="readonly" type="text" value="' +data1[0].summary.pubdate  + '">');
+                        $("#Publisher").html('<input class="form-control input-sm" name="Publisher" readonly="readonly" type="text" value="' +data1[0].summary.publisher  + '">');
                         
                         let description = "";
                         if(data1[0].onix.CollateralDetail.TextContent){
@@ -279,7 +286,7 @@ use App\Tag;
                             description = "書誌情報なし";
                         }
                         $("#BookDiscription").html('<input class="form-control input-lg" name="BookDiscription"  readonly="readonly" type="text" value="' + description + '">');
-                       console.log(data1[0].summary.cover);
+                     
                      
                        
                        
@@ -313,7 +320,7 @@ function aaa(){
     let category_ids = $("input[type=checkbox].category:checked").toArray().map((i) => {
         return Number(i.value);
     });
-    console.log('category_ids', category_ids);
+   
     
     var request = $.ajax({
         type: 'GET',
@@ -325,13 +332,11 @@ function aaa(){
 
     /* 成功時 */
         request.done(function(data){
-            console.log(data);
             $("#ajax_data").empty();
             for(var i = 0; data.length > i; i++){
-                console.log(data[i]);
                
                 $("#ajax_data").append('<label><input type="checkbox" value="'+data[i].id+'" class="check" name="tag_id[]" ></input>'+data[i].tags+"</label>");
-
+　
             }
             // クリック時に選択済みのタグIdをglobal変数に保存する
             $("input[name='tag_id[]']").on('click', (i) => {
@@ -342,7 +347,6 @@ function aaa(){
             // ajax_dataにinputをappendした後、選択済みのタグにチェックを入れる
             $("input[name='tag_id[]']").each((idx, i) => {
                 var isSelected = selected_tag_ids.indexOf(Number(i.value)) >= 0;
-                console.log('isSelected=%O, tag id=%O, selected tag ids=%O', isSelected, i.value, selected_tag_ids)
                 if (isSelected) {
                     i.checked = true;
                 }
@@ -352,9 +356,11 @@ function aaa(){
 
     /* 失敗時 */
         request.fail(function(e){
-            console.error(e);
         });
 };
+
+
+
 
 
 $(".category").on("click",function(){
@@ -369,14 +375,16 @@ $(".category").on("click",function(){
        selectedname.push($(this).data("name"));
    });
    
-    console.log(selectedvalue);  
     let selectBox ='';
     
     for(let i=0;i<selectedvalue.length;i++){
-        selectBox += '<option value="'+selectedvalue[i]+'" >'+selectedname[i]+'</option>';
+        if(i == 0) {
+            selectBox += '<option value="'+selectedvalue[i]+'" name="option" checked="checked" >'+selectedname[i]+'</option>';
+        }
+        selectBox += '<option value="'+selectedvalue[i]+'" name="option" >'+selectedname[i]+'</option>';
     };
     const name = selectedname.join(',');//"php python"  
-      console.log(selectBox);
+
 
     $("#tags").empty();
     $("#tags").append(selectBox);
@@ -384,6 +392,17 @@ $(".category").on("click",function(){
     
 });
 
+
+
+$("#bbb").on("click",function(){
+const new_tag_category_id =$('#tags').val();
+const new_tag_name = $('#new_tag_name').val();
+console.log(new_tag_category_id);
+
+    $("#new_tag").append('<label><input type="checkbox" checked="checked" class="check" value="'+ new_tag_name +'" name="tag_add[]"></input>'+new_tag_name+"</label>");
+    $("#new_tag").append('<input type="hidden"  value="'+new_tag_category_id+'" class="check" name="tag_category_id[]" ></input>');
+
+ });
 
 
 

@@ -388,21 +388,38 @@ class BooksController extends Controller
         }
         
         
+    for($i = 0; $i < count($request->tag_add); $i++){
+          
+            if(count(Tag::where('tags',$request->tag_add[$i])->where('category_id', $request->tag_category_id[$i])
+            ->get())==0){
         $tag =new Tag;
-        $category_id = $request->tag_category_id;
-        $tags =$request->tag_add;
+        $tag->category_id = $request->tag_category_id[$i];
+        $tag->tags =$request->tag_add[$i];
         $tag ->save();
+        $newTag = $tag->id;
+        $book_tag=new Book_tag;
+        $book_tag ->tag_id=$newTag;
+        $book_tag ->book_id=$book_id;
+        $book_tag -> save();
         
-        $newTag = Tag::orderBy('id', 'desc')->first();
-        $newTagsId=$newTag->id;
-       
+        }else{
+        $tag = Tag::where('tags',$request->tag_add[$i])->where('category_id', $request->tag_category_id[$i])->first();
+        $newTag = $tag->id;
+        $book_tag=new Book_tag;
+        $book_tag ->tag_id=$newTag;
+        $book_tag ->book_id=$book_id;
+        $book_tag -> save();
+        }
+        }
+        
+    
         for ($i = 0; $i < count($request->tag_id); $i++){
             if(count(Book_tag::where('book_id', $book_id)
             ->where('tag_id', $request->tag_id[$i])->get()) == 0){
         $book_tag =new Book_tag;
         $book_tag ->book_id=$book_id;
         $book_tag ->tag_id= $request->tag_id[$i];
-        $book_tag ->tag_id=$newTagsId;
+    
         
         $book_tag ->save();
         }
@@ -460,25 +477,39 @@ class BooksController extends Controller
         $category_lists->save();
             }
         }
-        
+
+       for($i = 0; $i < count($request->tag_add); $i++){
           
+            if(count(Tag::where('tags',$request->tag_add[$i])->where('category_id', $request->tag_category_id[$i])
+            ->get())==0){
         $tag =new Tag;
-        
-        $tag->category_id = $request->tag_category_id;
-        $tag->tags =$request->tags;
+        $tag->category_id = $request->tag_category_id[$i];
+        $tag->tags =$request->tag_add[$i];
         $tag ->save();
+        $newTag = $tag->id;
+        $book_tag=new Book_tag;
+        $book_tag ->tag_id=$newTag;
+        $book_tag ->book_id=$book_id;
+        $book_tag -> save();
         
-        $newTag = Tag::orderBy('id', 'desc')->first();
-        $newTagsId=$newTag->id;
-       
+        }else{
+        $tag = Tag::where('tags',$request->tag_add[$i])->where('category_id', $request->tag_category_id[$i])->first();
+        $newTag = $tag->id;
+        $book_tag=new Book_tag;
+        $book_tag ->tag_id=$newTag;
+        $book_tag ->book_id=$book_id;
+        $book_tag -> save();
+        }
+        }
+        
+        
         for ($i = 0; $i < count($request->tag_id); $i++){
             if(count(Book_tag::where('book_id', $book_id)
             ->where('tag_id', $request->tag_id[$i])->get()) == 0){
         $book_tag =new Book_tag;
         $book_tag ->book_id=$book_id;
         $book_tag ->tag_id= $request->tag_id[$i];
-        $book_tag ->tag_id=$newTagsId;
-        
+       
         $book_tag ->save();
         }
         }

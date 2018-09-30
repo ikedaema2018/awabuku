@@ -28,30 +28,31 @@ use App\Category;
              @endif
         </div>
     </div>  
-    
+    <div style="margin-left:40px;">
     <div class="row">
-        <p class="col-xs-12">書籍の内容</p>
+        <p >書籍の内容</p>
         <p class="col-xs-12">{{ $book->BookDiscription}}</p>
     </div>
    
     <div class="row">
         
-        <p class="col-xs-12">おすすめコメント</p>
+        <p class=class="col-xs-offset-1 col-xs-9 col-xs-offset-2" style="border-bottom-style: outset;">おすすめコメント</p>
        
              @if(isset($comments)>0)
              @foreach($comments as $comment)
-                 <p class="col-xs-12">{{$comment->comment_text}}({{User::find($comment->user_id)->name}})</p>
+                 <p class="col-xs-12">{{$comment->comment_text}}(<a href="{{url('user_search_page/'.$comment->user_id)}}">{{User::find($comment->user_id)->name}}</a>)</p>
                 
              @endforeach
              @endif
+    </div>
     </div>
                  
                  
                     
 <table class="table table-striped" style="display: table"; >
     <tr>
-        <th>本のowner_id</th>
-        <th>本のowner</th>
+        <th>id</th>
+        <th>book's Owner</th>
         <th>貸与可否</th>
         <th>借りている人</th>
         <th>返却予定</th>
