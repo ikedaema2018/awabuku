@@ -327,31 +327,56 @@ class BooksController extends Controller
         
         //Authで通らなければ、登録ができないように追加する
         if(Auth::check()){
-                 
-        // $validator = Validator::make($request->all(), [
-        //         'BookTitle' => 'required|min:1|max:255',
-        //         'BookAuthor' => 'required|min:1|max:50',
-        //         'isbn10' => 'required|max:10',
-        //         'isbn13' => 'required|max:13',
-        //         'PublishedDate' => 'required',
-        //         'BookImage' => 'required',
-        //         'BookDiscription' => 'required|min:1|max:1000',
-        //         'owner' =>'required|min:1|max:50',
-        //         'category_id'=>'required',
-        //         'rental_flag'=>'required',
-        //         'user_id'=>'required',
-        //         'life_flag'=>'required',        
-        //         'tags[]'=>'required',
-    
-            
-        // ]);
         
-        //バリデーション:エラー 
-        // if ($validator->fails()) {
-        //         return redirect('/aaa')
-        //             ->withInput()
-        //             ->withErrors($validator);
-        // }
+        
+        $validate_rule = [         
+                'BookTitle'       => 'required',
+                'BookAuthor'      => 'required',
+                'isbn10'          => 'required',
+                'isbn13'          => 'required',
+                'PublishedDate'   => 'required',
+                'BookImage'       => 'required',
+                'BookDiscription' => 'required',
+                
+                
+                'category_id'     =>'required',
+                'rental_flag'     =>'required',
+              
+                'comment_text'    =>'required',
+                'evaluation'      =>'required'
+        ];
+        
+       $error_msg=[
+                'BookTitle'       => '本の情報が入力されていません',
+                'BookAuthor'      => '本の情報が入力されていません',
+                'isbn10'          => '本の情報が入力されていません',
+                'isbn13'          => '本の情報が入力されていません',
+                'PublishedDate'   => '本の情報が入力されていません',
+                'BookImage'       => '本の情報が入力されていません',
+                'BookDiscription' => '本の情報が入力されていません',
+                
+                'category_id'     =>'カテゴリが入力されていません',
+                'rental_flag'     =>'本が貸し出しの可否を選択してください',
+               
+                'comment_text'    =>'コメントを入力してください',
+                'evaluation'      =>'評価を入力してください'
+
+           ];
+         $validator = Validator::make($request->all(), $validate_rule, $error_msg);
+
+        // バリデーション:エラー 
+        if ($validator->fails()) {
+                return redirect('/book')
+                    ->withInput()
+                    ->withErrors($validator);
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+        }
         
         //isbnをstr型に変更
         $isbn10 = strval($request->isbn10);
@@ -440,6 +465,10 @@ class BooksController extends Controller
             $id= User::find($request->gs);
             $owners->user_id = $id->id;
         
+            echo '<pre>' . var_export($id, true) . '</pre>';
+            echo '<pre>' . var_export($owners, true) . '</pre>';
+            
+            
         }else{
             $owners->user_id =$request->user_id;
         }
@@ -457,7 +486,6 @@ class BooksController extends Controller
         $comments->comment_text= $request->comment_text;
         $comments->evaluation= $request->evaluation;
         $comments->key= $request->key;
-        $comments->comment_text= $request->comment_text;
         $comments->save();  
     
     
@@ -523,14 +551,18 @@ class BooksController extends Controller
         $owners->rental_flag= $request->rental_flag;
         
         
-      if($request->gs == true  || Auth::user()->kanri_flag == 1) {
+      if($request->gs == 2  && Auth::user()->kanri_flag == 1) {
             //ここで$request->gsをもとにユーザー情報を検策
+         
             $id= User::find($request->gs);
+            logger('------------abc------------------');
+            logger($id); 
+            logger($request->gs);
+            logger($owners); 
             $owners->user_id = $id->id;
-        
-        }else{
-          $owners->user_id =$request->user_id; 
+  
         }
+       
         
         $owners->save();  
        
@@ -545,20 +577,20 @@ class BooksController extends Controller
         $comments->comment_text= $request->comment_text;
         $comments->evaluation= $request->evaluation;
         $comments->key= $request->key;
-        $comments->comment_text= $request->comment_text;
+   
         $comments->save();   
         
 }
 
         return redirect('/book_owner/'.$owners->id);
 
-        // }else{
-        //   return redirect('/book');
-        //     }
+        }else{
+          return redirect('/book');
+            }
        
     
  }
-}
+
 
 
         public function category_list() {

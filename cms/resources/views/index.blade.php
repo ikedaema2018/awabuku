@@ -18,6 +18,7 @@ use App\Category_genre;
         <div class="jumbotron"  style="background:url(img/topic.jpg); background-size:cover;">
           <p><b>TOPIC</b></p> 
            <div style="background-color:#EEFFFF;"> 
+           
              
                 <ul style="list-style:none;" class="sample">
                  <li><span><img class="avater img-circle" src="{{$topic_user->avater}}"></img></span></li>
