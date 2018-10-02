@@ -68,7 +68,7 @@ use App\Tag;
                    
                   
                         @foreach ($book->tags as $tag) 
-                        {{ $tag->tags }}
+                        <a  class="tag" href="{{url('tag_page/'.$tag->id)}}">{{ $tag->tags }}</a>
                         @endforeach
                    
                  </li>
@@ -105,31 +105,30 @@ use App\Tag;
               <form action="{{url('gsbook')}}" method="post" class="horizontal">
                 {{ csrf_field() }}
                     <div class="form-group"> 
-                          <p><b>こんなひとにおすすめ</b></p>
-                          <div class="center">
-                            <label class="radio-inline"><input type ="radio" name="person" value="1">初心者</label>
-                            <label class="radio-inline"><input type ="radio" name="person" value="2">中級者</label>
-                            <label class="radio-inline"><input type ="radio" name="person" value="3">上級者</label>
-                            <label class="radio-inline"><input type ="radio" name="person" value="4">その他</label>
-                         </div>    
-                    </div>        
-                     
-                    <div class="form-group">
-                          <p><b>評価</b></p> 
+                      <p><b>特徴</b></p>
+                      <div class="block-contents">
+                          @if(count($keys)>0)
+                          @foreach($keys as $key)
+                            <label class="radio-inline"><input type ="radio" name="key" value="{{$key->id}}">{{$key->key}}</label>
+                          @endforeach
+                          @endif
+         　　　　　　　　　　</div>    
+    　　　　　　　　　　　　</div>  
+                     <div class="form-group">
+                      <p><b>評価</b></p> 
                         <div class="evaluation center">
-                            <input id="star1" type="radio" name="evolution" value="5" />
+                            <input id="star1" type="radio" name="evaluation" value="5" />
                             <label for="star1"class="radio-inline"><span class="text">最高</span>★</label>
-                            <input id="star2" type="radio" name="evolution" value="4" />
+                            <input id="star2" type="radio" name="evaluation" value="4" />
                             <label for="star2"class="radio-inline"><span class="text">良い</span>★</label>
-                            <input id="star3" type="radio" name="evolution" value="3" />
+                            <input id="star3" type="radio" name="evaluation" value="3" />
                             <label for="star3"class="radio-inline"><span class="text">普通</span>★</label>
-                            <input id="star4" type="radio" name="evolution" value="2" />
+                            <input id="star4" type="radio" name="evaluation" value="2" />
                             <label for="star4"class="radio-inline"><span class="text">悪い</span>★</label>
-                            <input id="star5" type="radio" name="evolution" value="1" />
+                            <input id="star5" type="radio" name="evaluation" value="1" />
                             <label for="star5"class="radio-inline"><span class="text">最悪</span>★</label>
                         </div>
                     </div> 
-                    
                     <div class="form-group">  
                           <label>おすすめポイント</label>
                           <div class="center">
@@ -185,13 +184,57 @@ use App\Tag;
     <tbody>
         <tr>
             <td>
-                <p>{{$comment->user_id}}</p>
+                <p>{{$comment->user->name}}</p>
             </td>
             <td>
-                <p>{{$comment->person}}</p>
+                <p>{{$comment->keys->key}}</p>
             </td>
             <td>
-                <p>{{$comment->evolution}}</p>
+                @if(($comment->evaluation) == 1)
+                    <div class="star-rating-icon">
+                      <span class="glyphicon glyphicon-star"></span>
+                      <span class="glyphicon glyphicon-star-empty"></span>
+                      <span class="glyphicon glyphicon-star-empty"></span>
+                      <span class="glyphicon glyphicon-star-empty"></span>
+                      <span class="glyphicon glyphicon-star-empty"></span>
+                    </div>
+                @endif 
+                @if(($comment->evaluation) == 2)
+                    <div class="star-rating-icon">
+                      <span class="glyphicon glyphicon-star"></span>
+                      <span class="glyphicon glyphicon-star"></span>
+                      <span class="glyphicon glyphicon-star-empty"></span>
+                      <span class="glyphicon glyphicon-star-empty"></span>
+                      <span class="glyphicon glyphicon-star-empty"></span>
+                    </div>
+                @endif 
+                @if(($comment->evaluation) == 3)
+                    <div class="star-rating-icon">
+                      <span class="glyphicon glyphicon-star"></span>
+                      <span class="glyphicon glyphicon-star"></span>
+                      <span class="glyphicon glyphicon-star"></span>
+                      <span class="glyphicon glyphicon-star-empty"></span>
+                      <span class="glyphicon glyphicon-star-empty"></span>
+                    </div>
+                @endif 
+                @if(($comment->eevaluation) == 4)
+                    <div class="star-rating-icon">
+                      <span class="glyphicon glyphicon-star"></span>
+                      <span class="glyphicon glyphicon-star"></span>
+                      <span class="glyphicon glyphicon-star"></span>
+                      <span class="glyphicon glyphicon-star"></span>
+                      <span class="glyphicon glyphicon-star-empty"></span>
+                    </div>
+                @endif
+                @if(($comment->evaluation) == 5)
+                    <div class="star-rating-icon">
+                      <span class="glyphicon glyphicon-star"></span>
+                      <span class="glyphicon glyphicon-star"></span>
+                      <span class="glyphicon glyphicon-star"></span>
+                      <span class="glyphicon glyphicon-star"></span>
+                      <span class="glyphicon glyphicon-star"></span>
+                    </div>
+                @endif
             </td>
             <td>
                 <p class="col-xs-12">{{$comment->comment_text}}({{User::find($comment->user_id)->name}})</p>

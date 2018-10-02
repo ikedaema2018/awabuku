@@ -34,11 +34,14 @@ use App\Category;
                   </form>
                 </div>
         </div>        
-    
-    <div class="row">
-        <p class="col-xs-12">書籍の内容</p>
-        <p class="col-xs-12">{{ $book->BookDiscription}}</p>
     </div>
+    <div style="margin-left:40px;">
+        <div class="row">
+            <p >書籍の内容</p>
+            <p class="col-xs-12">{{ $book->BookDiscription}}</p>
+        </div>
+     </div>
+            
      
 <!--本の詳細終わり-->   
 
@@ -50,18 +53,18 @@ use App\Category;
         @if(isset($comments)>0)
         <table class="table table-striped">
          <tr>
-            <th>ユーザー</th> 
-            <th>オススメな人</th>
-            <th>オススメ度</th>
-            <th>コメント</th>
+            <th class="col-sm-2">ユーザー</th> 
+            <th class="col-sm-3">特徴</th>
+            <th class="col-sm-2">オススメ度</th>
+            <th class="col-sm-5">コメント</th>
          </tr>
          <tbody>
              @foreach($comments as $comment)
              <tr>    
                 <td>{{User::find($comment->user_id)->name}}さん</td>
-                <td>{{$comment->person}}</td>
+                <td>{{$comment->keys->key}}</td>
                 <td>
-                    @if(($comment->evolution) == 1)
+                    @if(($comment->evaluation) == 1)
                     <div class="star-rating-icon">
                       <span class="glyphicon glyphicon-star"></span>
                       <span class="glyphicon glyphicon-star-empty"></span>
@@ -69,7 +72,7 @@ use App\Category;
                       <span class="glyphicon glyphicon-star-empty"></span>
                       <span class="glyphicon glyphicon-star-empty"></span>
                     </div>
-                    @endif @if(($comment->evolution) == 2)
+                    @endif @if(($comment->evaluation) == 2)
                     <div class="star-rating-icon">
                       <span class="glyphicon glyphicon-star"></span>
                       <span class="glyphicon glyphicon-star"></span>
@@ -77,7 +80,7 @@ use App\Category;
                       <span class="glyphicon glyphicon-star-empty"></span>
                       <span class="glyphicon glyphicon-star-empty"></span>
                     </div>
-                    @endif @if(($comment->evolution) == 3)
+                    @endif @if(($comment->evaluation) == 3)
                     <div class="star-rating-icon">
                       <span class="glyphicon glyphicon-star"></span>
                       <span class="glyphicon glyphicon-star"></span>
@@ -86,7 +89,7 @@ use App\Category;
                       <span class="glyphicon glyphicon-star-empty"></span>
                     </div>
                     @endif 
-                    @if(($comment->evolution) == 4)
+                    @if(($comment->evaluation) == 4)
                     <div class="star-rating-icon">
                       <span class="glyphicon glyphicon-star"></span>
                       <span class="glyphicon glyphicon-star"></span>
@@ -95,7 +98,7 @@ use App\Category;
                       <span class="glyphicon glyphicon-star"></span>
                     </div>
                     @endif
-                    @if(($comment->evolution) == 5)
+                    @if(($comment->evaluation) == 5)
                     <div class="star-rating-icon">
                       <span class="glyphicon glyphicon-star"></span>
                       <span class="glyphicon glyphicon-star"></span>

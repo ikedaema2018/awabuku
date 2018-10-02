@@ -69,7 +69,7 @@ class GsController extends Controller
          
         $book= Book::where('id',$owner->book_id)->first();
         $comments=Comment::where('owner_id',$owner->id)->get();
-
+        $keys= Key::orderBy('id','asc') ->get(); 
         $categories=Category_list::where('book_id',$book->id)->get();
         $category_names=[];
         
@@ -85,7 +85,7 @@ class GsController extends Controller
    
         return view('gsbook_view', [
             'book'=> $book,
-           
+            'keys'=>$keys,
             'owner'=>$owner,
             'comments'=>$comments,
             'category_names'=>$category_names,
@@ -102,76 +102,21 @@ class GsController extends Controller
         
         //Authで通らなければ、登録ができないように追加する
         if(Auth::check()){
-                 
-        // $validator = Validator::make($request->all(), [
-        //         'BookTitle' => 'required|min:1|max:255',
-        //         'BookAuthor' => 'required|min:1|max:50',
-        //         'isbn10' => 'required|max:10',
-        //         'isbn13' => 'required|max:13',
-        //         'PublishedDate' => 'required',
-        //         'BookImage' => 'required',
-        //         'BookDiscription' => 'required|min:1|max:1000',
-        //         'owner' =>'required|min:1|max:50',
-        //         'category_id'=>'required',
-        //         'rental_flag'=>'required',
-        //         'user_id'=>'required',
-        //         'life_flag'=>'required',
-            
-        // ]);
         
-        //バリデーション:エラー 
-        // if ($validator->fails()) {
-        //         return redirect('/aaa')
-        //             ->withInput()
-        //             ->withErrors($validator);
-        // }
-        
-        //isbnをstr型に変更
-   
-        
-       
         
         $comments = new Comment;
         $comments->book_id= $request->book_id;
         $comments->owner_id =$request->owner_id;
         $comments->user_id= $request->user_id;
         $comments->comment_text= $request->comment_text;
-        $comments->evolution= $request->evolution;
-        $comments->person= $request->person;
-        $comments->comment_text= $request->comment_text;
+        $comments->evaluation= $request->evaluation;
+        $comments->key= $request->key;
         $comments->save();  
-    
-    
-    
-        }else{
- 
-        $owners->save();  
-    
-        $comments = new Comment;
-        $comments->book_id= $book_id;
-        $comments->owner_id =$owner_id;
-        $comments->user_id= $request->user_id;
-        $comments->comment_text= $request->comment_text;
-        $comments->evolution= $request->evolution;
-        $comments->person= $request->person;
-        $comments->comment_text= $request->comment_text;
-        $comments->save();   
-        
-       }
+
+        }
 
         return redirect('/gsbook/'.$request->owner_id);
-
-        // }else{
-        //   return redirect('/book');
-        //     }
-       
-        }
-      
-      
-     
-     
-     
-     
-     
+   }
+    
     //
 }

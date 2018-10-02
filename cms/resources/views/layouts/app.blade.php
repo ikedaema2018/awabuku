@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
     
-    <title>アワブク</title>
+    <title>OurBooks</title>
     <link rel="stylesheet" href="{{asset('css/thread_page.css')}}">
     <link rel="stylesheet" href="{{asset('css/book_register.css')}}">
     
@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="{{asset('css/threads.css')}}">
     <link rel="stylesheet" href="{{asset('css/bootstrap-social.css')}}">
     <link rel="stylesheet" href="{{asset('css/login.css')}}">
+    <link rel="stylesheet" href="{{asset('css/gsbook.css')}}">
     
     
     <link rel="stylesheet" href="{{secure_asset('css/head.css')}}" type="text/css" />

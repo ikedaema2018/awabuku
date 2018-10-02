@@ -285,32 +285,16 @@ class BooksController extends Controller
             // $categories = Category::orderBy('id', 'asc')->get(); 
 
             $genres = Category_genre::all();
-            // ジャンルごとに処理.    
-            
-            // foreach($genres as $genre) {
-            //  $categories = [];
-            // // ジャンルに紐づくカテゴリー一覧を取得.
            
-            // $tmp_categories = $genre->categories()->get()->toArray();
-            
-            // if ($tmp_categories && count($tmp_categories) > 0) {
-            //         // 取得できたら、$categoriesに追加.
-            //         $categories = array_merge($categories, $tmp_categories);
-            //     }
-            //      $genreCategories[$genre->category_genrename] = $categories;
-            // }
            
             $keys= Key::orderBy('id','asc') ->get(); 
-            // $tags= Tag::orderBy('id','asc') ->get();
-
+           
 
             return view('book_register',
             [
             'genres'=>$genres,  
-            // 'categories' => $categories,
-            // 'genreCategories' =>$genreCategories,
             'keys'=>$keys,
-            // 'tags'=>$tags,
+         
             ]
           
             );
@@ -369,13 +353,6 @@ class BooksController extends Controller
                 return redirect('/book')
                     ->withInput()
                     ->withErrors($validator);
-                    
-                    
-                    
-                    
-                    
-                    
-                    
         }
         
         //isbnをstr型に変更
@@ -680,7 +657,7 @@ class BooksController extends Controller
         public function rental_view(Book $book) {
         $owners= Owner::where('book_id',$book->id)->get();
         $comments=Comment::where('book_id',$book->id)->get();
- 
+
        $rentals=Rental::where('return_flag',1)->get();
 
       
@@ -849,6 +826,7 @@ class BooksController extends Controller
             'book'=> $book,
             'owner'=>$owner]
         );
+        
 
         }
 
@@ -948,14 +926,19 @@ class BooksController extends Controller
       $user_comments =Comment::where('user_id',Auth::user()->id)->get();
       $categories = Category::orderBy('id', 'asc')->get();
       $thread_comment_lists =Thread_comment::where('thread_id',$thread->id)->get();
-      
+      $genres = Category_genre::all();
+      $keys= Key::orderBy('id','asc') ->get(); 
+           
+
      
         return view('thread_page',
         ['thread' => $thread,
         'thread_user_name' => $thread_user_name,
         'user_comments' => $user_comments,
         'categories' =>$categories,
-        'thread_comment_lists'=>$thread_comment_lists 
+        'thread_comment_lists'=>$thread_comment_lists,
+        'genres'=>$genres,  
+        'keys'=>$keys,
         ]
         
         );
@@ -978,33 +961,60 @@ class BooksController extends Controller
 
    //スレッド用の書籍の新規登録
     public function book_insert_thread(Request $request) {
-        // //バリデーション
+      // //バリデーション
         
         //Authで通らなければ、登録ができないように追加する
         if(Auth::check()){
-                 
-        // $validator = Validator::make($request->all(), [
-        //         'BookTitle' => 'required|min:1|max:255',
-        //         'BookAuthor' => 'required|min:1|max:50',
-        //         'isbn10' => 'required|max:10',
-        //         'isbn13' => 'required|max:13',
-        //         'PublishedDate' => 'required',
-        //         'BookImage' => 'required',
-        //         'BookDiscription' => 'required|min:1|max:1000',
-        //         'owner' =>'required|min:1|max:50',
-        //         'category_id'=>'required',
-        //         'rental_flag'=>'required',
-        //         'user_id'=>'required',
-        //         'life_flag'=>'required',
-            
-        // ]);
         
-        //バリデーション:エラー 
-        // if ($validator->fails()) {
-        //         return redirect('/aaa')
-        //             ->withInput()
-        //             ->withErrors($validator);
-        // }
+        
+        $validate_rule = [         
+                'BookTitle'       => 'required',
+                'BookAuthor'      => 'required',
+                'isbn10'          => 'required',
+                'isbn13'          => 'required',
+                'PublishedDate'   => 'required',
+                'BookImage'       => 'required',
+                'BookDiscription' => 'required',
+                
+                
+                'category_id'     =>'required',
+                'rental_flag'     =>'required',
+              
+                'comment_text'    =>'required',
+                'evaluation'      =>'required'
+        ];
+        
+       $error_msg=[
+                'BookTitle'       => '本の情報が入力されていません',
+                'BookAuthor'      => '本の情報が入力されていません',
+                'isbn10'          => '本の情報が入力されていません',
+                'isbn13'          => '本の情報が入力されていません',
+                'PublishedDate'   => '本の情報が入力されていません',
+                'BookImage'       => '本の情報が入力されていません',
+                'BookDiscription' => '本の情報が入力されていません',
+                
+                'category_id'     =>'カテゴリが入力されていません',
+                'rental_flag'     =>'本が貸し出しの可否を選択してください',
+               
+                'comment_text'    =>'コメントを入力してください',
+                'evaluation'      =>'評価を入力してください'
+
+           ];
+         $validator = Validator::make($request->all(), $validate_rule, $error_msg);
+
+        // バリデーション:エラー 
+        if ($validator->fails()) {
+                return redirect('/book')
+                    ->withInput()
+                    ->withErrors($validator);
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+        }
         
         //isbnをstr型に変更
         $isbn10 = strval($request->isbn10);
@@ -1022,6 +1032,7 @@ class BooksController extends Controller
         $books->PublishedDate = $request->PublishedDate;
         $books->BookImage = $request->BookImage;
         $books->BookDiscription= $request->BookDiscription;
+        
         $books->save();
         
         $aiu = Book::orderBy('id', 'desc')->first();
@@ -1034,16 +1045,72 @@ class BooksController extends Controller
             ->where('category_id', $request->category_id[$i])->get()) == 0){
         $category_lists =new Category_list;
         $category_lists->book_id=$book_id;
-        $category_lists->category_id= $request->category_id[$i];
+        $category_lists->category_id= $request->category_id;
         $category_lists->save();
         }
         }
+        
+        
+    for($i = 0; $i < count($request->tag_add); $i++){
+          
+            if(count(Tag::where('tags',$request->tag_add[$i])->where('category_id', $request->tag_category_id[$i])
+            ->get())==0){
+        $tag =new Tag;
+        $tag->category_id = $request->tag_category_id[$i];
+        $tag->tags =$request->tag_add[$i];
+        $tag ->save();
+        $newTag = $tag->id;
+        $book_tag=new Book_tag;
+        $book_tag ->tag_id=$newTag;
+        $book_tag ->book_id=$book_id;
+        $book_tag -> save();
+        
+        }else{
+        $tag = Tag::where('tags',$request->tag_add[$i])->where('category_id', $request->tag_category_id[$i])->first();
+        $newTag = $tag->id;
+        $book_tag=new Book_tag;
+        $book_tag ->tag_id=$newTag;
+        $book_tag ->book_id=$book_id;
+        $book_tag -> save();
+        }
+        }
+        
+    
+        for ($i = 0; $i < count($request->tag_id); $i++){
+            if(count(Book_tag::where('book_id', $book_id)
+            ->where('tag_id', $request->tag_id[$i])->get()) == 0){
+        $book_tag =new Book_tag;
+        $book_tag ->book_id=$book_id;
+        $book_tag ->tag_id= $request->tag_id[$i];
+    
+        
+        $book_tag ->save();
+        }
+        }
+
+        
+        
 
         $owners = new Owner;
         $owners->book_id= $book_id;
         $owners->user_id= $request->user_id;
-       
+        
         $owners->rental_flag= $request->rental_flag;
+        
+        
+        if($request->gs == true  || Auth::user()->kanri_flag == 1) {
+            //ここで$request->gsをもとにユーザー情報を検策
+            $id= User::find($request->gs);
+            $owners->user_id = $id->id;
+        
+            echo '<pre>' . var_export($id, true) . '</pre>';
+            echo '<pre>' . var_export($owners, true) . '</pre>';
+            
+            
+        }else{
+            $owners->user_id =$request->user_id;
+        }
+        
         $owners->save();  
         
         $eok = Owner::orderBy('id', 'desc')->first();
@@ -1057,8 +1124,8 @@ class BooksController extends Controller
         $comments->comment_text= $request->comment_text;
         $comments->evaluation= $request->evaluation;
         $comments->key= $request->key;
-        $comments->comment_text= $request->comment_text;
         $comments->save();  
+    
     
         $kkk = Comment::orderBy('id', 'desc')->first();
         $comment_id = $kkk->id;
@@ -1070,12 +1137,8 @@ class BooksController extends Controller
         $thread_comments->save();
         
         
-        
-        
         return redirect('/thread/'.$request->thread_id);
-    
-    
-    
+
         }else{
         $aiu = Book::where('isbn13', $isbn13)->first();
         $book_id = $aiu->id;
@@ -1089,15 +1152,69 @@ class BooksController extends Controller
         $category_lists->book_id=$book_id;
         $category_lists->category_id= $request->category_id[$i];
         $category_lists->save();
+            }
+        }
+
+       for($i = 0; $i < count($request->tag_add); $i++){
+          
+            if(count(Tag::where('tags',$request->tag_add[$i])->where('category_id', $request->tag_category_id[$i])
+            ->get())==0){
+        $tag =new Tag;
+        $tag->category_id = $request->tag_category_id[$i];
+        $tag->tags =$request->tag_add[$i];
+        $tag ->save();
+        $newTag = $tag->id;
+        $book_tag=new Book_tag;
+        $book_tag ->tag_id=$newTag;
+        $book_tag ->book_id=$book_id;
+        $book_tag -> save();
+        
+        }else{
+        $tag = Tag::where('tags',$request->tag_add[$i])->where('category_id', $request->tag_category_id[$i])->first();
+        $newTag = $tag->id;
+        $book_tag=new Book_tag;
+        $book_tag ->tag_id=$newTag;
+        $book_tag ->book_id=$book_id;
+        $book_tag -> save();
         }
         }
+        
+        
+        for ($i = 0; $i < count($request->tag_id); $i++){
+            if(count(Book_tag::where('book_id', $book_id)
+            ->where('tag_id', $request->tag_id[$i])->get()) == 0){
+        $book_tag =new Book_tag;
+        $book_tag ->book_id=$book_id;
+        $book_tag ->tag_id= $request->tag_id[$i];
+       
+        $book_tag ->save();
+        }
+        }
+
+        
+        
         $owners = new Owner;
         $owners->book_id= $book_id;
         $owners->user_id= $request->user_id;
       
         $owners->rental_flag= $request->rental_flag;
-        $owners->save();  
         
+        
+      if($request->gs == 2  && Auth::user()->kanri_flag == 1) {
+            //ここで$request->gsをもとにユーザー情報を検策
+         
+            $id= User::find($request->gs);
+            logger('------------abc------------------');
+            logger($id); 
+            logger($request->gs);
+            logger($owners); 
+            $owners->user_id = $id->id;
+  
+        }
+       
+        
+        $owners->save();  
+       
         $eok = Owner::orderBy('id', 'desc')->first();
         $owner_id = $eok->id;
         
@@ -1109,8 +1226,9 @@ class BooksController extends Controller
         $comments->comment_text= $request->comment_text;
         $comments->evaluation= $request->evaluation;
         $comments->key= $request->key;
-        $comments->comment_text= $request->comment_text;
+   
         $comments->save();   
+        
         
         $kkk = Comment::orderBy('id', 'desc')->first();
         $comment_id = $kkk->id;
@@ -1120,46 +1238,20 @@ class BooksController extends Controller
         $thread_comments->thread_id =$request->thread_id;
         $thread_comments->thread_comment =$request->thread_comment;
         $thread_comments->save();
-        
-        $thread = Thread::where('id',$request->thread_id)->first();
-        
-         return redirect('/thread/'.$thread->id);
 
-        // }else{
-        //   return redirect('/');
-        //     }
-            
-        }
-            
-        }
-        
-    }
 
-  //index TOP画面
-    // public function category_genre_page(){
 
-    //     $category_genres=Category_genre::
-    //     $categories = Category::orderBy('id', 'asc')
-    //     ->get();
-        
-    //     $b = Category_list::all();
-    //     $category_lists = $b->groupBy('category_id');
-        
-        
-    //     $thread_lists = Thread::orderBy('updated_at','desc')
-    //                     ->take(5)
-    //                     ->get();
-         
-    //     $rentals = Rental::all();
-                    
-    //     return view('category_genre_page', [
-    //         'categories' => $categories,
-    //         'category_lists' => $category_lists,
-    //         'thread_lists'  =>$thread_lists,
-    //         'rentals'=>$rentals
-    //     ]);
-    // }    
+}
+
+        return redirect('/thread/'.$request->thread_id);
+
+        }else{
+          return redirect('/thread/'.$request->thread_id);
+            }
+       
     
+ }
+
 
   
       //特徴登録

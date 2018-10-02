@@ -30,13 +30,17 @@ use App\Category_genre;
                     <li style="width: 30%;">
                         <a href="{{url('rental/'.$topic_book->id)}}"><p><b>{{$topic_book->BookTitle}}</b></></a>
                         <span style="font-size: 20px;"><p>{{$topic->comment_text}}</p></span>
+                        <div>
                         @foreach($topic_category_names as $topic_category_name)
-                        <a href="{{url('category_page/'.$topic_category_name["id"])}}">{{$topic_category_name["category_name"]}}&nbsp;&nbsp;/&nbsp;&nbsp;</a>
+                        <a href="{{url('category_page/'.$topic_category_name["id"])}}">{{$topic_category_name["category_name"]}}&nbsp;&nbsp;&nbsp;&nbsp;</a>
                         @endforeach 
+                        </div>
+                        <div>
                         @foreach($topic_book -> tags as $tag)
-                        <a href="{{url('tag_page/'.$tag->id)}}">{{$tag->tags}}&nbsp;&nbsp;/&nbsp;&nbsp;</a>
+                        <a  class="tag" href="{{url('tag_page/'.$tag->id)}}">{{$tag->tags}}</a>
                         @endforeach
-                        
+                        </div>
+                       
              
                     </li>
                 </ul> 

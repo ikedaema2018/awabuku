@@ -239,6 +239,8 @@ use App\Tag;
                             $("#BookThumbnail").text("");
                             $("#BookDiscription").text("");
                             $("#BookImage").text("");
+                            $("#Publisher").text("");
+                            
                             $("#message").html(' <p class = "bg-warning" id = "warning" > 該当する書籍がありません。 < /p>');
                             $('#message > p').fadeOut(3000);
                         } else {
@@ -394,7 +396,7 @@ $(".category").on("click",function(){
         }
         selectBox += '<option value="'+selectedvalue[i]+'" name="option" >'+selectedname[i]+'</option>';
     };
-    const name = selectedname.join(',');//"php python"  
+     
 
 
     $("#tags").empty();
@@ -415,23 +417,6 @@ console.log(new_tag_category_id);
 
  });
 
-
-
-
 </script>
-
-
-
-
-
-
-
-
-
-
-
-    </script>
-
-
 @endsection
 @section('footer')

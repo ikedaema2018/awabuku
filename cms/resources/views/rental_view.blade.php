@@ -30,12 +30,28 @@ use App\Category;
     </div>  
     <div style="margin-left:40px;">
     <div class="row">
-        <p >書籍の内容</p>
+        <p>書籍の内容</p>
         <p class="col-xs-12">{{ $book->BookDiscription}}</p>
     </div>
+    <div class="row">
+        <p>カテゴリ</p>
+        @if(isset($category_lists)> 0 )
+        @foreach($category_lists as $category_list)
+        <a  href="{{url('category_page/'.$category_list->category_id)}}"class="col-xs-12">{{Category::find($category_list->category_id)->category_name}}</a></p>
+        @endforeach
+        @endif
+    </div>
+    <div class="row">
+        <p>タグ</p>
+        @foreach($book -> tags as $tag)
+         <a  class="tag" href="{{url('tag_page/'.$tag->id)}}" class="col-xs-12">{{$tag->tags}}</a>
+        @endforeach
+    </div>    
+        
+        
+   
    
     <div class="row">
-        
         <p class=class="col-xs-offset-1 col-xs-9 col-xs-offset-2" style="border-bottom-style: outset;">おすすめコメント</p>
        
              @if(isset($comments)>0)
@@ -52,7 +68,7 @@ use App\Category;
 <table class="table table-striped" style="display: table"; >
     <tr>
         <th>id</th>
-        <th>book's Owner</th>
+        <th>book's</th>
         <th>貸与可否</th>
         <th>借りている人</th>
         <th>返却予定</th>
