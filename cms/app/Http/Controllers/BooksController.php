@@ -86,7 +86,7 @@ class BooksController extends Controller
         $rentals = Rental::all();
         
     
-        
+        $tags = Tag::all();
 
         return view('index', [
             'topic'=>$topic,
@@ -99,7 +99,8 @@ class BooksController extends Controller
             'thread_lists'  =>$thread_lists,
             'rentals'=>$rentals,
             'genreBooks'=>$genreBooks,
-            
+            'tags'=>$tags,
+        
         ]);
      
         
@@ -1366,6 +1367,39 @@ public function tag_page(Tag $tag) {
   
    } 
 
+
+
+//ownerブックの更新
+    public function modify_ownbook(Owner $owner) {
+        
+        if(Auth::check()){
+            // $categories = Category::orderBy('id', 'asc')->get(); 
+            
+            $genres = Category_genre::all();
+            $book= Book::where('id',$owner->book_id)->first();
+            $comments =Comment::where('book_id',$owner->book_id)
+             ->where('user_id',Auth::user()->id)
+             ->get();
+            $keys= Key::orderBy('id','asc') ->get(); 
+           
+
+            return view('modify_ownbook',
+            [
+            'book'=>$book,  
+            'owner'=>$owner,  
+            'comments'=>$comments,
+            'keys' =>$keys,
+            'genres'=>$genres,
+            
+            ]
+          
+            );
+        
+            
+        }else{
+            return redirect('/aiu');
+        }
+    }
 
 
 

@@ -18,14 +18,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Scopes\LivingBookScope;
 use App\Key;
+use App\Tag;
+
 
 class SearchController extends Controller
 {
   //search TOP画面
     public function getIndex(Request $request){
-   
-    
-   
+
     #キーワード受け取り
   $keyword = $request->input('keyword');
  
@@ -42,15 +42,45 @@ class SearchController extends Controller
  
   #ページネーション
   $data = $query->orderBy('created_at','desc')->paginate(10);
-  
+  logger("------keyward-----------");
+  logger($data);
   return view('search')->with('data',$data)
   ->with('keyword',$keyword)
-  ->with('book_lists',$book_lists)
   ->with('message','ユーザーリスト');
-      
-      
+     
   }
   
+    
+    //タグの検索
+    public function getIndex_tag(Request $request){
+
+    #キーワード受け取り
+  $keyword = $request->input('keyword');
+ 
+  #クエリ生成
+  $query = Tag::query();
+ 
+  #もしキーワードがあったら
+  if(!empty($keyword))
+  {
+    $query->where('tags','like','%'.$keyword.'%');
+    
+  }
+   
+ 
+  #ページネーション
+  $data = $query->orderBy('created_at','desc')->paginate(10);
+  
+  logger("------keyward_tag-----------");
+  logger($data);
+  
+  return view('search_tag')->with('data',$data)
+  ->with('keyword',$keyword)
+  ->with('message','ユーザーリスト');
+     
+  }
+  
+
 //
 
 

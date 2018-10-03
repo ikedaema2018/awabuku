@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('facebook_id')->unique()->nullable();
             $table->string('name');
             $table->string('avater')->nullable();
-            $table->integer('class_id')->nullable();
+            $table->integer('group_id')->nullable();
             $table->string('password')->nullable()->change();
             $table->integer('kanri_flag')->default(0);
             $table->rememberToken();

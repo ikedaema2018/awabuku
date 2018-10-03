@@ -127,22 +127,64 @@ use App\Category_genre;
     
 <!-- レンタル別表示 始まり --> 
 
-    <div class= "col-sm-4 well well-lg" >
+    <div class= "col-sm-4" >
+    
+        
+     <div>
+        <p style="border-bottom-style: outset;">詳細検索</p>
+          <form class="form-inline" action="{{url('/search')}}">
+            <div class="input-group serach_box col-xs-12">
+          
+              <input type="text" class="form-control keyword_search" name="keyword" value="" placeholder="書名・著者名を検索する。" >
+              <span class="input-group-btn">
+                <button type="submit"class="btn btn-info" name="search_button">
+                  <i class='glyphicon glyphicon-search'></i></button>
+                
+              </span>
+           </div>  
+          </form>
+          <form class="form-inline" action="{{url('/search_tag')}}">
+            <div class="input-group serach_box col-xs-12">
+         
+              <input type="text" class="form-control keyword_search_tag" name="keyword" value="" placeholder="タグを検索する" >
+              <span class="input-group-btn">
+                <button type="submit"class="btn btn-info" name="search_button">
+                  <i class='glyphicon glyphicon-search'></i></button>
+                
+              </span>
+           </div>  
+          </form>
+    </div>      
+    <div>
+      <p>タグリスト<p>
+      @if(isset($tags)>0)  
+      @foreach($tags as $tag)
+      <a  class="tag" href="{{url('tag_page/'.$tag->id)}}">{{$tag->tags}}</a>
+     
+      @endforeach
+      @endif
+        
+    </div>      
+      
+    <div>    
      <h3>人気のレンタル書籍</h3>  
         @if(count($rentals)>0)
         @foreach($rentals as $rental)
-    
           <ul style="list-style:none;">
              <li><img src="{{Book::find($rental->rental_books->book_id)->BookImage}}" width="128" height="180"></img></li>
              <li><a href="{{url('rental/'.Book::find($rental->rental_books->book_id)->id)}}">{{Book::find($rental->rental_books->book_id)->BookTitle}}</a></li>
-        
           </ul>    
-    
-    
         @endforeach
         @endif
-        
     </div>
+        
+          
+          
+          
+            
+</div>    
+       
+</div>
 <!-- レンタル別表示 終わり-->   
     
     

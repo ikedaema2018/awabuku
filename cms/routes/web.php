@@ -15,8 +15,14 @@ use App\Http\Middleware\LoginMiddleware;
 
 
 Route::get('/login', 'UserController@login_view');
-Route::get('/user_class', 'UserController@user_class');
-Route::post('/user_class_insert/', 'UserController@user_class_insert');
+
+Route::get('/user_group', 'UserController@user_group')
+->middleware('login');
+Route::get('/user_page', 'UserController@user_page')
+->middleware('login');
+
+Route::post('/user_group_insert/', 'UserController@user_group_insert')
+->middleware('login');
 
 Route::get('logout', 'UserController@logout');
 Route::get('facebook', 'UserController@loginFacebook');
@@ -81,6 +87,10 @@ Route::get('/mypage/{owner}','BooksController@mypage_detail')
 ->middleware('login');
 Route::post('/delete_ownbook','BooksController@delete_ownbook')
 ->middleware('login');
+Route::get('/modify_ownbook/{owner}','BooksController@modify_ownbook')
+->middleware('login');
+
+
 
 //返却画面
 Route::post('/return/{rental}','BooksController@return_view')
@@ -118,6 +128,9 @@ Route::get('/tag_page/{tag}', 'BooksController@tag_page')
 //検索結果ページ
 Route::get('/search', 'SearchController@getIndex')
 ->middleware('login');
+Route::get('/search_tag', 'SearchController@getIndex_tag')
+->middleware('login');
+
 
 //外部の人が見るユーザー情報
 Route::get('/user_search_page/{user}','UsersearchController@user_search_page')

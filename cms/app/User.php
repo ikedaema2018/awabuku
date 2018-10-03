@@ -11,4 +11,11 @@ class User extends Model implements AuthenticatableContract
     //
     use Authenticatable; 
     protected $fillable = ['name', 'facebook_id', 'avater'];
+   
+      public function group(){
+              return $this->belongsTo('App\Group', 'group_id', 'id');
+   } 
+    
+    
+    
 }

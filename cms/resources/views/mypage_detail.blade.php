@@ -21,6 +21,10 @@ use App\Category;
             <p>{{ $book->isbn10 }}/&nbsp;{{ $book->isbn13 }}</p>
             <p>{{ $book->PublishedDate}}</p>
         </div>
+         <div class="col-sm-3">  
+            <label for="modify"><a href="{{url('modify_ownbook/'.$owner->id)}}">登録したデータを修正する。</a></label> 
+         
+        </div>
         <div class="col-sm-3">  
             <label for="deleate">登録したデータを削除する。</label> 
                 <div>

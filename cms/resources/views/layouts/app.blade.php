@@ -79,8 +79,8 @@
         </div>    
     </div>
 
-        <nav class="navbar navbar-default"style="background-color: #00CCCC;">
-          <div class="container-fluid">
+        <nav class="navbar navbar-default" >
+          <div class="container-fluid" style="background-color: #00CCCC;"">
 
 
             <div class="navbar-header">
@@ -91,6 +91,8 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              
             </button>
             
             <!--ロゴ表示の指定-->
@@ -114,7 +116,11 @@
                         <a href="{{url('mypage')}}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>マイページ</a>
                     </li>
                     <li>
-                        <a href="{{url('threads')}}"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></span>スレッド</a>
+                        <a href="{{url('threads')}}"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>スレッド</a>
+                    </li>  
+                    <li>
+                        <a href="{{url('user_page')}}"><img src="{{asset('img/group.png')}}" style="width: 20px; height: 20px;"><span>メンバー<span></a>
+ 
                     </li>
                 
                 </ul> 

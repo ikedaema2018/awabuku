@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Group;
 
 
 use Illuminate\Support\Facades\Auth;
@@ -58,7 +59,7 @@ class UserController extends Controller
         ]);
         
         Auth::login($authUser, true);
-        return redirect('user_class/');
+        return redirect('group_class/');
         
         // $authUser = $this->findOrCreateUser($fuser);
         // Auth::login($authUser, true);
@@ -86,12 +87,13 @@ class UserController extends Controller
         return redirect('/');
     }
     //user・class選択画面
-       public function user_class() {
+       public function user_group() {
         if(Auth::check()) {
             $user = Auth::user()->get();
-            $classes = Class::all();
-            return view('/user_class', [
+            $groups = Group::all();
+            return view('/user_group', [
                 'user' => $user,
+                'groups'=>$groups,
                 ]);
         }else{
             return redirect('/login');
@@ -99,27 +101,37 @@ class UserController extends Controller
     }
    
   //user・classを登録する
-  public function user_class_insert(Request $request){
+  public function user_group_insert(Request $request){
                  $validate_rule = [         
-                'class'       => 'required',
+                'group'       => 'required',
                 ];
         
       $error_msg=[
-                'class'       => '所属の情報が入力されていません',
+                'group'       => '所属の情報が入力されていません',
                 ];
          $validator = Validator::make($request->all(), $validate_rule, $error_msg);
       // バリデーション:エラー 
         if ($validator->fails()) {
-                return redirect('/user_insert')
+                return redirect('/user_group')
                     ->withInput()
                     ->withErrors($validator);
       }
    
        $user = User::find(Auth::user()->id);
-       $user->class_id = $request->class;
+       $user->group_id = $request->group;
        $user->save();
        
        return redirect('/');
   }
+  
+    public function user_page() { 
+     $groups= Group::all();
+       return view('user_page', [
+              'groups' =>$groups,
+        ]);
+    }
+  
+  
+  
 }
     
