@@ -6,6 +6,7 @@
 
 use App\User;
 use App\Book;
+use App\Class;
 use App\Comment;
 use App\Scopes\LivingBookScope;
 
@@ -20,12 +21,15 @@ use App\Scopes\LivingBookScope;
                 <form action="{{url('user_class_insert')}}" method="post">
                 {{ csrf_field() }}
                   <select name="class" id="" style="font-size:200%;border:1px;">
-                           <option value="1">LAB5</option>
-                           <option value="2">LAB4</option>
-                           <option value="3">Teacher</option>
-                           <option value="4">Tuter</option>
+                         @if(isset($classes)>0)
+                         @foreach($classes as $class)
+                      
+                           <option value="{{$class->id}}">{{$class->class_name}}</option>
+                        
+                         @foreach
+                         @endif
                   </select>
-                            <button id="bbb" form="form_id">選択</button>
+                            <button type="submit" id="bbb">選択</button>
                             
                  </form> 
            

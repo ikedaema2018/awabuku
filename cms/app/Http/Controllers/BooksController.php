@@ -319,8 +319,10 @@ class BooksController extends Controller
                 'isbn10'          => 'required',
                 'isbn13'          => 'required',
                 'PublishedDate'   => 'required',
+                'Publisher'       => 'required',
                 'BookImage'       => 'required',
                 'BookDiscription' => 'required',
+                
                 
                 
                 'category_id'     =>'required',
@@ -338,7 +340,8 @@ class BooksController extends Controller
                 'PublishedDate'   => '本の情報が入力されていません',
                 'BookImage'       => '本の情報が入力されていません',
                 'BookDiscription' => '本の情報が入力されていません',
-                
+                'Publisher'       => '本の情報が入力されていません',
+
                 'category_id'     =>'カテゴリが入力されていません',
                 'rental_flag'     =>'本が貸し出しの可否を選択してください',
                
@@ -369,6 +372,7 @@ class BooksController extends Controller
         $books->isbn10 = $isbn10;
         $books->isbn13 = $isbn13;
         $books->PublishedDate = $request->PublishedDate;
+        $books->Publisher = $request->Publisher;
         $books->BookImage = $request->BookImage;
         $books->BookDiscription= $request->BookDiscription;
         
@@ -765,7 +769,13 @@ class BooksController extends Controller
         //本の登録情報をレンタルviewページに飛ばす
         public function return_view(Rental $rental) {
          $owner= Owner::where('id',$rental->owner_id)->first();
-        return view('return_view', ['owner'=>$owner,'rental'=> $rental]
+         $keys = Key::all();
+        
+        return view('return_view', [
+            'owner'=>$owner,
+            'rental'=> $rental,
+            'keys'=> $keys,
+            ]
         );
     }
    //本を返却する。
@@ -975,6 +985,7 @@ class BooksController extends Controller
                 'PublishedDate'   => 'required',
                 'BookImage'       => 'required',
                 'BookDiscription' => 'required',
+                'Publisher'        => 'required',
                 
                 
                 'category_id'     =>'required',
@@ -992,6 +1003,7 @@ class BooksController extends Controller
                 'PublishedDate'   => '本の情報が入力されていません',
                 'BookImage'       => '本の情報が入力されていません',
                 'BookDiscription' => '本の情報が入力されていません',
+                'Publisher'        => '本の情報が入力されていません',
                 
                 'category_id'     =>'カテゴリが入力されていません',
                 'rental_flag'     =>'本が貸し出しの可否を選択してください',
@@ -1007,13 +1019,7 @@ class BooksController extends Controller
                 return redirect('/book')
                     ->withInput()
                     ->withErrors($validator);
-                    
-                    
-                    
-                    
-                    
-                    
-                    
+               
         }
         
         //isbnをstr型に変更
@@ -1032,6 +1038,7 @@ class BooksController extends Controller
         $books->PublishedDate = $request->PublishedDate;
         $books->BookImage = $request->BookImage;
         $books->BookDiscription= $request->BookDiscription;
+        $books->Publisher =$request->Publisher;
         
         $books->save();
         

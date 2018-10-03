@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+
+
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use App\Scopes\LivingBookScope;
@@ -87,38 +89,37 @@ class UserController extends Controller
        public function user_class() {
         if(Auth::check()) {
             $user = Auth::user()->get();
+            $classes = Class::all();
             return view('/user_class', [
-            
                 'user' => $user,
-                
                 ]);
         }else{
             return redirect('/login');
         }
     }
    
-   //user・classを登録する
-   public function user_class_insert(Request $request){
-       if(Auth::check()){
+  //user・classを登録する
+  public function user_class_insert(Request $request){
                  $validate_rule = [         
                 'class'       => 'required',
                 ];
         
-       $error_msg=[
+      $error_msg=[
                 'class'       => '所属の情報が入力されていません',
                 ];
          $validator = Validator::make($request->all(), $validate_rule, $error_msg);
-       // バリデーション:エラー 
+      // バリデーション:エラー 
         if ($validator->fails()) {
                 return redirect('/user_insert')
                     ->withInput()
                     ->withErrors($validator);
-       }
+      }
    
-　　　$user = new User;
-　　　$user->class_id = $request->class;
-　　　$user->save();
-       }
-   }
+       $user = User::find(Auth::user()->id);
+       $user->class_id = $request->class;
+       $user->save();
+       
+       return redirect('/');
+  }
 }
     

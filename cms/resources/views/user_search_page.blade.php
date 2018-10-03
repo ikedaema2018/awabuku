@@ -88,37 +88,7 @@ use App\Comment;
         @endif
 <!--所有している本　終わり-->
 
-<!--レンタル履歴　はじめ-->
- <h2 class="col-xs-12">レンタル履歴</h2>
-    @if(isset($rentaled_books)>0)
-         <?php $i=0?>
-          @foreach($rentaled_books as $rentaled_book)
-              @if($i==0)
-               <div class="col-sm-12 border_bottom">
-                      @endif
-                       <div class="col-sm-2">
-                            <ul class="sample">
-                                <li>
-                                <img src="{{$rentaled_book["BookImage"]}}" class="img-responsive" width="128" height="180"></img>
-                                
-                                <p>{{ $rentaled_book["BookTitle"] }}</p>
-                                <p>{{ $rentaled_book["BookAuthor"] }}</p>
-                                 <p>おすすめコメントを見る</p> 
-                                 <a href="{{url('mypage/'.Comment::find($book["id"])->owner_id)}}"><p>おすすめコメントを見る</p></a>
-                                 <a href="{{ url('rental/'.$rentaled_book["id"]) }}"><p>レンタルする</p></a>
-                                
-                                </li>
-                            </ul>
-                 　     </div>
-                 
-                     　    <?php $i=$i+1?>
-                     　      @if($i == 6 || $loop->last)
-                     　      <?php $i=0 ?>
-            　</div>
-             　    @endif
-         @endforeach   
-    @endif
-    
+
 <script>
 
 

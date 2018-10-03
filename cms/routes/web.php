@@ -16,7 +16,7 @@ use App\Http\Middleware\LoginMiddleware;
 
 Route::get('/login', 'UserController@login_view');
 Route::get('/user_class', 'UserController@user_class');
-Route::post('/user_class_insert', 'UserController@user_class_insert');
+Route::post('/user_class_insert/', 'UserController@user_class_insert');
 
 Route::get('logout', 'UserController@logout');
 Route::get('facebook', 'UserController@loginFacebook');
