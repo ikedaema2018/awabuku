@@ -39,7 +39,7 @@ use App\Category;
     <div class="row">
         <p>タグ</p>
          @foreach($comment->user_c->tags as $tag)
-        <p>{{$tag->tags}}</p>
+        <p class="tag">{{$tag->tags}}</p>
         @endforeach
     
     </div>  
@@ -95,8 +95,10 @@ use App\Category;
         @endif
     </div>
      <div class="row">
-        <p class=class="col-xs-offset-1 col-xs-9 col-xs-offset-2" style="border-bottom-style: outset;">おすすめコメント</p>
+        <p style="border-bottom-style: outset;">おすすめコメント</p>
+        <div class="col-xs-offset-1 col-xs-9 col-xs-offset-2" style="background-color:#fffaf0;">
         <p class="col-xs-12">{{$comment->comment_text}}<a href="{{url('user_search_page/'.$comment->user_id)}}"></a></p>
+        </div>
     </div>
     </div>
                  

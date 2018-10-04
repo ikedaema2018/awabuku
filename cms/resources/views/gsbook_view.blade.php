@@ -171,7 +171,7 @@ use App\Tag;
 <table class="table table-striped">
     <tr>
         <th>ユーザー名</th>
-        <th>こんな人</th>
+        <th>特徴</th>
         <th>評価</th>
         <th>オススメポイント</th>
     
@@ -237,7 +237,7 @@ use App\Tag;
                 @endif
             </td>
             <td>
-                <p class="col-xs-12">{{$comment->comment_text}}({{User::find($comment->user_id)->name}})</p>
+                <p class="col-xs-12"><a href="{{url('book_comments'.$comment->id)}}">{{$comment->comment_text}}({{User::find($comment->user_id)->name}})</a></p>
             </td>
             </tr>
         </tbody>

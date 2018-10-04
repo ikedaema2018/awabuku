@@ -56,8 +56,9 @@ use App\Category;
        
              @if(isset($comments)>0)
              @foreach($comments as $comment)
+             <div class="col-sm-offset-1 col-sm-11">
                  <a href="{{url('book_comment/'.$comment->id)}}"><p class="col-xs-12">{{$comment->comment_text}}({{User::find($comment->user_id)->name}}</a>)</p>
-                
+             </div>  
              @endforeach
              @endif
     </div>
