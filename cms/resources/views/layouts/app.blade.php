@@ -19,7 +19,8 @@
     <link rel="stylesheet" href="{{asset('css/threads.css')}}">
     <link rel="stylesheet" href="{{asset('css/bootstrap-social.css')}}">
     <link rel="stylesheet" href="{{asset('css/login.css')}}">
-    <link rel="stylesheet" href="{{asset('css/gsbook.css')}}">
+    <link rel="stylesheet" href="{{asset('css/gsbook.css')}}">    
+    <link rel="stylesheet" href="{{asset('css/book_comment.css')}}">
     
     
     <link rel="stylesheet" href="{{secure_asset('css/head.css')}}" type="text/css" />

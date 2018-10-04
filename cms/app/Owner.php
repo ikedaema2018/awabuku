@@ -21,9 +21,12 @@ class Owner extends Model
       public function owner_comments(){
               return $this->hasMany('App\Comment','owner_id','id');
             // return $this->belongsTo('App\User', '外部キーのカラム名', '親元のid扱いのカラム名');
-
-
       }
+            public function user(){
+              return $this->belongsTo('App\User','user_id','id');
+            // return $this->belongsTo('App\User', '外部キーのカラム名', '親元のid扱いのカラム名');
+      }
+      
       
       protected static function boot(){
         parent::boot();

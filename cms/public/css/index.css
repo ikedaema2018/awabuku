@@ -56,3 +56,16 @@ ul.book_info {
   border: 1px solid #3498db;
   color: #fff;
 }
+
+
+.comment_area {
+   
+    overflow: hidden;
+    width: 700px;
+}
+.comment_area p {
+    margin: 0;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+}

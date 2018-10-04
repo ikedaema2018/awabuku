@@ -11,6 +11,7 @@ use App\Category;
 ?>
 
 <!--本の詳細-->
+
     <div class="row">
         <div class="col-sm-3"　style="background:#CCCCCC height:200px;" style="text-align:center;">
             <img src="{{ $book->BookImage}}"></img>
@@ -21,22 +22,33 @@ use App\Category;
             <p>{{ $book->isbn10 }}/&nbsp;{{ $book->isbn13 }}</p>
             <p>{{ $book->PublishedDate}}</p>
         </div>
-         <div class="col-sm-3">  
-            <label for="modify"><a href="{{url('modify_ownbook/'.$owner->id)}}">登録したデータを修正する。</a></label> 
-         
-        </div>
+        <div class="col-sm-3">  
+            <label for="deleate">本の貸出情報を変更する。</label> 
+                
+                  <form action="{{url('change_rental')}}" method="post">
+                         {{ csrf_field() }}
+                      <label><input type="radio" name="rental_flag" value="0"<?php if($owner->rental_flag==0):echo 'checked="checked"';endif;?>>はい</label>
+                    　<label><input type="radio" name="rental_flag" value="1"<?php if($owner->rental_flag==1):echo 'checked="checked"';endif;?>>いいえ</label>
+                    　<label><input type="radio" name="rental_flag" value="2"<?php if($owner->rental_flag==2):echo 'checked="checked"';endif;?>>同期内の貸与可</label><br>
+                    　<input type="hidden" name="id" value={{"$owner->id"}}>
+                      
+                      <button type="submit" class="btn btn-info">変更する</button>
+                  </form>
+                
+        </div>  
         <div class="col-sm-3">  
             <label for="deleate">登録したデータを削除する。</label> 
-                <div>
+               
                   <form action="{{url('delete_ownbook')}}" method="post">
                          {{ csrf_field() }}
-                      <input type="radio" name="life_flag" value="1"<?php if($owner->life_flag==1):echo 'checked="checked"';endif;?>>はい
-                    　<input type="radio" name="life_flag" value="0"<?php if($owner->life_flag==0):echo 'checked="checked"';endif;?>>いいえ<br>
-                    　<input type="hidden" name="id" value={{"$owner->id"}}>
+                      <label><input type="radio" name="life_flag" value="1"<?php if($owner->life_flag==1):echo 'checked="checked"';endif;?>>はい</label>
+                      
+                    　<label><input type="radio" name="life_flag" value="0"<?php if($owner->life_flag==0):echo 'checked="checked"';endif;?>>いいえ</label><br>
+                    　<label><input type="hidden" name="id" value={{"$owner->id"}}>
                       
                       <button type="submit" class="btn btn-info">削除する</button>
                   </form>
-                </div>
+                
         </div>        
     </div>
     <div style="margin-left:40px;">

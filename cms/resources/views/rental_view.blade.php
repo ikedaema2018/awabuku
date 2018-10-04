@@ -56,7 +56,7 @@ use App\Category;
        
              @if(isset($comments)>0)
              @foreach($comments as $comment)
-                 <p class="col-xs-12">{{$comment->comment_text}}(<a href="{{url('user_search_page/'.$comment->user_id)}}">{{User::find($comment->user_id)->name}}</a>)</p>
+                 <a href="{{url('book_comment/'.$comment->id)}}"><p class="col-xs-12">{{$comment->comment_text}}({{User::find($comment->user_id)->name}}</a>)</p>
                 
              @endforeach
              @endif
@@ -91,6 +91,8 @@ use App\Category;
                     <p>不可</p>
                     @elseif ($owner->rental_flag == 0 && $owner->return_flag == 0)
                     <p>貸出可能</p>
+                    @elseif ($owner->rental_flag == 2 && $owner->return_flag == 0 && $owner->user->group_id == Auth::user()->group_id)
+                    <p>同期内のみ可能</p>
                     @elseif ($owner->rental_flag == 0 && $owner->return_flag== 1)
                     <p>貸出中</p>
                     @endif
@@ -117,15 +119,23 @@ use App\Category;
                 　</p>
                 </td> 
                  <td style="vertical-align: middle; text-align: center;">
-                    @if($owner->return_flag == 0)
-                    <form action="{{ url('book_rental') }}" method="post">
-                        {{ csrf_field() }} 
-                     <input type="hidden" name="return_flag" value="{{ $owner->return_flag }}">
-                     <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                     <input type="hidden" name="owner_id" value="{{ $owner->id }}">
-                     <button type="submit">本を借りる</button>
-                    </form>
-                    @elseif($owner->return_flag == 1)
+                    @if ($owner->rental_flag == 0 && $owner->return_flag == 0)
+                        <form action="{{ url('book_rental') }}" method="post">
+                            {{ csrf_field() }} 
+                         <input type="hidden" name="return_flag" value="{{ $owner->return_flag }}">
+                         <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                         <input type="hidden" name="owner_id" value="{{ $owner->id }}">
+                         <button type="submit">本を借りる</button>
+                        </form>
+                     @elseif ($owner->rental_flag == 2 && $owner->return_flag == 0 && $owner->user->group_id == Auth::user()->group_id)
+                        <form action="{{ url('book_rental') }}" method="post">
+                            {{ csrf_field() }} 
+                         <input type="hidden" name="return_flag" value="{{ $owner->return_flag }}">
+                         <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                         <input type="hidden" name="owner_id" value="{{ $owner->id }}">
+                         <button type="submit">本を借りる</button>
+                        </form>
+                     @else
                     <p>---</p>
                     
                     @endif

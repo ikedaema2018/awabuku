@@ -442,7 +442,7 @@ class BooksController extends Controller
         $owners->rental_flag= $request->rental_flag;
         
         
-        if($request->gs == true  || Auth::user()->kanri_flag == 1) {
+        if($request->gs == 2  && Auth::user()->kanri_flag == 1) {
             //ここで$request->gsをもとにユーザー情報を検策
             $id= User::find($request->gs);
             $owners->user_id = $id->id;
@@ -864,6 +864,29 @@ class BooksController extends Controller
         return redirect('/mypage');        
         
     } 
+    public function change_rental(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+            'rental_flag'=>'required',
+        ]);
+        
+        // var_dump($request->all());
+        // if ($validator->fails()){
+        //     return redirect('/book_update_view')
+        //     ->withInput(["id"=>$request->id])
+        //     ->withError($validator);
+        // }
+        
+        $owner = Owner::find($request->id);
+        $owner->rental_flag = $request->rental_flag;
+        $owner->save();
+
+   
+        return redirect('/mypage/'.$owner->id);        
+        
+    } 
+    
+    
 
 
 
@@ -1400,7 +1423,29 @@ public function tag_page(Tag $tag) {
             return redirect('/aiu');
         }
     }
+//Book_Comment ユーザーひとりに紐づくbook_comment
 
+ public function book_comment(Comment $comment) {
+     
+      
+    //     $owners= Owner::where('book_id',$book->id)->get();
+    //     $comments=Comment::where('book_id',$book->id)->get();
+
+    //   $rentals=Rental::where('return_flag',1)->get();
+
+      
+    //     $category_lists=Category_list::where('book_id',$book->id)->get(); 
+ 
+        return view('book_comment', [
+            // 'book'=> $book,
+            // 'owners'=>$owners,
+            'comment'=>$comment,
+            // 'category_lists'=>$category_lists,
+            // 'rentals'=>$rentals,
+            
+        ]
+        );
+    }
 
 
 }

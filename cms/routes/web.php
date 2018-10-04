@@ -87,8 +87,12 @@ Route::get('/mypage/{owner}','BooksController@mypage_detail')
 ->middleware('login');
 Route::post('/delete_ownbook','BooksController@delete_ownbook')
 ->middleware('login');
-Route::get('/modify_ownbook/{owner}','BooksController@modify_ownbook')
+Route::post('/change_rental','BooksController@change_rental')
 ->middleware('login');
+
+
+// Route::get('/modify_ownbook/{owner}','BooksController@modify_ownbook')
+// ->middleware('login');
 
 
 
@@ -165,3 +169,7 @@ Route::post('/tag_update', 'BooksController@tag_update')
 Route::get('/ajax/{category_ids}', 'AjaxTest@ajax');
 
 Route::get('/ajax_comment/{book_id}/{user_id}', 'AjaxTest@ajax_comment');
+
+//一人のユーザーによるBook_comment
+Route::get('/book_comment/{comment}','BooksController@book_comment')
+->middleware('login');

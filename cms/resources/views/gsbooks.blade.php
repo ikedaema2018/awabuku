@@ -15,7 +15,7 @@ use App\Category_genre;
 <!-- G'sの本一覧 -->   
 
 <div class="container">
-        <div class="jumbotron"  style="background:url(img/topic.jpg); background-size:cover;">
+        <div class="jumbotron"  style="background-size:cover;">
           
            <div style="background-color:#FFFFFF;"> 
                 <ul style="list-style:none; justify-content:between;" class="row">

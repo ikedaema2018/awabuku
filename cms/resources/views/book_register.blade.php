@@ -95,7 +95,7 @@ use App\Tag;
  <div class="owner_info">
      
    
-　<input type="hidden" name="owner" value="{{Auth::user()->name}}" >
+
             @if(Auth::user()->kanri_flag == 1)
                 <div class="form-group"> 
                 <p>ジーズの本の入力</p>
@@ -109,6 +109,7 @@ use App\Tag;
           <div class="block-contents">
           <label class="radio-inline"><input type="radio" name="rental_flag" value=0>はい</label>
         　<label class="radio-inline"><input type="radio" name="rental_flag" value=1>いいえ</label>
+        　<label class="radio-inline"><input type="radio" name="rental_flag" value=2>同期内のみ</label>
         　</div>
     </div>
     

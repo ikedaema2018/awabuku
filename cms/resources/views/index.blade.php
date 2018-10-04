@@ -15,35 +15,45 @@ use App\Category_genre;
 
 
     <div class="container">
-        <div class="jumbotron"  style="background:url(img/topic.jpg); background-size:cover;">
-          <p><b>TOPIC</b></p> 
-           <div style="background-color:#EEFFFF;"> 
-           
-             
+        <div class="jumbotron"  style="background-color:#fffaf0; background-size:cover;">
+           <div> 
                 <ul style="list-style:none;" class="sample">
                  <li><span><img class="avater img-circle" src="{{$topic_user->avater}}"></img></span></li>
                  <li><p><b><a href="{{url('user_search_page/'.$topic_user->id)}}">{{$topic_user->name}}</a>さんのオススメ</b></p></li>
                 </ul>
     
-                <ul style="list-style:none;"class="book_info" style="justify-content:between;">
-                    <li><a href="{{url('rental/'.$topic_book->id)}}"><img src="{{$topic_book->BookImage}}" width="128" height="180"></img></a></li>
-                    <li style="width: 30%;">
-                        <a href="{{url('rental/'.$topic_book->id)}}"><p><b>{{$topic_book->BookTitle}}</b></></a>
-                        <span style="font-size: 20px;"><p>{{$topic->comment_text}}</p></span>
-                        <div>
-                        @foreach($topic_category_names as $topic_category_name)
-                        <a href="{{url('category_page/'.$topic_category_name["id"])}}">{{$topic_category_name["category_name"]}}&nbsp;&nbsp;&nbsp;&nbsp;</a>
-                        @endforeach 
-                        </div>
-                        <div>
-                        @foreach($topic_book -> tags as $tag)
-                        <a  class="tag" href="{{url('tag_page/'.$tag->id)}}">{{$tag->tags}}</a>
-                        @endforeach
-                        </div>
-                       
-             
-                    </li>
-                </ul> 
+                <div class="row">
+                    <div  class="col-sm-3" style="text-align: center;">
+                        <a href="{{url('rental/'.$topic_book->id)}}"><img src="{{$topic_book->BookImage}}" width="128" height="180"></img></a></li>
+                    </div>
+                    <div  class="col-sm-9">    
+                        <ul style="list-style-type: none;">    
+                            <li>
+                                <div>
+                                    
+                                    <a href="{{url('rental/'.$topic_book->id)}}"><p><b>{{$topic_book->BookTitle}}</b></p></a>
+                                    <div class="comment_area">  
+                                    <span style="font-size: 20px;"><p>{{$topic->comment_text}}</p></span>
+                                       
+                                    </div>
+                                    <div class="col-sm-offset-10 col-sm-2">
+                                        　<a href="{{url('book_comment/'.$topic->id)}}">もっとみる</a>
+                                    </div>
+                                    <div>
+                                        @foreach($topic_category_names as $topic_category_name)
+                                        <a href="{{url('category_page/'.$topic_category_name["id"])}}">{{$topic_category_name["category_name"]}}&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                                        @endforeach 
+                                    </div>
+                                    <div>
+                                        @foreach($topic_book -> tags as $tag)
+                                        <a  class="tag" href="{{url('tag_page/'.$tag->id)}}">{{$tag->tags}}</a>
+                                        @endforeach
+                                    </div>
+                                </div>    
+                            </li>
+                        </ul>
+                    </div> 
+                </div>    
            </div>
         </div>
     </div>
@@ -78,7 +88,6 @@ use App\Category_genre;
                     <a href="{{url('threads/')}}">もっと見る</a>
                 </div>    
             </div>
-       
     </div>
 <!-- スレッド速報 終わり -->
 
