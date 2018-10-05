@@ -18,9 +18,9 @@ use App\Scopes\LivingBookScope;
            <span navbar-brand><img class="avater img-circle" src="{{Auth::user()->avater}}"></img></span>
             <h3>{{Auth::user()->name}}さんのマイページ</h3>
             @if(Auth::user()->group_id == "null")
-            <a href="{{url('user_group/')}}">グループの登録をしてください</a>
-            @else
-            <h4>{{Auth::user()->group->group_name}}</h4>
+                <a href="{{url('user_group/')}}">グループの登録をしてください</a>
+                @else
+                <h4>{{Auth::user()->group->group_name}}</h4>
             @endif
         </div>
     

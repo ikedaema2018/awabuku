@@ -59,7 +59,7 @@ class UserController extends Controller
         ]);
         
         Auth::login($authUser, true);
-        return redirect('group_class/');
+        return redirect('user_group/');
         
         // $authUser = $this->findOrCreateUser($fuser);
         // Auth::login($authUser, true);

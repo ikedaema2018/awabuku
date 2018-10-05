@@ -16,10 +16,10 @@ use App\Category;
      </ul>
 
     <div class="row">
-        <div class="col-xs-3"　style="background:#CCC;height:200px;"style="text-align:center;">
+        <div class="col-sm-3"　style="background:#CCC;height:200px;"style="text-align:center;">
             <img src="{{ $comment->user_c->BookImage}}"></img>
         </div>
-        <div class="col-xs-9"　style="background:#CCC;height:200px;">
+        <div class="col-sm-9"　style="background:#CCC;height:200px;">
             
        
             <h2>{{ $comment->user_c->BookTitle }}</h2>

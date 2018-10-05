@@ -58,14 +58,9 @@ ul.book_info {
 }
 
 
-.comment_area {
-   
-    overflow: hidden;
-    width: 700px;
-}
-.comment_area p {
-    margin: 0;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
+.cut_txt{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp:1;
+  overflow: hidden;
 }

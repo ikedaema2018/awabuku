@@ -12,12 +12,12 @@ use App\Category_genre;
 
 ?>
 
+@if(count($topic) > 0 )
 
-
-    <div class="container">
         <div class="jumbotron"  style="background-color:#fffaf0; background-size:cover;">
            <div> 
                 <ul style="list-style:none;" class="sample">
+                
                  <li><span><img class="avater img-circle" src="{{$topic_user->avater}}"></img></span></li>
                  <li><p><b><a href="{{url('user_search_page/'.$topic_user->id)}}">{{$topic_user->name}}</a>さんのオススメ</b></p></li>
                 </ul>
@@ -32,10 +32,11 @@ use App\Category_genre;
                                 <div>
                                     
                                     <a href="{{url('rental/'.$topic_book->id)}}"><p><b>{{$topic_book->BookTitle}}</b></p></a>
-                                    <div class="comment_area">  
-                                    <span style="font-size: 20px;"><p>{{$topic->comment_text}}</p></span>
-                                       
-                                    </div>
+                                     <div class="col-sm-12"> 
+                                    　<p class="cut_txt">{{$topic->comment_text}}</p>
+                                    　</div>
+                                    　
+                                
                                     <div class="col-sm-offset-10 col-sm-2">
                                         　<a href="{{url('book_comment/'.$topic->id)}}">もっとみる</a>
                                     </div>
@@ -56,14 +57,9 @@ use App\Category_genre;
                 </div>    
            </div>
         </div>
-    </div>
+    @endif
     
-    
-    
-    
-    
-    
-    
+
     @if(Session::has('alert'))
     <div class="alert alert-danger" role="alert">
   　　メッセージ：{{ session('alert') }}

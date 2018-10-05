@@ -28,9 +28,7 @@ use App\Scopes\LivingBookScope;
                          @endif
                   </select>
                             <button type="submit" id="bbb" class="btn btn-primary">選択</button>
-                            
                  </form> 
-           
         </div>
     </div>
 <!--ジャンボトロン終わり-->
