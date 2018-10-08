@@ -69,11 +69,12 @@ use App\Tag;
             </div>
             <div>
                 <div class="col-sm-6">
-                  <p>ISBN:</p>
+                  <p>ISBN10:</p>
                   <p id="isbn10" class="type">
                 </div>   
                 <div class="col-sm-6">
                    <h4>&nbsp;</h4> 
+                   <p>ISBN13:</p>
                   <p id="isbn13" class="type"</p>
                 </div>
             </div>
@@ -145,7 +146,7 @@ use App\Tag;
                   <div id="ajax_data"></div>
                   <div id ="new_tag"></div>
                    <div style="margin-top:20px; margin-bottom:20px;">
-                        <p>タグを追加する</p>
+                        <p>カテゴリを選択してタグを追加する</p>
                          <form id="form_id">
                             <select id="tags" form="form_id">
                             <option>カテゴリを選択</option>

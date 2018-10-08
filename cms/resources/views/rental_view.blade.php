@@ -12,27 +12,28 @@ use App\Category;
 ?>
 
 
-    <div class="row">
-        <div class="col-xs-3"　style="background:#CCC;height:200px;"style="text-align:center;">
-            <img src="{{ $book->BookImage}}"></img>
-        </div>
-        <div class="col-xs-9"　style="background:#CCC;height:200px;">
-            <h2>{{ $book->BookTitle }}</h2>
-            <p>{{ $book->BookAuthor }}</p>
-            <p>{{ $book->isbn10 }}/&nbsp;{{ $book->isbn13 }}</p>
-            <p>{{ $book->PublishedDate}}</p>
-             @if(isset($comment_lists)>0)
-             @foreach($category_lists as $category_list)
-            <p>{{ Category::find($category_list->category_id)->category_name}}</p>
-             @endforeach
-             @endif
-        </div>
-    </div>  
-    <div style="margin-left:40px;">
+<div class="row">
+    <div class="col-sm-3" style="text-align: center;">
+        <img src="{{ $book->BookImage}}" height="200px;"></img>
+    </div>
+    <div class="col-sm-9">
+        <h2>{{ $book->BookTitle }}</h2>
+        <p>{{ $book->BookAuthor }}</p>
+        <p>{{ $book->isbn10 }}/&nbsp;{{ $book->isbn13 }}</p>
+        <p>{{ $book->PublishedDate}}</p>
+         @if(isset($comment_lists)>0)
+         @foreach($category_lists as $category_list)
+        <p>{{ Category::find($category_list->category_id)->category_name}}</p>
+         @endforeach
+         @endif
+    </div>
+</div>  
+<div class="col-xs-offset-1 col-xs-10 col-xs-offset-2">
     <div class="row">
         <p>書籍の内容</p>
         <p class="col-xs-12">{{ $book->BookDiscription}}</p>
     </div>
+    
     <div class="row">
         <p>カテゴリ</p>
         @if(isset($category_lists)> 0 )
@@ -46,26 +47,23 @@ use App\Category;
         @foreach($book -> tags as $tag)
          <a  class="tag" href="{{url('tag_page/'.$tag->id)}}" class="col-xs-12">{{$tag->tags}}</a>
         @endforeach
-    </div>    
+    </div> 
+    
         
-        
-   
-   
-    <div class="row">
-        <p class=class="col-xs-offset-1 col-xs-9 col-xs-offset-2" style="border-bottom-style: outset;">おすすめコメント</p>
+    <div class="row" style="margin-bottom:30px;">
+        <p style="border-bottom-style: outset;">おすすめコメント</p>
        
              @if(isset($comments)>0)
              @foreach($comments as $comment)
-             <div class="col-sm-offset-1 col-sm-11">
+             <div>
                  <a href="{{url('book_comment/'.$comment->id)}}"><p class="col-xs-12">{{$comment->comment_text}}({{User::find($comment->user_id)->name}}</a>)</p>
              </div>  
              @endforeach
              @endif
     </div>
-    </div>
-                 
-                 
-                    
+</div>    
+    
+                   
 <table class="table table-striped" style="display: table"; >
     <tr>
         <th>id</th>

@@ -16,9 +16,11 @@ use App\Tag;
 <?php $i=0?>
    @if(count($groups)>0)
      @foreach($groups as $group)
-      
+        @if(count($group->users)>0)
+            <h2><b>{{$group->group_name}}</b></h2>
+         @endif
           @foreach($group->users as $user)
-          <h2><b>{{$group->group_name}}</b></h2>
+          
              @if($i==0)
               <div class="col-sm-12 border_bottom">
              @endif
@@ -36,7 +38,7 @@ use App\Tag;
                <?php $i=0 ?>
         　    </div> 
         　      @endif
-        　 @endforeach
+         @endforeach
     @endforeach
   @endif             
     

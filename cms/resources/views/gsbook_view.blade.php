@@ -237,7 +237,7 @@ use App\Tag;
                 @endif
             </td>
             <td>
-                <p class="col-xs-12"><a href="{{url('book_comments'.$comment->id)}}">{{$comment->comment_text}}({{User::find($comment->user_id)->name}})</a></p>
+                <p class="col-xs-12"><a href="{{url('book_comments'.$comment->id)}}">{{$comment->comment_text}}</a></p>
             </td>
             </tr>
         </tbody>
