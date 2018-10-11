@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="{{asset('css/login.css')}}">
     <link rel="stylesheet" href="{{asset('css/gsbook.css')}}">    
     <link rel="stylesheet" href="{{asset('css/book_comment.css')}}">
+    <link rel="stylesheet" href="{{asset('css/key.css')}}">
     
     
     <link rel="stylesheet" href="{{secure_asset('css/head.css')}}" type="text/css" />
@@ -45,6 +46,13 @@
     <!--fontaweome-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    
+
+    <script type="text/javascript" src="{{asset('js/JOB.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/barcode-reader.jquery.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/BarcodeReader.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/DecoderWorker.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/exif.js')}}"></script>
     
 
 </head>
