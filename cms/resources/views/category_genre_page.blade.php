@@ -12,8 +12,10 @@ use App\Category;
  
 
 
- <div class="row">   
+
  @if(count($genreBooks)>0)
+ <div class="row">  
+ <div class="col-sm-3">
    @foreach($genreBooks as $genreBookKey  => $genreBookValues)
    
         <div class= "col-sm-12">  
@@ -24,12 +26,12 @@ use App\Category;
         <div class="col-sm-12"> 
          <ul class="category">
           @foreach($categories as $category)
-          <li><a href=""><p>{{$category->category_name}}</a></p></li>
+          <li><a href="{{url('category_page/'.$category->id)}}"><p>{{$category->category_name}}</a></p></li>
           @endforeach
          </ul>
        </div>
-               
-
+  </div>             
+  <div class="col-sm-9">
          <?php $i=0?>
             @foreach($genreBookValues as $genreBookValue)
               @if($i==0)
@@ -51,6 +53,7 @@ use App\Category;
              　   @endif
             @endforeach 　    
     @endforeach
+    </div>
   @endif
                
                

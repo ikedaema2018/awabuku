@@ -4,6 +4,7 @@
 <?php
 
 use App\User;
+use App\Category;
 
 ?>
 <div class="col-sm-offset-2 col-sm-8">
@@ -23,7 +24,7 @@ use App\User;
                     
                     <div class="row">
                         <div class="form-group">  
-                            <div class="col-sm-3 right"> 
+                            <div class="col-sm-3 "> 
                                 <label class="control-label"><b>スレッド名：</b></label>
                             </div>
                             <div class="col-sm-6">    
@@ -34,7 +35,7 @@ use App\User;
                     
                     <div class="row">
                         <div class="form-group">  
-                            <div class="col-sm-3 right">
+                            <div class="col-sm-3 ">
                                 <label class="control-label"><b>内容：</b></label>
                             </div>
                             <div class="col-sm-6">    
@@ -46,7 +47,7 @@ use App\User;
                     
                     <div class="row">
                         <div class="form-group">   
-                              <div class="col-sm-3 right">
+                              <div class="col-sm-3 ">
                                   <label class="control-label"><b>カテゴリー:</b></label>
                               </div>
                               <div class="col-sm-9">
@@ -91,6 +92,7 @@ use App\User;
             <tr>
                 <th>教えてほしい人！</th>　
                 <th>スレッド名</th>
+                <th>カテゴリー</th>
 
             </tr>
      
@@ -99,6 +101,7 @@ use App\User;
                 <tr>
                     <td>{{User::find($thread->user_name)->name }}</td>
                     <td><a href="{{url('thread/'.$thread->id)}}">{{ $thread->thread_sub }}</a></td>
+                    <td>{{Category::find($thread->category_id)->category_name}}</td>
                  </tr>
                 @endforeach
             </tbody>

@@ -664,21 +664,45 @@ class BooksController extends Controller
         $comments=Comment::where('book_id',$book->id)->get();
 
        $rentals=Rental::where('return_flag',1)->get();
-
-      
-        $category_lists=Category_list::where('book_id',$book->id)->get();        
+       $book_owner=Owner::where('book_id',$book->id)->first();
+       $keys = Key::all();   
+       $category_lists=Category_list::where('book_id',$book->id)->get();        
 
         return view('rental_view', [
             'book'=> $book,
             'owners'=>$owners,
+            'book_owner'=>$book_owner,
             'comments'=>$comments,
             'category_lists'=>$category_lists,
             'rentals'=>$rentals,
-            
+            'keys'=>$keys,
+           
         ]
         );
     }
-   
+    
+     public function rental_comment_insert(Request $request) {
+        // //バリデーション
+        
+        //Authで通らなければ、登録ができないように追加する
+        if(Auth::check()){
+        
+        
+        $comments = new Comment;
+        $comments->book_id= $request->book_id;
+        $comments->owner_id =$request->owner_id;
+        $comments->user_id= $request->user_id;
+        $comments->comment_text= $request->comment_text;
+        $comments->evaluation= $request->evaluation;
+        $comments->key= $request->key;
+        $comments->save();  
+
+        }
+
+        return redirect('/rental/'.$request->book_id);
+   }
+    
+    
    //本を借りる
         public function book_rental(Request $request) {
             
@@ -698,7 +722,9 @@ class BooksController extends Controller
      
         return redirect('/mypage')->with('alert', '返却期限を過ぎている書籍があります。大至急ご返却ください');
         }
-            
+         
+         
+      
             
         $validator = Validator::make($request->all(), [
           'user_id' => 'required',
@@ -715,6 +741,7 @@ class BooksController extends Controller
         $rentals->return_day =date("Y-m-d",strtotime("+7 day"));
         $rentals->return_flag = 1;
         $rentals->save();
+        
         
         $owner = [
         'return_flag' => 1
@@ -743,6 +770,9 @@ class BooksController extends Controller
             ->orderBy('updated_at', 'desc')
             ->get();
             
+            $comments = Comment::where('user_id',Auth::user()->id)->get();
+            
+            
             $expired_rentals = Rental::where('user_id', Auth::user()->id)
             ->where('return_flag',1)
             //返却期限を過ぎているものをselect
@@ -760,7 +790,8 @@ class BooksController extends Controller
                 'owners' => $owners,
                 'rentals' => $rentals,
                 'expired_rentals' => $expired_rentals,
-                'returned_rentals' => $returned_rentals
+                'returned_rentals' => $returned_rentals,
+                'comments' => $comments,
                  
                 ]);
         }else{
@@ -837,8 +868,6 @@ class BooksController extends Controller
             'book'=> $book,
             'owner'=>$owner]
         );
-        
-
         }
 
     //ownerの本の情報を削除する（life_flag->1に変更）
@@ -1004,7 +1033,7 @@ class BooksController extends Controller
         $validate_rule = [         
                 'BookTitle'       => 'required',
                 'BookAuthor'      => 'required',
-                'isbn10'          => 'required',
+              
                 'isbn13'          => 'required',
                 'PublishedDate'   => 'required',
                 'BookImage'       => 'required',
@@ -1022,7 +1051,7 @@ class BooksController extends Controller
        $error_msg=[
                 'BookTitle'       => '本の情報が入力されていません',
                 'BookAuthor'      => '本の情報が入力されていません',
-                'isbn10'          => '本の情報が入力されていません',
+               
                 'isbn13'          => '本の情報が入力されていません',
                 'PublishedDate'   => '本の情報が入力されていません',
                 'BookImage'       => '本の情報が入力されていません',
@@ -1042,7 +1071,7 @@ class BooksController extends Controller
         if ($validator->fails()) {
                 return redirect('/book')
                     ->withInput()
-                    ->withErrors($validator);
+                    ->withErrors($error_msg);
                
         }
         

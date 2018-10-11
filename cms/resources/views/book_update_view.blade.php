@@ -4,12 +4,10 @@
 
    <h3>書誌情報が登録されました。</h3>
       <div class="row">
-                <p hidden>{{ $owner->books->id }}</p>
-            
-                 <div class="col-xs-3">
+                 <div class="col-sm-3" style="text-align:center;">
                  <img src="{{ $owner->books->BookImage}}"></img>
                  </div>
-                <div class="col-xs-9">
+                <div class="col-sm-9">
                     <h2>{{ $owner->books->BookTitle }}</h2>
                     <p>{{ $owner->books->BookAuthor }}</p>
                     <p>{{ $owner->books->isbn10 }}/{{ $owner->books->isbn13 }}</p>

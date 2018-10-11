@@ -27,25 +27,3 @@
     opacity:0.7;
     zoom:1;/*IE*/
 }
-
-.coment_list{
-    margin-top: 50px;
-}
-
-.comment_body{
-  font-size: 0;
-}
-.comment_body_list{
-  /*background-color: #EEFFFF;*/
-  display: inline-block;
-  font-size: 12px;
-  width: 25%;
-}  
-
-.panel-heading-li{
-    display: inline-block;
-}
-
-.carousel_book_info{
-  display: inline-block;  
-}

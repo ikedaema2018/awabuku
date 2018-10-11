@@ -12,7 +12,7 @@ use App\Tag;
 
  <p class="page-header">本を登録する</p>
   <div class="form-group">
-    <label  class="col-sm-3 control-label form-control-static" for="isbn">ISBNを入力してください:</label>
+    <label  class="col-sm-3 control-label form-control-static btn-group-lg" for="isbn">ISBNを入力してください:</label>
     <div class="col-sm-9">
         <input  class="form-control-static col-sm-9" type="text" class="form-control" id="isbn" placeholder="978で始まる13桁の数字を入力（ーハイフンは含まない）">
         <button id="btn" class="form-control-static">検索</button>
@@ -38,7 +38,7 @@ use App\Tag;
     
 <div style="background-color:#DDFFFF;">
     <div class="row">    
-        <div class="col-sm-3">
+        <div class="col-sm-3" style=text-align:center;>
             <p>表紙画像:</p>
             <p id="BookThumbnail" class="type"></p>
                 <div style="visibility: hidden;">
@@ -68,15 +68,19 @@ use App\Tag;
                 </div>
             </div>
             <div>
+               
+                  
+                  
+               
                 <div class="col-sm-6">
-                  <p>ISBN10:</p>
-                  <p id="isbn10" class="type">
-                </div>   
-                <div class="col-sm-6">
-                   <h4>&nbsp;</h4> 
                    <p>ISBN13:</p>
                   <p id="isbn13" class="type"</p>
+                  <p id="isbn10" class="type">
                 </div>
+             
+                
+                
+                
             </div>
         </div>    
     </div>
@@ -116,11 +120,12 @@ use App\Tag;
     
    <div class="form-group">   
           <p><b>カテゴリーを選択する</b><p>
-          
+          <div class="block-contents">   
+           <p style="font-size:10px;">※複数回答可</p>
             <?php $i=0 ?>
             @foreach($genres as $genre)
               
-                <div  id="accordion-{{$i}}}" class="block-contents" style="margin-top:20px;">
+                <div  id="accordion-{{$i}}}"  style="margin-top:20px;">
                     @if(count($genres)>0)   
                     <a data-toggle="collapse" data-parent="#accordion-{{$i}}" href="#sample{{$i}}">
                     ・{{$genre->category_genrename}}
@@ -135,19 +140,20 @@ use App\Tag;
             </div>  
             <?php $i = $i + 1 ?>
              @endforeach
-
+        </div>
    </div>   
     
     <div class="form-group"> 
-          <p><b>関連するタグ</b></p>
+          <p><b>関連するタグを選択する</b></p>
           <div class="block-contents">
+           <p style="font-size:10px;">※複数回答可</p>
               <p id="tagslist"></p>
               	<div class="modal-body">
                   <div id="ajax_data"></div>
                   <div id ="new_tag"></div>
                    <div style="margin-top:20px; margin-bottom:20px;">
                         <p>カテゴリを選択してタグを追加する</p>
-                         <form id="form_id">
+                        <form id="form_id">
                             <select id="tags" form="form_id">
                             <option>カテゴリを選択</option>
                             </select>
@@ -167,6 +173,7 @@ use App\Tag;
     <div class="form-group"> 
           <p><b>特徴</b></p>
           <div class="block-contents">
+              <p style="font-size:10px;">※オススメな人がいたらチェックしてください</p>
               @if(count($keys)>0)
               @foreach($keys as $key)
                 <label class="radio-inline"><input type ="radio" name="key" value="{{$key->id}}">{{$key->key}}</label>
@@ -223,53 +230,15 @@ use App\Tag;
         var selected_tag_ids = [];
 
 
-        $("#btn").on("click", function () {
+       $("#btn").on("click", function () {
             const isbn = $("#isbn").val();
-                     
             const googleUrl = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn;
             const openUrl   = "https://api.openbd.jp/v1/get?isbn=" + isbn;
           
            $.getJSON(openUrl , function (data1) {
-               //openUrlにデータがあったら
-                 if (!data1[0]==null) {
-                     console.log("-----data1[0]!=null-------")
-                     console.log(!data1[0]==null)
-                     $("#BookTitle").html('<input class="form-control input-lg" name="BookTitle" readonly="readonly" type="text"  value="' + data1[0].summary.title +
-                            '">');
-                        $("#isbn10").html('<input class="form-control input-sm" name ="isbn10" readonly="readonly" type="number" value="' + data1[0].summary.isbn + '">');
-                        $("#isbn13").html('<input class="form-control input-sm" name ="isbn13" readonly="readonly" type="number" value="' + data1[0].summary.isbn + '">');
-                        $("#BookAuthor").html('<input class="form-control input-sm" name="BookAuthor" readonly="readonly" type="text" value="' + data1[0].summary.author +'">');
-                        $("#PublishedDate").html('<input class="form-control input-sm" name="PublishedDate" readonly="readonly" type="text" value="' +data1[0].summary.pubdate  + '">');
-                        $("#Publisher").html('<input class="form-control input-sm" name="Publisher" readonly="readonly" type="text" value="' +data1[0].summary.publisher  + '">');
-                        
-                        let description = "";
-                        if(data1[0].onix.CollateralDetail.TextContent){
-                            description = data1[0].onix.CollateralDetail.TextContent[0].Text;
-                        }else{
-                            description = "書誌情報なし";
-                        }
-                        $("#BookDiscription").html('<input class="form-control input-lg" name="BookDiscription"  readonly="readonly" type="text" value="' + description + '">');
-         
-                        try {
-                             $("#BookThumbnail").html(' <img src=\"' + data1[0].summary.cover +'\ " />');   
-                             if (data1[0].summary.cover == ""){ throw new Error() }
-                        } catch(e) {
-                            $("#BookThumbnail").html('<img src="http://www.tatemachi.com/wp/wp-content/themes/tatemachi/img/shopimage-noimage.jpg" width="100",heigt="200">');
-                        }
-
-                        try {
-                            $("#BookImage").html(' <input name="BookImage" type="hidden" value="' + data1[0].summary.cover + '">');
-                             if (data1[0].summary.cover == ""){ throw new Error() }
-                        } catch(e) {
-                            $("#BookImage").html('<input name="BookImage" type="hidden" value="http://www.tatemachi.com/wp/wp-content/themes/tatemachi/img/shopimage-noimage.jpg">');
-                      
-                        }
-                        $("#message").html("");
-                } else {
-                        $.getJSON(googleUrl, function (data) {
+                 if (data1[0]===null) {
+                    $.getJSON(googleUrl, function (data) {
                         if (!data.totalItems){
-                            console.log("-----!data.totalItems-------")
-                            console.log(!data.totalItems)
                             $("#isbn").val("");
                             $("#BookTitle").text("");
                             $("#BookAuthor").text("");
@@ -279,17 +248,14 @@ use App\Tag;
                             $("#BookThumbnail").text("");
                             $("#BookDiscription").text("");
                             $("#BookImage").text("");
-                            $("#Publisher").text("");
-                            $("#message").html(' <p　style="color:red;" class = "bg-warning" id = "warning" > 該当する書籍がありません。 </p>');
-                            
+                            $("#message").html(' <p class = "bg-warning" id = "warning" > 該当する書籍がありません。 < /p>');
+                            $('#message > p').fadeOut(3000);
                         } else {
                             //googleURLの処理
-                            console.log("-----data.totalItems-------")
-                            console.log(data.totalItems)
                            
                             $("#BookTitle").html('<input class="form-control input-lg" name="BookTitle" readonly="readonly" type="text"  value="' + data.items[0].volumeInfo.title +
                             '">');
-                            $("#isbn10").html('<input class="form-control input-sm" name ="isbn10" readonly="readonly" type="number" value="' + data.items[0].volumeInfo.industryIdentifiers[
+                            $("#isbn10").html('<input class="form-control input-sm" name ="isbn10" readonly="readonly" type="hidden" value="' + data.items[0].volumeInfo.industryIdentifiers[
                                 0].identifier + '">');
                             $("#isbn13").html('<input class="form-control input-sm" name ="isbn13" readonly="readonly" type="number" value="' + data.items[0].volumeInfo.industryIdentifiers[
                                 1].identifier + '">');
@@ -297,13 +263,19 @@ use App\Tag;
                                 '">');
                             $("#PublishedDate").html('<input class="form-control input-sm" name="PublishedDate" readonly="readonly" type="text" value="' + data.items[0].volumeInfo
                                 .publishedDate + '">');
+ 
+                            let description = "";
+                         
                             $("#BookDiscription").html('<input class="form-control input-lg" name="BookDiscription"  readonly="readonly" type="text" value="' + data.items[0].volumeInfo
-                                .description + '">');
-                            $("#Publisher").html('<input class="form-control input-lg" name="Publisher"  readonly="readonly" type="text" value="' + data.items[0].volumeInfo
-                                .publisher + '">');
+                             .description + '">');
+                            
+                            
+                            $("#Publisher").html('<input class="form-control input-sm" name="Publisher"  readonly="readonly" type="text" value="' 
+                            + data.items[0].volumeInfo.publisher + '">');
+      
                                  
                             try {
-                                     $("#BookThumbnail").html(' <img src=\"' + data.items[0].volumeInfo.imageLinks.smallThumbnail +
+                                $("#BookThumbnail").html(' <img src=\"' + data.items[0].volumeInfo.imageLinks.smallThumbnail +
                                 '\ " />'); 
                             } catch(e) {
             
@@ -315,16 +287,52 @@ use App\Tag;
                                 $("#BookImage").html(' <input name="BookImage" type="hidden" value="' + data.items[0].volumeInfo.imageLinks.smallThumbnail +
                                 '">');
                             } catch(e) {
-            
                                 $("#BookImage").html('<input name="BookImage" type="hidden" value="http://www.tatemachi.com/wp/wp-content/themes/tatemachi/img/shopimage-noimage.jpg">');
-                          
                             }
-                        $("#message").html("");
                         }
                     })
+                } else {
+    
+                    //openURLの処理
+                    console.log(data1[0]);
+                        $("#BookTitle").html('<input class="form-control input-lg" name="BookTitle" readonly="readonly" type="text"  value="' + data1[0].summary.title +
+                            '">');
+                        $("#isbn10").html('<input class="form-control input-sm" name ="isbn10" readonly="readonly" type="hidden" value="' + data1[0].summary.isbn + 
+                        '">');
+                        $("#isbn13").html('<input class="form-control input-sm" name ="isbn13" readonly="readonly" type="number" value="' + data1[0].summary.isbn + 
+                        '">');
+                        $("#BookAuthor").html('<input class="form-control input-sm" name="BookAuthor" readonly="readonly" type="text" value="' + data1[0].summary.author +
+                        '">');
+                        $("#PublishedDate").html('<input class="form-control input-sm" name="PublishedDate" readonly="readonly" type="text" value="' +data1[0].summary.pubdatey  +
+                         '">');
+                        $("#Publisher").html    ('<input class="form-control input-sm" name="Publisher" readonly="readonly" type="text" value="' +data1[0].summary.publisher  + 
+                        '">');
+
+                        let description = "";
+                        if(data1[0].onix.CollateralDetail.TextContent){
+                            description = data1[0].onix.CollateralDetail.TextContent[0].Text;
+                        }else{
+                            description = "書誌情報なし";
+                        }
+                        $("#BookDiscription").html('<input class="form-control input-lg" name="BookDiscription"  readonly="readonly" type="text" value="'
+                        + description + '">');
+                       console.log(data1[0].summary.cover);
+                     
+                     
+                        try {
+                             $("#BookThumbnail").html('<img src=\"' + data1[0].summary.cover +'\ " />');   
+                             if (data1[0].summary.cover == ""){ throw new Error() }
+                        } catch(e) {
+                            $("#BookThumbnail").html('<img src="http://www.tatemachi.com/wp/wp-content/themes/tatemachi/img/shopimage-noimage.jpg" width="100",heigt="200">');
+                        }
+
+                        try {
+                            $("#BookImage").html('<input name="BookImage" type="hidden" value="' + data1[0].summary.cover + '">');
+                             if (data1[0].summary.cover == ""){ throw new Error() }
+                        } catch(e) {
+                            $("#BookImage").html('<input name="BookImage" type="hidden" value="http://www.tatemachi.com/wp/wp-content/themes/tatemachi/img/shopimage-noimage.jpg">');
+                        }
                 }
-                
-                
             });
         });
 // tag ajax

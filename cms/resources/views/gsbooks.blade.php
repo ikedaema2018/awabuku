@@ -39,15 +39,16 @@ use App\Category_genre;
          @foreach($owners as $owner)
          @if($i == 0)
           <div class="col-sm-12 border_bottom">
-         @endif      
+         @endif     
+         <div class="hoge">
             <div class="col-sm-2" style="backgroud:#ccc,height:250px;">
                 <ul style="list-style:none;">
-                    <li><a href="{{url('rental/'.$owner["id"])}}"><img src="{{Book::find($owner->book_id)->BookImage}}" width="128" height="180"></img></a></li>
-                    <li><a href="{{url('rental/'.$owner["id"])}}">{{Book::find($owner->book_id)->BookTitle}}</a></li>
+                    <li><img src="{{Book::find($owner->book_id)->BookImage}}" width="128" height="180"></img></li>
+                    <li>{{Book::find($owner->book_id)->BookTitle}}</li>
                     <li><a href="{{url('gsbook/'.$owner->id)}}"><button type="button" class="btn-success">コメントを読む/書く</button></a></li>
                 </ul>
-                
             </div>
+         </div>    
          <?php $i=$i+1?>
          @if($i == 6 || $loop->last)
        　<?php $i=0?>

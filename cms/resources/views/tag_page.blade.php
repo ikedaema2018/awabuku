@@ -9,8 +9,11 @@ use App\Book;
 use App\Category;
 ?>
 
- 
-<h2>{{$tag->tags}}</h2>
+
+<div>
+   <h3 style="border-bottom-style: outset;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;タグ：{{$tag->tags}}</h3>
+</div>    
+
 <div class="row">   
 <?php $i=0?>
    @if(count($tag)>0)
@@ -19,13 +22,11 @@ use App\Category;
       @if($i==0)
         <div class="col-sm-12 border_bottom">
       @endif
-            <div class= "col-sm-2">
-              <ul class="sample">
-               <li>
-                 <a href="{{url('rental/'.$book->id)}}"><img src="{{$book->BookImage}}"></img></a><br>
-                 <a href="{{url('rental/'.$book->id)}}">{{$book->BookTitle}}</a><br>
-               </li>          
-              </ul>
+            <div class= "col-sm-2" style="text-align:center;">
+             
+                 <a href="{{url('rental/'.$book->id)}}"><img src="{{$book->BookImage}}"></img></a>
+                 <a href="{{url('rental/'.$book->id)}}"><p style="margin-right:auto margin-left:auto;">{{$book->BookTitle}}</p></a>
+              
             </div>
       <?php $i=$i+1?>
            @if($i == 6 || $loop->last)
@@ -36,6 +37,5 @@ use App\Category;
     @endforeach
   @endif             
  </div>     
-
 
 @endsection

@@ -121,6 +121,7 @@ use App\Scopes\LivingBookScope;
 <!--レンタル本　終わり--> 
 
 
+
 <!--所有している本-->
 <div>
 <h2 class="col-xs-12">所有している本</h2>　
@@ -158,33 +159,83 @@ use App\Scopes\LivingBookScope;
 </div>
 <!--所有している本　終わり-->
 
+<!--コメントを入れている本-->
+<div>
+<h2 class="col-xs-12">コメントした本</h2>　
+
+        @if(isset($comments)>0)
+        <?php $i=0 ?>
+            @foreach($comments as $comment)
+              @if($i == 0)
+                <div class="col-sm-12 border_bottom">
+                      @endif
+                      <div class="hoge">
+                            <div class="col-sm-2">
+                            <ul class="sample">
+                             <li>
+                                <img src="{{$comment->user_c->BookImage}}" class="img-responsive" style="width:128px; height:180px;"></img>
+                                <p>{{ $comment->user_c->BookTitle }}</p>
+                                <p>{{ $comment->user_c->BookAuthor }}</p>
+                                <p>{{ $comment->user_c->Published}}</p>      
+                                
+                                
+                                @if($comment->book_comments->user_id === Auth::user()->id)
+                                <p style="color:bleu"><span class="glyphicon glyphicon-book">MyBook</p>
+                                @endif
+                
+                                @foreach($comment->book_comments->rentals as $aaa)
+                                @if($aaa->return_flag == 1)
+                                <p style="color:red">{{User::find($aaa->user_id)->name}}さんに{{$aaa->return_day->format('Y-m-d')}}まで貸出中</p>
+                                @endif
+                                @endforeach
+                             </li>
+                             </ul>
+                            <a href="{{url('mypage/'.$comment->book_comments->id)}}"></a>
+                              <?php $i=$i+1 ?>
+                              @if($i == 6 || $loop->last)
+                              <?php $i=0 ?>
+                             </div>
+                        @endif
+                         
+                    </div>     
+                   </div>
+            @endforeach
+        @endif
+
+ </div>    
+
+<!--コメントを入れている本　終わり-->
+
+
 <!--レンタル履歴　はじめ-->
 <div>
- <h2 class="col-xs-12">レンタル履歴</h2>
+ 
     @if(isset($returned_rentals)>0)
+    <h2 class="col-xs-12">レンタル履歴</h2>
          <?php $i=0?>
           @foreach($returned_rentals as $returned_rental)
               @if($i==0)
                <div class="col-sm-12 border_bottom">
                       @endif
+                      <div class="hoge">
                        <div class="col-sm-2">
                             <ul class="sample">
                                 <li>
-                                <img src="{{Book::find($returned_rental->rental_books->book_id)->BookImage}}" class="img-responsive" width="128" height="180"></img>
+                                <img src="{{Book::find($returned_rental->rental_books->book_id)->BookImage}}" class="img-responsive" style="width:128px; height:180px;"></img>
                                 <a href="">{{Book::find($returned_rental->rental_books->book_id)->BookTitle}}</a>
                                 <p>{{ Book::find($returned_rental->rental_books->book_id)->BookAuthor}}</p>
                                 <p>{{ Book::find($returned_rental->rental_books->book_id)->isbn13 }}</p>
                                 <p>{{ Book::find($returned_rental->rental_books->book_id)->Published}}</p>     
-                                <a href="{{url('mypage/'.$owner->id)}}">詳細へ</a>
+                              
                                 </li>
                             </ul>
-                 　     </div>
-                 
                      　    <?php $i=$i+1?>
                      　      @if($i == 6 || $loop->last)
                      　      <?php $i=0 ?>
-            　</div>
+                       </div>   
               @endif
+              </div>
+              </div>
           @endforeach   
     @endif
 </div>

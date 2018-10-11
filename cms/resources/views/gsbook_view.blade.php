@@ -77,8 +77,6 @@ use App\Tag;
             </td>
         </tr>
     </table>       
-  </div>
-</div> 
 
 <!-- 本を新規登録してからオススメする -->  
 <div class="row">
@@ -166,6 +164,8 @@ use App\Tag;
 </div>
 </div>
 
+
+<div class="row" style="margin-top:40px;">
 <p class="col-xs-12">おすすめコメント</p>
         
 <table class="table table-striped">
@@ -176,14 +176,15 @@ use App\Tag;
         <th>オススメポイント</th>
     
     </tr>        
-      
-      
-      
+   
      @if(isset($comments)>0)
      @foreach($comments as $comment)
+    
     <tbody>
+         @if($comment->user_id > 1)
         <tr>
             <td>
+               
                 <p>{{$comment->user->name}}</p>
             </td>
             <td>
@@ -240,14 +241,17 @@ use App\Tag;
                 <p class="col-xs-12"><a href="{{url('book_comments'.$comment->id)}}">{{$comment->comment_text}}</a></p>
             </td>
             </tr>
+            @endif
         </tbody>
      @endforeach
      @endif
  </table>   
                  
                  
+  </div>
+</div> 
 
-
+</div>
 
  @endsection
         

@@ -79,6 +79,8 @@ Route::post('/book_rental','BooksController@book_rental')
 ->middleware('login');
 Route::get('/book_rentaled_view/{rental}','BooksController@book_rentaled_view')
 ->middleware('login');
+Route::post('/rental/','BooksController@rental_comment_insert')
+->middleware('login');
 
 //マイページ
 Route::get('/mypage','BooksController@mypage')

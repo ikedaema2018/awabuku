@@ -62,25 +62,26 @@ use App\Category;
 <!--本の詳細終わり-->   
 
 
-<!--おすすめコメント一覧開始-->
-  
-    <div class="col-sm-12">
-    <p>おすすめコメント</p>
-        @if(isset($comments)>0)
-        <table class="table table-striped">
-         <tr>
-            <th class="col-sm-2">ユーザー</th> 
-            <th class="col-sm-3">特徴</th>
-            <th class="col-sm-2">オススメ度</th>
-            <th class="col-sm-5">コメント</th>
-         </tr>
-         <tbody>
-             @foreach($comments as $comment)
-             <tr>    
-                <td>{{User::find($comment->user_id)->name}}さん</td>
-                <td>{{$comment->keys->key}}</td>
-                <td>
-                    @if(($comment->evaluation) == 1)
+    
+
+<!--コメントリストを表示する　　-->
+<div class="col-sm-2-offset col-sm-8 col-sm-offset-2" style="margin-top:40px;">
+
+@if(isset($comments)>0)
+      @foreach($comments as $comment)   
+        <div class="panel panel-info coment_list">
+        	<div class="panel-heading">
+        		<ul style="list-style:none;" >
+        		<li class=panel-heading-li>{{$comment->updated_at}}</li>
+        		
+        		</ul>
+        	</div>
+        	
+        	<div class="panel-body hoge row">
+        	    <div class="col-xs-offset-1 col-xs-10 col-xs-offset-1">
+        	    <div>{{$comment->keys->key}}</div>
+        	    <div>
+        	    @if(($comment->evaluation) == 1)
                     <div class="star-rating-icon">
                       <span class="glyphicon glyphicon-star"></span>
                       <span class="glyphicon glyphicon-star-empty"></span>
@@ -101,7 +102,7 @@ use App\Category;
                       <span class="glyphicon glyphicon-star"></span>
                       <span class="glyphicon glyphicon-star"></span>
                       <span class="glyphicon glyphicon-star"></span>
-                      <span class="glyphicon glyphicon-star"></span>
+                      <span class="glyphicon glyphicon-star-empty"></span>
                       <span class="glyphicon glyphicon-star-empty"></span>
                     </div>
                     @endif 
@@ -111,7 +112,7 @@ use App\Category;
                       <span class="glyphicon glyphicon-star"></span>
                       <span class="glyphicon glyphicon-star"></span>
                       <span class="glyphicon glyphicon-star"></span>
-                      <span class="glyphicon glyphicon-star"></span>
+                      <span class="glyphicon glyphicon-star-empty"></span>
                     </div>
                     @endif
                     @if(($comment->evaluation) == 5)
@@ -119,20 +120,21 @@ use App\Category;
                       <span class="glyphicon glyphicon-star"></span>
                       <span class="glyphicon glyphicon-star"></span>
                       <span class="glyphicon glyphicon-star"></span>
-                      <span class="glyphicon glyphicon-star-empty"></span>
-                      <span class="glyphicon glyphicon-star-empty"></span>
+                      <span class="glyphicon glyphicon-star"></span>
+                      <span class="glyphicon glyphicon-star"></span>
                     </div>
                     @endif
-                </td>
-                <td>{{$comment->comment_text}}</td>
-             </tr>
-              @endforeach
-          </tbody> 
-         </table> 
-        @endif
-    </div>
-    </div>
-<!--おすすめコメント一覧終わり-->               
+                </div>    
+                <div><p>{{$comment->comment_text}}</p></div>
+             </div>
+             </div>  
+        </div>     
+      @endforeach
+@endif 
+</div>
+<!--コメントを表示する　終了-->
+
+
  @endsection
         
                     

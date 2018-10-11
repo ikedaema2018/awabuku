@@ -14,14 +14,14 @@ use App\Category_genre;
 
 @if(count($topic) > 0 )
 
-        <div class="jumbotron"  style="background-color:#fffaf0; background-size:cover;">
+        <div class="jumbotron"  style="background-color:#fffaf0;">
            <div> 
-                <ul style="list-style:none;" class="sample">
-                
-                 <li><span><img class="avater img-circle" src="{{$topic_user->avater}}"></img></span></li>
-                 <li><p><b><a href="{{url('user_search_page/'.$topic_user->id)}}">{{$topic_user->name}}</a>さんのオススメ</b></p></li>
-                </ul>
-    
+                <div>
+                    <ul style="list-style:none;" class="sample">
+                     <li><span><img class="avater img-circle" src="{{$topic_user->avater}}"></img></span></li>
+                     <li><p style="font-size:15px;"><a href="{{url('user_search_page/'.$topic_user->id)}}">{{$topic_user->name}}</a>さんのオススメ</p></li>
+                    </ul>
+                </div>
                 <div class="row">
                     <div  class="col-sm-3" style="text-align: center;">
                         <a href="{{url('rental/'.$topic_book->id)}}"><img src="{{$topic_book->BookImage}}" width="128" height="180"></img></a></li>
@@ -32,24 +32,15 @@ use App\Category_genre;
                                 <div>
                                     
                                     <a href="{{url('rental/'.$topic_book->id)}}"><p><b>{{$topic_book->BookTitle}}</b></p></a>
-                                     <div class="col-sm-12"> 
-                                    　<p class="cut_txt">{{$topic->comment_text}}</p>
+                                      <div class="col-sm-12"> 
+                                    　 <p class="cut_txt">{{$topic->comment_text}}</p>
                                     　</div>
                                     　
                                 
                                     <div class="col-sm-offset-10 col-sm-2">
-                                        　<a href="{{url('book_comment/'.$topic->id)}}">もっとみる</a>
+                                      <a href="{{url('book_comment/'.$topic->id)}}">もっとみる</a>
                                     </div>
-                                    <div>
-                                        @foreach($topic_category_names as $topic_category_name)
-                                        <a href="{{url('category_page/'.$topic_category_name["id"])}}">{{$topic_category_name["category_name"]}}&nbsp;&nbsp;&nbsp;&nbsp;</a>
-                                        @endforeach 
-                                    </div>
-                                    <div>
-                                        @foreach($topic_book -> tags as $tag)
-                                        <a  class="tag" href="{{url('tag_page/'.$tag->id)}}">{{$tag->tags}}</a>
-                                        @endforeach
-                                    </div>
+                                
                                 </div>    
                             </li>
                         </ul>
@@ -91,12 +82,13 @@ use App\Category_genre;
     
 <!-- カテゴリ別表示 始まり -->    
 <div class="row">
-    <div class= "col-sm-8">
+    
+    <div class="col-sm-offset-1 col-sm-7">
         <div class="row">
              @if(count($genreBooks)>0)
                 @foreach($genreBooks as $genreBookKey => $genreBookValues)
                 
-                        <div class= "col-sm-12">  
+                        <div class="col-sm-12">  
                             @if(count($genreBookValues)>0)
                             <h3>{{$genreBookKey}}</h3>
                             @endif
@@ -106,11 +98,11 @@ use App\Category_genre;
                         @foreach($genreBookValues as $genreBookValue)
                                 @if(($loop->iteration)<6)
                                 
-                                        <div class="col-sm-2" style="backgroud:#ccc,height:250px;">
-                                            <ul style="list-style:none;">
-                                            <li><a href="{{url('rental/'.$genreBookValue["id"])}}"><img src="{{$genreBookValue["BookImage"]}}" width="128" height="180"></img></a></li>
-                                            <li><a href="{{url('rental/'.$genreBookValue["id"])}}">{{$genreBookValue["BookTitle"]}}</a></li>
-                                            </ul>
+                                        <div class="col-sm-2" style="text-align:center;">
+                                           
+                                            <a href="{{url('rental/'.$genreBookValue["id"])}}"><img src="{{$genreBookValue["BookImage"]}}" width="128" height="180"></img></a>
+                                            <a href="{{url('rental/'.$genreBookValue["id"])}}"><p>{{$genreBookValue["BookTitle"]}}</p></a>
+                                            
                                         </div>
                                 @endif
                                 @if(($loop->iteration)==6)
@@ -176,9 +168,13 @@ use App\Category_genre;
         @if(count($rentals)>0)
         @foreach($rentals as $rental)
           <ul style="list-style:none;">
-             <li><img src="{{Book::find($rental->rental_books->book_id)->BookImage}}" width="128" height="180"></img></li>
-             <li><a href="{{url('rental/'.Book::find($rental->rental_books->book_id)->id)}}">{{Book::find($rental->rental_books->book_id)->BookTitle}}</a></li>
-          </ul>    
+             <li>
+                 <div style="text-align:center;">
+                     <img src="{{Book::find($rental->rental_books->book_id)->BookImage}}" width="128" height="180"></img></br>
+                     <a href="{{url('rental/'.Book::find($rental->rental_books->book_id)->id)}}"><p style="margin-right:auto margin-left:auto;"">{{Book::find($rental->rental_books->book_id)->BookTitle}}</p></a>
+                 </div>
+             </li>  
+           </ul>    
         @endforeach
         @endif
     </div>

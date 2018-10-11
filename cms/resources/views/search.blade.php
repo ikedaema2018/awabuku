@@ -11,36 +11,26 @@ use App\Book;
 ?>
 
 
-<!--所有している本-->
-
-<div class="container-fluid">
-<div class="row">
- 
-
- 
-<div class="col-sm-8" style="text-align:right;">
-  <div class="paginate">
-  {{ $data->appends(Request::only('keyword'))->links() }}
-  </div>
-</div>
  
 
 <!--検索結果　始まり-->
-<h2 class="col-xs-12">検索結果</h2>
+@if(count($data)>0)
+<h3 class="col-xs-12" style="border-bottom-style: outset;">{{$keyword}}の検索結果</h3>
+@else
+<h3 class="col-xs-12" style="border-bottom-style: outset;">{{$keyword}}の検索結果はありませんでした。</h3>
+@endif
+
+<div class="row">
 <?php $i=0?>
+
             @foreach($data as $book_list)
         
               @if($i == 0)
                 <div class="col-sm-12 border_bottom">
               @endif
-                <div class="col-sm-2">
-                <ul class="sample">
-                 <li>
-                     <a href="{{url('rental/'.$book_list->id)}}" class="img-responsive" width="128" height="180">
-                         <img src="{{$book_list->BookImage}}" width="128" height="180"></img></a>
-                     <a href="{{url('rental/'.$book_list->id)}}">{{$book_list->BookTitle}}</a><br>
-                 </li>
-                 </ul>
+                <div class="col-sm-2" style="text-align:center;">
+                 <p></p><a href="{{url('rental/'.$book_list->id)}}"><img src="{{$book_list->BookImage}}" width="128" height="180"></img></a></p>
+                　 <a href="{{url('rental/'.$book_list->id)}}"><p style="margin-right:auto margin-left:auto;">{{$book_list->BookTitle}}</p></a>
                 </div>
                   <?php $i=$i+1 ?>
                   @if($i == 6 || $loop->last)
@@ -49,14 +39,19 @@ use App\Book;
                  @endif
                 
             @endforeach
-    
+</div>    
+
+
+
+<div style=" margin-left: auto; margin-right: auto;">
+  <div class="paginate">
+  {{ $data->appends(Request::only('keyword'))->links() }}
+  </div>
+</div>
 
 
 <!--検索結果　終わり-->
-
-
-</div>
-</div>  
+  
 
  @endsection
   
