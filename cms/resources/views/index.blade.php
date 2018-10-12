@@ -62,7 +62,7 @@ use App\Category_genre;
     <div class=box>
         <h3 class="">新着のスレッド</h3>
       
-            <div class="well" >
+            <div class="well" style="background-color: #fffaf0;">
                 <ul style="list-style:none;">
                     @if(isset($thread_lists)>0)
                     @foreach($thread_lists as $thread_list)

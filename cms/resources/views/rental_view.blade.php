@@ -92,7 +92,7 @@ use App\Category;
               <form action="{{url('rental')}}" method="post" class="horizontal">
                 {{ csrf_field() }}
                     <div class="form-group"> 
-                      <p><b>特徴</b></p>
+                      <p><b>おすすめしたい人</b></p>
                       <div class="block-contents">
                           @if(count($keys)>0)
                           @foreach($keys as $key)

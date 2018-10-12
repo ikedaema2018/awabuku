@@ -1,14 +1,12 @@
+
 @extends('layouts.app')
 
 @section('content')
  <?php
-
 use App\Book;
-use App\User;
 use App\Category;
-
-
-
+use App\User;
+use App\Key;
 ?>
 
 
@@ -17,26 +15,29 @@ use App\Category;
 
 
 <div style="margin-top:60px;" class="well">
-  <div class="row">
-        <p hidden>{{ $thread->id }}</p>
-        <h2 class="col-xs-12"><b>{{ $thread->thread_sub }}</b></h2>
+      <div class="row">
+        <p class="col-xs-2" hidden>{{ $thread->id }}</p>
+        <h2 class="col-xs-10"><b>{{ $thread->thread_sub }}</b></h2>
       </div>
       <div class="row">
         <div class="col-xs-2">
             <span navbar-brand><img class="avater img-circle" src="{{$thread_user_name->avater}}"></img></span>
             <p>{{ $thread_user_name->name}}</p>
-    
+
         </div>
+         <div style="margin-bottom:5px;">
+             <a href="{{url('category_page/'.$thread->category_id)}}"><p>{{ Category::find($thread->category_id)->category_name}}</p></a>
+        </div>    
+        
         <div class="col-xs-10">                    
              <p>{{ $thread->thread_body }}</p>
-             <a href="{{url('category_page/'.$thread->category_id)}}">{{Category::find($thread->category_id)->category_name}}</p></a>
         </div> 
-     
-        
-　</div>    
+       
+    　</div>    
+    　
 </div>
 
-<div class="row" style="margin-bottom:40px;">
+<div class="row">
     
     <!-- 登録済みの本からオススメする -->    
     <div class="col-sm-6 text-center">       
@@ -131,15 +132,14 @@ use App\Category;
     
       	 
       	       <input type="hidden" name="thread_id"  value="{{$thread->id}}" >
-      	       <input type="textarea" name="thread_comment"  placeholder="コメントを入力" rows="30" class="form-control">
-               
-    	    
+      	       <input type="textarea" name="thread_comment"  placeholder="コメントを入力" rows="10" class="form-control">
+               <button type="submit" class="btn btn-primary"/ value="">投稿する</button>
+    	    </form>
     		  
     <!--モーダルフッター    --> 		  
     		  <div class="modal-footer">
-        	  <button type="submit" class="btn btn-primary col-xs-offset-10 col-xs-2"　 value="">投稿する</button>
+        		<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
         	  </div>
-        	  </form>
         	</div>
         </div>
     </div>
@@ -195,38 +195,9 @@ use App\Category;
       
 {{ csrf_field() }}
     
-<div class="row">
-<div class="col-sm-offset-2 col-sm-8 col-sm-offset-2">
-
- <p class="page-header">本を登録する</p>
-  <div class="form-group">
-    <label  class="col-sm-3 control-label form-control-static" for="isbn">ISBNを入力してください:</label>
-    <div class="col-sm-9">
-        <input  class="form-control-static col-sm-9" type="text" class="form-control" id="isbn" placeholder="978で始まる13桁の数字を入力（ーハイフンは含まない）">
-        <button id="btn" class="form-control-static">検索</button>
-    </div>
-    <div id="message"></div>
-  </div>
-
-@if ($errors->any())
-  <div class="errors">
-    <ul>
-      @foreach ($errors->all() as $error)
-        <li>{{ $error }}</li>
-      @endforeach
-    </ul>
-  </div>
-@endif
-
-
-             
-<form action="{{url('book')}}" method="post" class="horizontal">
-      
-{{ csrf_field() }}
-    
 <div style="background-color:#DDFFFF;">
     <div class="row">    
-        <div class="col-sm-3" style=text-align:center;>
+        <div class="col-sm-3">
             <p>表紙画像:</p>
             <p id="BookThumbnail" class="type"></p>
                 <div style="visibility: hidden;">
@@ -256,19 +227,14 @@ use App\Category;
                 </div>
             </div>
             <div>
-               
-                  
-                  
-               
                 <div class="col-sm-6">
-                   <p>ISBN13:</p>
-                  <p id="isbn13" class="type"</p>
+                  <p>ISBN:</p>
                   <p id="isbn10" class="type">
+                </div>   
+                <div class="col-sm-6">
+                   <h4>&nbsp;</h4> 
+                  <p id="isbn13" class="type"</p>
                 </div>
-             
-                
-                
-                
             </div>
         </div>    
     </div>
@@ -280,7 +246,8 @@ use App\Category;
             <p id="BookDiscription" class="type"></p>
         </div>
     </div>
-</div>  
+</div>                
+
 
 <!--owner_info始まる-->
 
@@ -301,7 +268,9 @@ use App\Category;
           <div class="block-contents">
           <label class="radio-inline"><input type="radio" name="rental_flag" value=0>はい</label>
         　<label class="radio-inline"><input type="radio" name="rental_flag" value=1>いいえ</label>
-        　<label class="radio-inline"><input type="radio" name="rental_flag" value=2>同期内のみ</label>
+        　<label class="radio-inline"><input type="radio" name="rental_flag" value=2>同期内のみ可</label>
+        　
+        
         　</div>
     </div>
     
@@ -356,7 +325,7 @@ use App\Category;
 
      
     <div class="form-group"> 
-          <p><b>特徴</b></p>
+          <p><b>オススメしたい人</b></p>
           <div class="block-contents">
               @if(count($keys)>0)
               @foreach($keys as $key)
@@ -383,7 +352,7 @@ use App\Category;
     </div> 
     
     <div class="form-group">  
-          <label>おすすめポイント</label>
+          <label>おすすめポイントト</label>
           
           <div class="center">
           <textarea  rows="5" class="form-control" name="comment_text" placeholder="例）++の勉強をしたい人におすすめ" autofocu></textarea>
@@ -434,25 +403,81 @@ use App\Category;
         	<div class="panel-heading">
         		<ul style="list-style:none;" >
                 <li class="user_name panel-heading-li"><img class="thread_avater img-circle" src="{{User::find($thread_comment_list->r->user_id)->avater}}"></img></li>
-        		<li class="user_name panel-heading-li">{{User::find($thread_comment_list->r->user_id)->name}}さん</li>
+        		<li class="user_name panel-heading-li"><a href="{{url('/user_search_page/'.$thread_comment_list->r->user_id)}}">{{User::find($thread_comment_list->r->user_id)->name}}さん</li>
         		<li class=panel-heading-li>{{$thread_comment_list->updated_at}}</li>	
         		</ul>
+        	
         	</div>
-        	<div class="panel-body hoge row">
-                  <div class="comment_body row">
-                    <div class="comment_body_list col-sm-4" style="text-align:center;">
-                        <img src="{{Book::find($thread_comment_list->r->book_id)->BookImage}}"></img>
-                    </div>
-                    <div class="comment_body_list col-sm-8">
-                        <a href="{{url('rental/'.$thread_comment_list->r->book_id)}}"></a>
-                        <h3>{{Book::find($thread_comment_list->r->book_id)->BookTitle}}</h3>
-                        <p hidden>{{Book::find($thread_comment_list->r->book_id)->BookAuthor}}</p>
-                        <p>オススメポイント</p>
-                        <div style="background-color:#fffaf0; background-size:cover;">
-                            <p>{{$thread_comment_list->r->comment_text}}</p>
-                        </div>
-                    </div>
-                    </div>  
+        	<div class="panel-body row">
+                  <ul style="list-style-type: none;" class="comment_body">
+                    <li class="comment_body_list col-sm-4"><a href="{{url('')}}"><a href="{{url('rental/'.$thread_comment_list->r->book_id)}}"><img src="{{Book::find($thread_comment_list->r->book_id)->BookImage}}"></img></li></a>
+                    <li class="comment_body_list col-sm-8">
+                        </a>
+                        <a href="{{url('rental/'.$thread_comment_list->r->book_id)}}"><h4>{{Book::find($thread_comment_list->r->book_id)->BookTitle}}</h4></a>
+                        <p>{{Book::find($thread_comment_list->r->book_id)->BookAuthor}}</p>
+                       
+                            @foreach($thread_comment_list->r->user_c->tags as $tag)
+                             <a href="{{url('tag_page/'.$tag->id)}}" class="tag">{{$tag->tags}}</a>
+                            @endforeach
+                            <div>
+                              <p>特徴</p>  
+                              <p>&nbsp;&nbsp;&nbsp;{{Key::find($thread_comment_list->r->key)->key}}</p>
+                            </div>
+                        
+                            <div>
+                               <p>評価</p>     
+                                @if(($thread_comment_list->r->evaluation) == 1)
+                                <div class="star-rating-icon">
+                                  <span class="glyphicon glyphicon-star"></span>
+                                  <span class="glyphicon glyphicon-star-empty"></span>
+                                  <span class="glyphicon glyphicon-star-empty"></span>
+                                  <span class="glyphicon glyphicon-star-empty"></span>
+                                  <span class="glyphicon glyphicon-star-empty"></span>
+                                </div>
+                                @endif 
+                                @if(($thread_comment_list->r->evaluation) == 2)
+                                <div class="star-rating-icon">
+                                  <span class="glyphicon glyphicon-star"></span>
+                                  <span class="glyphicon glyphicon-star"></span>
+                                  <span class="glyphicon glyphicon-star-empty"></span>
+                                  <span class="glyphicon glyphicon-star-empty"></span>
+                                  <span class="glyphicon glyphicon-star-empty"></span>
+                                </div>
+                                @endif 
+                                @if(($thread_comment_list->r->evaluation) == 3)
+                                <div class="star-rating-icon">
+                                  <span class="glyphicon glyphicon-star"></span>
+                                  <span class="glyphicon glyphicon-star"></span>
+                                  <span class="glyphicon glyphicon-star"></span>
+                                  <span class="glyphicon glyphiconstar-empty"></span>
+                                  <span class="glyphicon glyphicon-star-empty"></span>
+                                </div>
+                                @endif 
+                                @if(($thread_comment_list->r->evaluation) == 4)
+                                <div class="star-rating-icon">
+                                  <span class="glyphicon glyphicon-star"></span>
+                                  <span class="glyphicon glyphicon-star"></span>
+                                  <span class="glyphicon glyphicon-star"></span>
+                                  <span class="glyphicon glyphiconstar-empty"></span>
+                                  <span class="glyphicon glyphiconstar-empty"></span>
+                                </div>
+                                @endif
+                                @if(($thread_comment_list->r->evaluation) ==5)
+                                <div class="star-rating-icon">
+                                  <span class="glyphicon glyphicon-star"></span>
+                                  <span class="glyphicon glyphicon-star"></span>
+                                  <span class="glyphicon glyphicon-star"></span>
+                                  <span class="glyphicon glyphicon-star"></span>
+                                  <span class="glyphicon glyphicon-star-empty"></span>
+                                </div>
+                                @endif
+                            </div>    
+                        <p>おすすめコメント</p>
+                        <p>{{$thread_comment_list->r->comment_text}}</p>
+                        
+                      
+                    </li>
+                </ul>  
                 <p>コメント</p>
             	<p class="well">{{$thread_comment_list->thread_comment}}</p>    
         	</div>
@@ -475,7 +500,7 @@ use App\Category;
         let id = $(this).find(".itemid").text();
         let BookTitle =$(this).find(".itemtitle").text();
         let form = $("<input name='id'>").attr("type","hidden");
-        let form2 =$("<input name='BookTitle' class='col-xs-12'>").attr("type","text");
+        let form2 =$("<input name='BookTitle'>").attr("type","text");
         
         form.val(id);
         form2.val(BookTitle);
@@ -485,15 +510,13 @@ use App\Category;
         console.log($('#aaa').val()); 
         });
         
-
-
         $("#btn").on("click", function () {
             const isbn = $("#isbn").val();
             const googleUrl = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn;
             const openUrl   = "https://api.openbd.jp/v1/get?isbn=" + isbn;
           
            $.getJSON(openUrl , function (data1) {
-                 if (data1[0]===null) {
+                 if (!data1[0]==null) {
                     $.getJSON(googleUrl, function (data) {
                         if (!data.totalItems){
                             $("#isbn").val("");
@@ -512,7 +535,7 @@ use App\Category;
                            
                             $("#BookTitle").html('<input class="form-control input-lg" name="BookTitle" readonly="readonly" type="text"  value="' + data.items[0].volumeInfo.title +
                             '">');
-                            $("#isbn10").html('<input class="form-control input-sm" name ="isbn10" readonly="readonly" type="hidden" value="' + data.items[0].volumeInfo.industryIdentifiers[
+                            $("#isbn10").html('<input class="form-control input-sm" name ="isbn10" readonly="readonly" type="number" value="' + data.items[0].volumeInfo.industryIdentifiers[
                                 0].identifier + '">');
                             $("#isbn13").html('<input class="form-control input-sm" name ="isbn13" readonly="readonly" type="number" value="' + data.items[0].volumeInfo.industryIdentifiers[
                                 1].identifier + '">');
@@ -520,19 +543,13 @@ use App\Category;
                                 '">');
                             $("#PublishedDate").html('<input class="form-control input-sm" name="PublishedDate" readonly="readonly" type="text" value="' + data.items[0].volumeInfo
                                 .publishedDate + '">');
- 
-                            let description = "";
-                         
                             $("#BookDiscription").html('<input class="form-control input-lg" name="BookDiscription"  readonly="readonly" type="text" value="' + data.items[0].volumeInfo
-                             .description + '">');
-                            
-                            
-                            $("#Publisher").html('<input class="form-control input-sm" name="Publisher"  readonly="readonly" type="text" value="' 
-                            + data.items[0].volumeInfo.publisher + '">');
-      
+                                .description + '">');
+                            $("#Publisher").html('<input class="form-control input-lg" name="Publisher"  readonly="readonly" type="text" value="' + data.items[0].volumeInfo
+                                .publisher + '">');
                                  
                             try {
-                                $("#BookThumbnail").html(' <img src=\"' + data.items[0].volumeInfo.imageLinks.smallThumbnail +
+                                     $("#BookThumbnail").html(' <img src=\"' + data.items[0].volumeInfo.imageLinks.smallThumbnail +
                                 '\ " />'); 
                             } catch(e) {
             
@@ -544,52 +561,57 @@ use App\Category;
                                 $("#BookImage").html(' <input name="BookImage" type="hidden" value="' + data.items[0].volumeInfo.imageLinks.smallThumbnail +
                                 '">');
                             } catch(e) {
+            
                                 $("#BookImage").html('<input name="BookImage" type="hidden" value="http://www.tatemachi.com/wp/wp-content/themes/tatemachi/img/shopimage-noimage.jpg">');
+                          
                             }
                         }
                     })
                 } else {
     
-                    //openURLの処理
-                    console.log(data1[0]);
+                  
                         $("#BookTitle").html('<input class="form-control input-lg" name="BookTitle" readonly="readonly" type="text"  value="' + data1[0].summary.title +
                             '">');
-                        $("#isbn10").html('<input class="form-control input-sm" name ="isbn10" readonly="readonly" type="hidden" value="' + data1[0].summary.isbn + 
-                        '">');
-                        $("#isbn13").html('<input class="form-control input-sm" name ="isbn13" readonly="readonly" type="number" value="' + data1[0].summary.isbn + 
-                        '">');
-                        $("#BookAuthor").html('<input class="form-control input-sm" name="BookAuthor" readonly="readonly" type="text" value="' + data1[0].summary.author +
-                        '">');
-                        $("#PublishedDate").html('<input class="form-control input-sm" name="PublishedDate" readonly="readonly" type="text" value="' +data1[0].summary.pubdatey  +
-                         '">');
-                        $("#Publisher").html    ('<input class="form-control input-sm" name="Publisher" readonly="readonly" type="text" value="' +data1[0].summary.publisher  + 
-                        '">');
-
+                        $("#isbn10").html('<input class="form-control input-sm" name ="isbn10" readonly="readonly" type="number" value="' + data1[0].summary.isbn + '">');
+                        $("#isbn13").html('<input class="form-control input-sm" name ="isbn13" readonly="readonly" type="number" value="' + data1[0].summary.isbn + '">');
+                        $("#BookAuthor").html('<input class="form-control input-sm" name="BookAuthor" readonly="readonly" type="text" value="' + data1[0].summary.author +'">');
+                        $("#PublishedDate").html('<input class="form-control input-sm" name="PublishedDate" readonly="readonly" type="text" value="' +data1[0].summary.pubdate  + '">');
+                        $("#Publisher").html('<input class="form-control input-sm" name="Publisher" readonly="readonly" type="text" value="' +data1[0].summary.publisher  + '">');
+                        
                         let description = "";
                         if(data1[0].onix.CollateralDetail.TextContent){
                             description = data1[0].onix.CollateralDetail.TextContent[0].Text;
                         }else{
                             description = "書誌情報なし";
                         }
-                        $("#BookDiscription").html('<input class="form-control input-lg" name="BookDiscription"  readonly="readonly" type="text" value="'
-                        + description + '">');
-                       console.log(data1[0].summary.cover);
+                        $("#BookDiscription").html('<input class="form-control input-lg" name="BookDiscription"  readonly="readonly" type="text" value="' + description + '">');
                      
                      
+                       
+                       
+                                
                         try {
-                             $("#BookThumbnail").html('<img src=\"' + data1[0].summary.cover +'\ " />');   
-                             if (data1[0].summary.cover == ""){ throw new Error() }
+                             $("#BookThumbnail").html(' <img src=\"' + data1[0].summary.cover +'\ " />');    
                         } catch(e) {
                             $("#BookThumbnail").html('<img src="http://www.tatemachi.com/wp/wp-content/themes/tatemachi/img/shopimage-noimage.jpg" width="100",heigt="200">');
                         }
-
+                    
+                    
                         try {
-                            $("#BookImage").html('<input name="BookImage" type="hidden" value="' + data1[0].summary.cover + '">');
-                             if (data1[0].summary.cover == ""){ throw new Error() }
+                            $("#BookImage").html(' <input name="BookImage" type="hidden" value="' + data1[0].summary.cover + '">');
+                       
                         } catch(e) {
+        
                             $("#BookImage").html('<input name="BookImage" type="hidden" value="http://www.tatemachi.com/wp/wp-content/themes/tatemachi/img/shopimage-noimage.jpg">');
+                      
                         }
+                      
+                        
+                        
+                        
                 }
+                
+                
             });
         });
 // tag ajax
@@ -606,7 +628,6 @@ function aaa(){
         dataType: 'json',
         timeout: 1000
     });
-
     /* 成功時 */
         request.done(function(data){
             $("#ajax_data").empty();
@@ -630,22 +651,14 @@ function aaa(){
             })
             $('#sampleModal').modal('show');
         });
-
     /* 失敗時 */
         request.fail(function(e){
         });
 };
-
-
-
-
-
 $(".category").on("click",function(){
    
-
     const selectedvalue =[];
     const selectedname =[];
-
    $(".category:checked").each(function(){
        
        selectedvalue.push($(this).val());
@@ -661,29 +674,21 @@ $(".category").on("click",function(){
         selectBox += '<option value="'+selectedvalue[i]+'" name="option" >'+selectedname[i]+'</option>';
     };
      
-
-
     $("#tags").empty();
     $("#tags").append(selectBox);
   
     
 });
-
-
-
 $("#bbb").on("click",function(){
 const new_tag_category_id =$('#tags').val();
 const new_tag_name = $('#new_tag_name').val();
 console.log(new_tag_category_id);
-
     $("#new_tag").append('<label><input type="checkbox" checked="checked" class="check" value="'+ new_tag_name +'" name="tag_add[]"></input>'+new_tag_name+"</label>");
     $("#new_tag").append('<input type="hidden"  value="'+new_tag_category_id+'" class="check" name="tag_category_id[]" ></input>');
-
  });
-
 </script>
 
-    </script>
+    
 
 
 

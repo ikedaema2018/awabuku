@@ -23,7 +23,7 @@ use App\Category_genre;
                     <li class="col-sm-2"><img src="{{asset('img/gs_03.jpg')}}"></img></a></li>
                     <li class="col-sm-10">
                         <p><b>g's Library</b></p><br>
-                        <p>g's libraryの本はg'sの生徒であれば、１週間レンタルすることが可能です</p>
+                        <p>g's libraryの本はg'sの生徒であれば、閲覧が可能です</p>
                         
                     </li>
                 </ul> 
@@ -45,7 +45,7 @@ use App\Category_genre;
                 <ul style="list-style:none;">
                     <li><img src="{{Book::find($owner->book_id)->BookImage}}" width="128" height="180"></img></li>
                     <li>{{Book::find($owner->book_id)->BookTitle}}</li>
-                    <li><a href="{{url('gsbook/'.$owner->id)}}"><button type="button" class="btn-success">コメントを読む/書く</button></a></li>
+                    <li><a href="{{url('gsbook/'.$owner->id)}}"></a></li>
                 </ul>
             </div>
          </div>    

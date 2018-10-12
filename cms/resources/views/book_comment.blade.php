@@ -44,7 +44,7 @@ use App\Category;
     
     </div>  
     <div class="row">
-      <p>特徴</p>    
+      <p>おすすめしたい人</p>    
       <p class="col-xs-12">{{$comment->keys->key}}</p>
     </div>
     

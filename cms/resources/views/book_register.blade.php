@@ -5,19 +5,6 @@
 use App\Tag;
 ?>
 
- 
-<body>
-
-<body>
-	<div id="container">
-		<canvas width="320" height="240" id="picture"></canvas>
-		<p id="textbit"></p>
-		<div class="upload_btn">
-			<input id="Take-Picture" type="file" accept="image/*;capture=camera" />
-		</div>
-	</div>
-</body>
-
 
 
 <h2>Book Register</h2>
@@ -27,9 +14,9 @@ use App\Tag;
 
  <p class="page-header">本を登録する</p>
   <div class="form-group">
-    <label  class="col-sm-3 control-label form-control-static btn-group-lg" for="isbn">ISBNを入力してください:</label>
+    <label  class="col-sm-3 control-label form-control-static btn-group-lg" for="isbn">ISBNを入力してください<p style="font-size:10px;">※裏表紙や奥付に記載されている１３桁のユニークコード</p>:</label>
     <div class="col-sm-9">
-        <input  class="form-control-static col-sm-9" type="text" class="form-control" id="isbn" placeholder="978で始まる13桁の数字を入力（ーハイフンは含まない）">
+        <input  class="form-control-static col-sm-9" type="text" class="form-control" id="isbn" placeholder="ISBNとは978始まる13桁の数字を入力（ーハイフンは含まない）">
         <button id="btn" class="form-control-static">検索</button>
     </div>
     <div id="message"></div>
@@ -186,9 +173,9 @@ use App\Tag;
 
      
     <div class="form-group"> 
-          <p><b>特徴</b></p>
+          <p><b>オススメしたい人</b></p>
           <div class="block-contents">
-              <p style="font-size:10px;">※オススメな人がいたらチェックしてください</p>
+              
               @if(count($keys)>0)
               @foreach($keys as $key)
                 <label class="radio-inline"><input type ="radio" name="key" value="{{$key->id}}">{{$key->key}}</label>
@@ -439,153 +426,6 @@ console.log(new_tag_category_id);
 
  });
 
-
-
-			var takePicture = document.querySelector("#Take-Picture"),
-			showPicture = document.createElement("img");
-			Result = document.querySelector("#textbit");
-			var canvas =document.getElementById("picture");
-			var ctx = canvas.getContext("2d");
-			JOB.Init();
-			JOB.SetImageCallback(function(result) {
-				if(result.length > 0){
-					var tempArray = [];
-					for(var i = 0; i < result.length; i++) {
-						tempArray.push(result[i].Format+" : "+result[i].Value);
-					}
-					Result.innerHTML=tempArray.join("<br />");
-				}else{
-					if(result.length === 0) {
-						Result.innerHTML="Decoding failed.";
-					}
-				}
-			});
-			JOB.PostOrientation = true;
-			JOB.OrientationCallback = function(result) {
-				canvas.width = result.width;
-				canvas.height = result.height;
-				var data = ctx.getImageData(0,0,canvas.width,canvas.height);
-				for(var i = 0; i < data.data.length; i++) {
-					data.data[i] = result.data[i];
-				}
-				ctx.putImageData(data,0,0);
-			};
-			JOB.SwitchLocalizationFeedback(true);
-			JOB.SetLocalizationCallback(function(result) {
-				ctx.beginPath();
-				ctx.lineWIdth = "2";
-				ctx.strokeStyle="red";
-				for(var i = 0; i < result.length; i++) {
-					ctx.rect(result[i].x,result[i].y,result[i].width,result[i].height); 
-				}
-				ctx.stroke();
-			});
-			if(takePicture && showPicture) {
-				takePicture.onchange = function (event) {
-					var files = event.target.files;
-					if (files && files.length > 0) {
-						file = files[0];
-						try {
-							var URL = window.URL || window.webkitURL;
-							showPicture.onload = function(event) {
-								Result.innerHTML="";
-								JOB.DecodeImage(showPicture);
-								URL.revokeObjectURL(showPicture.src);
-							};
-							showPicture.src = URL.createObjectURL(file);
-						}
-						catch (e) {
-							try {
-								var fileReader = new FileReader();
-								fileReader.onload = function (event) {
-									showPicture.onload = function(event) {
-										Result.innerHTML="";
-										JOB.DecodeImage(showPicture);
-									};
-									showPicture.src = event.target.result;
-								};
-								fileReader.readAsDataURL(file);
-							}
-							catch (e) {
-								Result.innerHTML = "Neither createObjectURL or FileReader are supported";
-							}
-						}
-					}
-				};
-			}
-					var takePicture = document.querySelector("#Take-Picture"),
-			showPicture = document.createElement("img");
-			Result = document.querySelector("#textbit");
-			var canvas =document.getElementById("picture");
-			var ctx = canvas.getContext("2d");
-			JOB.Init();
-			JOB.SetImageCallback(function(result) {
-				if(result.length > 0){
-					var tempArray = [];
-					for(var i = 0; i < result.length; i++) {
-						tempArray.push(result[i].Format+" : "+result[i].Value);
-					}
-					Result.innerHTML=tempArray.join("<br />");
-				}else{
-					if(result.length === 0) {
-						Result.innerHTML="Decoding failed.";
-					}
-				}
-			});
-			JOB.PostOrientation = true;
-			JOB.OrientationCallback = function(result) {
-				canvas.width = result.width;
-				canvas.height = result.height;
-				var data = ctx.getImageData(0,0,canvas.width,canvas.height);
-				for(var i = 0; i < data.data.length; i++) {
-					data.data[i] = result.data[i];
-				}
-				ctx.putImageData(data,0,0);
-			};
-			JOB.SwitchLocalizationFeedback(true);
-			JOB.SetLocalizationCallback(function(result) {
-				ctx.beginPath();
-				ctx.lineWIdth = "2";
-				ctx.strokeStyle="red";
-				for(var i = 0; i < result.length; i++) {
-					ctx.rect(result[i].x,result[i].y,result[i].width,result[i].height); 
-				}
-				ctx.stroke();
-			});
-			if(takePicture && showPicture) {
-				takePicture.onchange = function (event) {
-					var files = event.target.files;
-					if (files && files.length > 0) {
-						file = files[0];
-						try {
-							var URL = window.URL || window.webkitURL;
-							showPicture.onload = function(event) {
-								Result.innerHTML="";
-								JOB.DecodeImage(showPicture);
-								URL.revokeObjectURL(showPicture.src);
-							};
-							showPicture.src = URL.createObjectURL(file);
-						}
-						catch (e) {
-							try {
-								var fileReader = new FileReader();
-								fileReader.onload = function (event) {
-									showPicture.onload = function(event) {
-										Result.innerHTML="";
-										JOB.DecodeImage(showPicture);
-									};
-									showPicture.src = event.target.result;
-								};
-								fileReader.readAsDataURL(file);
-							}
-							catch (e) {
-								Result.innerHTML = "Neither createObjectURL or FileReader are supported";
-							}
-						}
-					}
-				};
-			}
-		
 
 
 

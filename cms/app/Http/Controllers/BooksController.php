@@ -1069,7 +1069,7 @@ class BooksController extends Controller
 
         // バリデーション:エラー 
         if ($validator->fails()) {
-                return redirect('/book')
+                return redirect('thread/'.$request->thread_id)
                     ->withInput()
                     ->withErrors($error_msg);
                

@@ -103,7 +103,7 @@ use App\Tag;
               <form action="{{url('gsbook')}}" method="post" class="horizontal">
                 {{ csrf_field() }}
                     <div class="form-group"> 
-                      <p><b>特徴</b></p>
+                      <p><b>おすすめしたい人</b></p>
                       <div class="block-contents">
                           @if(count($keys)>0)
                           @foreach($keys as $key)
@@ -171,7 +171,7 @@ use App\Tag;
 <table class="table table-striped">
     <tr>
         <th>ユーザー名</th>
-        <th>特徴</th>
+        <th>おすすめしたい人</th>
         <th>評価</th>
         <th>オススメポイント</th>
     
