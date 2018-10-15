@@ -12,6 +12,8 @@
  * around with the SupportedFormats property.
  * 
  */
+console.log('url of DecoderWorker.js', DECODER_WORKER_URL);
+console.log('url of exif.js', EXIFJS_URL);
 JOB = {
 	Config : {
 		// Set to false if the decoder should look for one barcode and then stop. Increases performance.
@@ -42,7 +44,8 @@ JOB = {
 	Stream : null, // The actual video.
 	DecodeStreamActive : false, // Will be set to false when StopStreamDecode() is called.
 	Decoded : [], // Used to enfore the ForceUnique property.
-	DecoderWorker : new Worker("DecoderWorker.js"),
+//	DecoderWorker : new Worker("DecoderWorker.js"),
+	DecoderWorker : new Worker(DECODER_WORKER_URL),
 	OrientationCallback : null,
 	// Always call the Init().
 	Init : function() {
@@ -51,7 +54,8 @@ JOB = {
 		JOB.ScanCanvas.height = 480;
 		JOB.ScanContext = JOB.ScanCanvas.getContext("2d");
 		var script  = document.createElement('script');
-  		script.src  = "exif.js";
+//  		script.src  = "exif.js";
+  		script.src  = EXIFJS_URL;
  		script.type = 'text/javascript';
 		document.getElementsByTagName('head').item(0).appendChild(script);
 	},
@@ -277,8 +281,26 @@ JOB = {
 			JOB.ScanCanvas.height = 480;
 		}
 		JOB.DecoderWorker.onmessage = JOB.JOBImageCallback;
+		JOB.DecoderWorker.onerror = () => {
+			console.log("Error: DecoderWorker");
+		};
+		JOB.DecoderWorker.onmessageerror = () => {
+			console.log("MessageError: DecoderWorker");
+		};
 		JOB.ScanContext.drawImage(image,0,0,JOB.ScanCanvas.width,JOB.ScanCanvas.height);
 		JOB.Orientation = orientation;
+		var scan = JOB.ScanContext.getImageData(0,0,JOB.ScanCanvas.width,JOB.ScanCanvas.height).data;
+		JOB.DecoderWorker.postMessage({
+			scan : scan,
+			scanWidth : JOB.ScanCanvas.width,
+			scanHeight : JOB.ScanCanvas.height,
+			multiple : JOB.Config.Multiple,
+			decodeFormats : JOB.Config.DecodeFormats,
+			cmd : "normal",
+			rotation : orientation,
+			postOrientation : JOB.PostOrientation
+		});
+		/*
 		JOB.DecoderWorker.postMessage({
 			scan : JOB.ScanContext.getImageData(0,0,JOB.ScanCanvas.width,JOB.ScanCanvas.height).data,
 			scanWidth : JOB.ScanCanvas.width,
@@ -289,6 +311,7 @@ JOB = {
 			rotation : orientation,
 			postOrientation : JOB.PostOrientation
 		});
+		*/
 	},
 	
 	DetectVerticalSquash : function (img) {

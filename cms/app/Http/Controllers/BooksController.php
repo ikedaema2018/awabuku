@@ -1158,18 +1158,18 @@ class BooksController extends Controller
         $owners->rental_flag= $request->rental_flag;
         
         
-        if($request->gs == true  || Auth::user()->kanri_flag == 1) {
-            //ここで$request->gsをもとにユーザー情報を検策
-            $id= User::find($request->gs);
-            $owners->user_id = $id->id;
+        // if($request->gs == true  || Auth::user()->kanri_flag == 1) {
+        //     //ここで$request->gsをもとにユーザー情報を検策
+        //     $id= User::find($request->gs);
+        //     $owners->user_id = $id->id;
         
-            echo '<pre>' . var_export($id, true) . '</pre>';
-            echo '<pre>' . var_export($owners, true) . '</pre>';
+        //     echo '<pre>' . var_export($id, true) . '</pre>';
+        //     echo '<pre>' . var_export($owners, true) . '</pre>';
             
             
-        }else{
-            $owners->user_id =$request->user_id;
-        }
+        // }else{
+        //     $owners->user_id =$request->user_id;
+        // }
         
         $owners->save();  
         
@@ -1260,17 +1260,17 @@ class BooksController extends Controller
         $owners->rental_flag= $request->rental_flag;
         
         
-      if($request->gs == 2  && Auth::user()->kanri_flag == 1) {
-            //ここで$request->gsをもとにユーザー情報を検策
+    //   if($request->gs == 2  && Auth::user()->kanri_flag == 1) {
+    //         //ここで$request->gsをもとにユーザー情報を検策
          
-            $id= User::find($request->gs);
-            logger('------------abc------------------');
-            logger($id); 
-            logger($request->gs);
-            logger($owners); 
-            $owners->user_id = $id->id;
+    //         $id= User::find($request->gs);
+    //         logger('------------abc------------------');
+    //         logger($id); 
+    //         logger($request->gs);
+    //         logger($owners); 
+    //         $owners->user_id = $id->id;
   
-        }
+    //     }
        
         
         $owners->save();  

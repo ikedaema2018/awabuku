@@ -254,15 +254,15 @@ use App\Key;
  <div class="owner_info">
      
    
-　<input type="hidden" name="owner" value="{{Auth::user()->name}}" >
-            @if(Auth::user()->kanri_flag == 1)
-                <div class="form-group"> 
-                <p>ジーズの本の入力</p>
-                <div class="center">
-                        <label>入力：<input type="number" name="gs" /></label>
-                 </div>
-                </div>
-            @endif
+　<!--<input type="hidden" name="owner" value="{{Auth::user()->name}}" >-->
+            <!--@if(Auth::user()->kanri_flag == 1)-->
+            <!--    <div class="form-group"> -->
+            <!--    <p>ジーズの本の入力</p>-->
+            <!--    <div class="center">-->
+            <!--            <label>入力：<input type="number" name="gs" /></label>-->
+            <!--     </div>-->
+            <!--    </div>-->
+            <!--@endif-->
     <div class="form-group">  
           <p><b>本の貸出はできますか？</b></p>
           <div class="block-contents">
@@ -649,7 +649,7 @@ function aaa(){
                     i.checked = true;
                 }
             })
-            $('#sampleModal').modal('show');
+
         });
     /* 失敗時 */
         request.fail(function(e){

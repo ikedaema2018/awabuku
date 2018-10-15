@@ -5,8 +5,6 @@
 use App\Tag;
 ?>
 
-
-
 <h2>Book Register</h2>
 
 <div class="row">
@@ -14,10 +12,21 @@ use App\Tag;
 
  <p class="page-header">本を登録する</p>
   <div class="form-group">
+    <p>背表紙のバーコードを読みとる</p>
+    <div id="container">
+        <div  id="canvas_wrapper" style="display:none;" >
+		<canvas width="320" height="240" id="picture"></canvas>
+		</div>
+		<p id="textbit"></p>
+		<div class="upload_btn">
+			<input id="Take-Picture" type="file" accept="image/*;capture=camera" />
+		</div>
+	</div>
+
     <label  class="col-sm-3 control-label form-control-static btn-group-lg" for="isbn">ISBNを入力してください<p style="font-size:10px;">※裏表紙や奥付に記載されている１３桁のユニークコード</p>:</label>
     <div class="col-sm-9">
         <input  class="form-control-static col-sm-9" type="text" class="form-control" id="isbn" placeholder="ISBNとは978始まる13桁の数字を入力（ーハイフンは含まない）">
-        <button id="btn" class="form-control-static">検索</button>
+        <button id="btn" class="form-control-static" onclick="send_ISBN()">検索</button>
     </div>
     <div id="message"></div>
   </div>
@@ -230,9 +239,8 @@ use App\Tag;
 
     <script>
         var selected_tag_ids = [];
-
-
-       $("#btn").on("click", function () {
+       
+        var send_ISBN =function(){
             const isbn = $("#isbn").val();
             const googleUrl = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn;
             const openUrl   = "https://api.openbd.jp/v1/get?isbn=" + isbn;
@@ -336,7 +344,12 @@ use App\Tag;
                         }
                 }
             });
-        });
+        };
+      
+      
+
+
+
 // tag ajax
 function aaa(){
     let category_ids = $("input[type=checkbox].category:checked").toArray().map((i) => {
@@ -427,7 +440,96 @@ console.log(new_tag_category_id);
  });
 
 
+// バーコードリーダー
 
+
+			var takePicture = document.querySelector("#Take-Picture"),
+			showPicture = document.createElement("img");
+			Result = document.querySelector("#textbit");
+			var canvas =document.getElementById("picture");
+			var canvas_wrapper =document.getElementById("canvas_wrapper");
+			
+			var ctx = canvas.getContext("2d");
+			JOB.Init();
+			JOB.SetImageCallback(function(result) {
+				if(result.length > 0){
+				    /*
+					var tempArray = [];
+					for(var i = 0; i < result.length; i++) {
+						tempArray.push(result[i].Format+" : "+result[i].Value);
+					}
+					Result.innerHTML=tempArray.join("<br />");
+					*/
+					var isbns = result.filter((_isbn) => {
+					    return _isbn.Value.indexOf('978') == 0;
+					    
+					});
+					if (isbns.length == 1) {
+					    document.getElementById("isbn").value = isbns[0].Value;
+					    send_ISBN();
+					}
+				}else{
+					if(result.length === 0) {
+					    document.getElementById("isbn").value = "ISBNコードを読み込めませんでしたので、入力して下さい。";
+					}
+				}
+			});
+			JOB.PostOrientation = true;
+			JOB.OrientationCallback = function(result) {
+				canvas.width = result.width;
+				canvas.height = result.height;
+				var data = ctx.getImageData(0,0,canvas.width,canvas.height);
+				for(var i = 0; i < data.data.length; i++) {
+					data.data[i] = result.data[i];
+				}
+				ctx.putImageData(data,0,0);
+			};
+			JOB.SwitchLocalizationFeedback(true);
+			JOB.SetLocalizationCallback(function(result) {
+				ctx.beginPath();
+				ctx.lineWIdth = "2";
+				ctx.strokeStyle="red";
+				for(var i = 0; i < result.length; i++) {
+					ctx.rect(result[i].x,result[i].y,result[i].width,result[i].height); 
+				}
+				ctx.stroke();
+			});
+			if(takePicture && showPicture) {
+				takePicture.onchange = function (event) {
+					var files = event.target.files;
+					if (files && files.length > 0) {
+						file = files[0];
+						try {
+							var URL = window.URL || window.webkitURL;
+							showPicture.onload = function(event) {
+						        canvas_wrapper.style="display:block";
+								Result.innerHTML="";
+								JOB.DecodeImage(showPicture);
+								URL.revokeObjectURL(showPicture.src);
+                                
+							};
+							showPicture.src = URL.createObjectURL(file);
+						}
+						catch (e) {
+							try {
+								var fileReader = new FileReader();
+								fileReader.onload = function (event) {
+									showPicture.onload = function(event) {
+										Result.innerHTML="";
+										JOB.DecodeImage(showPicture);
+									};
+									showPicture.src = event.target.result;
+								};
+								fileReader.readAsDataURL(file);
+							}
+							catch (e) {
+								Result.innerHTML = "Neither createObjectURL or FileReader are supported";
+							}
+						}
+					}
+				};
+			}
+		
 
 
 </script>

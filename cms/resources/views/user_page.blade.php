@@ -20,10 +20,11 @@ use App\Tag;
             <h2><b>{{$group->group_name}}</b></h2>
          @endif
           @foreach($group->users as $user)
-          
+            
              @if($i==0)
               <div class="col-sm-12 border_bottom">
              @endif
+            
                  <div class= "col-sm-2">
                   <ul class="sample">
                    <li>
