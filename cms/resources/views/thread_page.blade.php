@@ -91,7 +91,7 @@ use App\Key;
                         	  </div>
                             @else
       <!--カルーセルnon actiive   -->                         
-                          		<div class="item">
+                          		<div class="item sitei">
                           		 <ul style="list-style:none;">                                                                                       
                                     <li class="thread_page carousel_book_info col-sm-4"><img src="{{$user_comment->user_c->BookImage}}" alt="送信する"></img></li>
                                     <li class="thread_page carousel_book_info col-sm-8">
@@ -109,12 +109,12 @@ use App\Key;
                       @endif
                 </div>
                 
-                <a class="left carousel-control" href="#sampleCarousel" role="button" data-slide="prev">
+                <a class="left carousel-control" href="#sampleCarousel" role="button" data-slide="prev" onClick="ddd()">
               		<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
               		<span class="sr-only">前へ</span>
                 </a>
-              	<a class="right carousel-control" href="#sampleCarousel" role="button" data-slide="next">
-              		<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+              	<a class="right carousel-control" href="#sampleCarousel" role="button" data-slide="next" onClick="ccc()">
+              		<span class="glyphicon glyphicon-chevron-right" aria-hidden="true" ></span>
               		<span class="sr-only">次へ</span>
               	</a>
             </div>
@@ -507,7 +507,7 @@ use App\Key;
         $("#aaa").prepend(form);
         $("#aaa").prepend(form2);
         
-        console.log($('#aaa').val()); 
+        
         });
         
         $("#btn").on("click", function () {
@@ -686,6 +686,83 @@ console.log(new_tag_category_id);
     $("#new_tag").append('<label><input type="checkbox" checked="checked" class="check" value="'+ new_tag_name +'" name="tag_add[]"></input>'+new_tag_name+"</label>");
     $("#new_tag").append('<input type="hidden"  value="'+new_tag_category_id+'" class="check" name="tag_category_id[]" ></input>');
  });
+ 
+ 
+ 
+ //配列のインデックス
+ var BCIndex = 0
+ var titleArr = Array.from(document.getElementsByClassName('itemtitle')).map(el=>el.textContent);
+ var idArr = Array.from(document.getElementsByClassName('itemid')).map(el=>el.textContent);
+ var slideClickFlag = false;
+ let form = $("<input name='id'>").attr("type","hidden");
+ let form2 =$("<input name='BookTitle'>").attr("type","text");
+ form.val(idArr[0]);
+ form2.val(titleArr[0]);
+
+$("#aaa").prepend(form);
+$("#aaa").prepend(form2);
+ 
+function ccc(){
+    console.log(slideClickFlag)
+          if (slideClickFlag){
+              return false;
+          }
+        slideClickFlag = true
+
+          $("#aaa").find("[name='id']").remove();
+          $("#aaa").find("[name='BookTitle']").remove();
+           
+        let id = $(".item.sitei").find(".itemid").text();
+        let BookTitle =$(".item.sitei").find(".itemtitle").text();
+        let form = $("<input name='id'>").attr("type","hidden");
+        let form2 =$("<input name='BookTitle'>").attr("type","text");
+        
+        
+        
+        if (BCIndex == titleArr.length - 1) {
+            BCIndex = 0
+        }else{
+            BCIndex += 1;
+        }
+        console.log(BCIndex);
+        form.val(idArr[BCIndex]);
+        form2.val(titleArr[BCIndex]);
+
+        $("#aaa").prepend(form);
+        $("#aaa").prepend(form2);
+        
+        setTimeout(slideClickFlag = false,1000);
+}
+
+function ddd(){
+    console.log(slideClickFlag)
+    if (slideClickFlag){
+              return false
+          }
+          slideClickFlag = true
+    $("#aaa").find("[name='id']").remove();
+          $("#aaa").find("[name='BookTitle']").remove();
+           
+        let id = $(".item.sitei").find(".itemid").text();
+        let BookTitle =$(".item.sitei").find(".itemtitle").text();
+        let form = $("<input name='id'>").attr("type","hidden");
+        let form2 =$("<input name='BookTitle'>").attr("type","text");
+        
+        
+        
+        if (BCIndex == 0) {
+            BCIndex = titleArr.length - 1
+        }else{
+            BCIndex -= 1;
+        }
+        form.val(idArr[BCIndex]);
+        form2.val(titleArr[BCIndex]);
+
+        $("#aaa").prepend(form);
+        $("#aaa").prepend(form2);
+        
+        setTimeout(slideClickFlag = false, 1000);
+}
 </script>
 
     

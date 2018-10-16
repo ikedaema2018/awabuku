@@ -3,53 +3,72 @@
 @section('content')
 
 <?php
-
 use App\User;
 use App\Book;
 use App\Category_genre;
-
-
-
 ?>
 
 @if(count($topic) > 0 )
-
-        <div class="jumbotron"  style="background-color:#fffaf0;">
-           <div> 
-                <div>
-                    <ul style="list-style:none;" class="sample">
-                     <li><span><img class="avater img-circle" src="{{$topic_user->avater}}"></img></span></li>
+    <div class="bxslider-wrap">
+      <ul class="bxslider">
+        <li>
+            <div style="background-color:#fffaf0;"> 
+                <div class="row">　
+                    <ul style="list-style:none;  vertical-align: bottom;" class="sample">
+                     <li><span><img class="avater img-circle" src="{{$topic_user->avater}}" style="inline"></img></span></li>
                      <li><p style="font-size:15px;"><a href="{{url('user_search_page/'.$topic_user->id)}}">{{$topic_user->name}}</a>さんのオススメ</p></li>
                     </ul>
                 </div>
                 <div class="row">
-                    <div  class="col-sm-3" style="text-align: center;">
-                        <a href="{{url('rental/'.$topic_book->id)}}"><img src="{{$topic_book->BookImage}}" width="128" height="180"></img></a></li>
+                    <div  class="col-sm-offset-1 col-sm-3" style="text-align:center;">
+                        <a href="{{url('rental/'.$topic_book->id)}}"><img src="{{$topic_book->BookImage}}" width="128" height="180" style="display:inline"></img></a>
                     </div>
-                    <div  class="col-sm-9">    
-                        <ul style="list-style-type: none;">    
-                            <li>
-                                <div>
-                                    
-                                    <a href="{{url('rental/'.$topic_book->id)}}"><p><b>{{$topic_book->BookTitle}}</b></p></a>
-                                      <div class="col-sm-12"> 
-                                    　 <p class="cut_txt">{{$topic->comment_text}}</p>
-                                    　</div>
-                                    　
-                                
-                                    <div class="col-sm-offset-10 col-sm-2">
-                                      <a href="{{url('book_comment/'.$topic->id)}}">もっとみる</a>
-                                    </div>
-                                
-                                </div>    
-                            </li>
-                        </ul>
+                    <div  class="col-sm-8">    
+                        <div class="col-xs-offset-1 col-xs-11">
+                            <a href="{{url('rental/'.$topic_book->id)}}"><h4><b>{{$topic_book->BookTitle}}</b></h4></a>
+                              <div class="col-xs-12"> 
+                            　 　<p class="cut_txt">{{$topic->comment_text}}</p>
+                            　</div>
+                            <div class="col-xs-offset-6 col-xs-6">
+                              <a href="{{url('book_comment/'.$topic->id)}}">もっとみる</a>
+                            </div>
+                        </div>    
                     </div> 
                 </div>    
-           </div>
-        </div>
-    @endif
-    
+            </div>
+        </li>     
+        <li>
+            <div style="background-color:#fffaf0;"> 
+                <div class="row">　
+                    <ul style="list-style:none;  vertical-align: bottom;" class="sample">
+                     <li><span><img class="avater img-circle" src="{{$topic_user->avater}}" style="inline"></img></span></li>
+                     <li><p style="font-size:15px;"><a href="{{url('user_search_page/'.$topic_user->id)}}">{{$topic_user->name}}</a>さんのオススメ</p></li>
+                    </ul>
+                </div>
+                <div class="row">
+                    <div  class="col-sm-offset-1 col-sm-3" style="text-align:center;">
+                        <a href="{{url('rental/'.$topic_book->id)}}"><img src="{{$topic_book->BookImage}}" width="128" height="180" style="display:inline"></img></a>
+                    </div>
+                    <div  class="col-sm-8">    
+                        <div class="col-xs-offset-1 col-xs-11">
+                            <a href="{{url('rental/'.$topic_book->id)}}"><h4><b>{{$topic_book->BookTitle}}</b></h4></a>
+                              <div class="col-xs-12"> 
+                            　 　<p class="cut_txt">{{$topic->comment_text}}</p>
+                            　</div>
+                            <div class="col-xs-offset-6 col-xs-6">
+                              <a href="{{url('book_comment/'.$topic->id)}}">もっとみる</a>
+                            </div>
+                        </div>    
+                    </div> 
+                </div>    
+            </div>
+        </li>
+        
+      </ul>
+    </div>
+@endif
+
+
 
     @if(Session::has('alert'))
     <div class="alert alert-danger" role="alert">
@@ -59,23 +78,25 @@ use App\Category_genre;
    
 <!-- スレッド速報 始まり -->
 
-    <div class=box>
-        <h3 class="">新着のスレッド</h3>
-      
-            <div class="well" style="background-color: #fffaf0;">
-                <ul style="list-style:none;">
+<div class="col-sm-offset-1 col-sm-10 col-sm-offset-1">
+  <div class="panel panel-info">
+     <div class="panel-heading">
+        <div class="panel-title">新着のスレッド</div>
+     </div>
+     <div class="panel-body">
+      <ul style="list-style:none;">
                     @if(isset($thread_lists)>0)
                     @foreach($thread_lists as $thread_list)
                         <li><p><b><a href="{{url('/thread/'.$thread_list->id)}}">{{$thread_list->thread_sub}}/({{User::find($thread_list->user_name)->name}})</a></b></p></li>
                     @endforeach
                     @endif
                 </ul>
-                <div class= "col-sm-offset-2 col-sm-10 text-center">
-                
+                <div class= "col-sm-offset-10 col-sm-2 text-center">
                     <a href="{{url('threads/')}}">もっと見る</a>
                 </div>    
-            </div>
-    </div>
+     </div>
+  </div>
+</div>  
 <!-- スレッド速報 終わり -->
 
 
@@ -88,9 +109,9 @@ use App\Category_genre;
              @if(count($genreBooks)>0)
                 @foreach($genreBooks as $genreBookKey => $genreBookValues)
                 
-                        <div class="col-sm-12">  
+                        <div class="col-sm-12" style="margin-bottom:10px;">  
                             @if(count($genreBookValues)>0)
-                            <h3>{{$genreBookKey}}</h3>
+                            <h3><b>{{$genreBookKey}}</b></h3>
                             @endif
                         </div>
                 
@@ -98,7 +119,7 @@ use App\Category_genre;
                         @foreach($genreBookValues as $genreBookValue)
                                 @if(($loop->iteration)<6)
                                 
-                                        <div class="col-sm-2" style="text-align:center;">
+                                        <div class="col-sm-2" style="text-align:center; margin-bottom:30px;">
                                            
                                             <a href="{{url('rental/'.$genreBookValue["id"])}}"><img src="{{$genreBookValue["BookImage"]}}" width="128" height="180"></img></a>
                                             <a href="{{url('rental/'.$genreBookValue["id"])}}"><p>{{$genreBookValue["BookTitle"]}}</p></a>
@@ -167,14 +188,12 @@ use App\Category_genre;
      <h3>人気のレンタル書籍</h3>  
         @if(count($rentals)>0)
         @foreach($rentals as $rental)
-          <ul style="list-style:none;">
-             <li>
+         
                  <div style="text-align:center;">
                      <img src="{{Book::find($rental->rental_books->book_id)->BookImage}}" width="128" height="180"></img></br>
-                     <a href="{{url('rental/'.Book::find($rental->rental_books->book_id)->id)}}"><p style="margin-right:auto margin-left:auto;"">{{Book::find($rental->rental_books->book_id)->BookTitle}}</p></a>
+                     <a href="{{url('rental/'.Book::find($rental->rental_books->book_id)->id)}}"><p style="margin-right:auto margin-left:auto;">{{Book::find($rental->rental_books->book_id)->BookTitle}}</p></a>
                  </div>
-             </li>  
-           </ul>    
+             
         @endforeach
         @endif
     </div>
@@ -191,6 +210,14 @@ use App\Category_genre;
     
     
 </div> 
+<script>
+$(document).ready(function(){
+  $('.bxslider').bxSlider();
+});
+</script>
+
 
 @endsection
 @section('footer')
+
+

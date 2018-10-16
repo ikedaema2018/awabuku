@@ -16,22 +16,25 @@ use App\Tag;
  <div class="col-sm-offset-2 col-sm-8 col-sm-offset-2">    
     
     <div class="row">
-        <div class="col-xs-3"　style="background:#CCC;height:200px;">
+        <div class="col-sm-3"　style="background:#CCC;height:200px;" style="text-align:center;">
             <img src="{{ $book["BookImage"]}}"></img>
         </div>
-        <div class="col-xs-9"　style="background:#CCC;height:200px;">
-            <h2>{{ $book->BookTitle }}</h2>
-            <p>{{ $book->BookAuthor }}</p>
-            <p>{{ $book->isbn10 }}/&nbsp;{{ $book->isbn13 }}</p>
+        <div class="col-sm-9"　style="background:#CCC;height:200px;">
+            <div style="margin-left:40px;">
+                <h3>{{ $book->BookTitle }}</h3>
+                <p>{{ $book->BookAuthor }}</p>
+                <p>{{ $book->isbn10 }}/&nbsp;{{ $book->isbn13 }}</p>
+            </div>    
         </div>
     </div>  
-    
-    <div class="row">
-        <p class="col-xs-12">書籍の内容</p>
-        <p class="col-xs-12">{{ $book->BookDiscription}}</p>
+    <div style="margin-left:40px;">
+        <div class="row">
+            <p class="col-xs-12">書籍の内容</p>
+            <p class="col-xs-12">{{ $book->BookDiscription}}</p>
+        </div>
     </div>
-
-    <table>
+    
+    <table style="margin-left:20px;">
         <tr>
             <th>カテゴリ</th>
             <td>
@@ -79,7 +82,7 @@ use App\Tag;
     </table>       
 
 <!-- 本を新規登録してからオススメする -->  
-<div class="row">
+<div class="row" style="margin-bottom:40px;">
 <div class="col-sm-6 text-center">       
         <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#sampleModal1" style="width:300px;">
     	  おすすめコメントを入力する
@@ -153,45 +156,33 @@ use App\Tag;
       </div>
       
           		
+        </div>
+    　</div>
     </div>
-　</div>
-</div>
 
-<div class="col-sm-6 text-center"> 
-    	 <a href="{{url('rental/'.$book->id)}}">
-    	     <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#sampleModal2" style="width:300px;">本をレンタルする</button>
-        </a>
-</div>
+    <div class="col-sm-6 text-center"> 
+        	 <a href="{{url('rental/'.$book->id)}}">
+        	     <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#sampleModal2" style="width:300px;">本をレンタルする</button>
+            </a>
+    </div>
 </div>
 
 
-<div class="row" style="margin-top:40px;">
-<p class="col-xs-12">おすすめコメント</p>
-        
-<table class="table table-striped">
-    <tr>
-        <th>ユーザー名</th>
-        <th>おすすめしたい人</th>
-        <th>評価</th>
-        <th>オススメポイント</th>
-    
-    </tr>        
-   
-     @if(isset($comments)>0)
-     @foreach($comments as $comment)
-    
-    <tbody>
-         @if($comment->user_id > 1)
-        <tr>
-            <td>
-               
-                <p>{{$comment->user->name}}</p>
-            </td>
-            <td>
-                <p>{{$comment->keys->key}}</p>
-            </td>
-            <td>
-                @if(($comment->evaluation) == 1)
+
+
+        @if(isset($comments)>0)
+         @foreach($comments as $comment)
+          
+           <div class="panel panel-info" style="margin-left:20px;">
+        	 <div class="panel-heading" style=text-align:left>
+        	  <ul style="list-style:none;" class="sample">
+               <!--<li><span><img class="avater img-circle" src="{{$comment->user->avater}}" style="inline"></img></span></li>-->
+        	   <li><a href="{{url('user_search_page/'.$comment->user->id)}}"><p>{{$comment->user->name}}</p></a>
+              </ul>
+        	 </div>
+        	 <div class="panel-body">
+                 <p>{{$comment->keys->key}}</p>
+                  @if(($comment->evaluation) == 1)
                     <div class="star-rating-icon">
                       <span class="glyphicon glyphicon-star"></span>
                       <span class="glyphicon glyphicon-star-empty"></span>
@@ -199,8 +190,8 @@ use App\Tag;
                       <span class="glyphicon glyphicon-star-empty"></span>
                       <span class="glyphicon glyphicon-star-empty"></span>
                     </div>
-                @endif 
-                @if(($comment->evaluation) == 2)
+                   @endif 
+                   @if(($comment->evaluation) == 2)
                     <div class="star-rating-icon">
                       <span class="glyphicon glyphicon-star"></span>
                       <span class="glyphicon glyphicon-star"></span>
@@ -208,44 +199,42 @@ use App\Tag;
                       <span class="glyphicon glyphicon-star-empty"></span>
                       <span class="glyphicon glyphicon-star-empty"></span>
                     </div>
-                @endif 
-                @if(($comment->evaluation) == 3)
-                    <div class="star-rating-icon">
-                      <span class="glyphicon glyphicon-star"></span>
-                      <span class="glyphicon glyphicon-star"></span>
-                      <span class="glyphicon glyphicon-star"></span>
-                      <span class="glyphicon glyphicon-star-empty"></span>
-                      <span class="glyphicon glyphicon-star-empty"></span>
-                    </div>
-                @endif 
-                @if(($comment->eevaluation) == 4)
-                    <div class="star-rating-icon">
-                      <span class="glyphicon glyphicon-star"></span>
-                      <span class="glyphicon glyphicon-star"></span>
-                      <span class="glyphicon glyphicon-star"></span>
-                      <span class="glyphicon glyphicon-star"></span>
-                      <span class="glyphicon glyphicon-star-empty"></span>
-                    </div>
-                @endif
-                @if(($comment->evaluation) == 5)
-                    <div class="star-rating-icon">
-                      <span class="glyphicon glyphicon-star"></span>
-                      <span class="glyphicon glyphicon-star"></span>
-                      <span class="glyphicon glyphicon-star"></span>
-                      <span class="glyphicon glyphicon-star"></span>
-                      <span class="glyphicon glyphicon-star"></span>
-                    </div>
-                @endif
-            </td>
-            <td>
-                <p class="col-xs-12"><a href="{{url('book_comments'.$comment->id)}}">{{$comment->comment_text}}</a></p>
-            </td>
-            </tr>
-            @endif
-        </tbody>
-     @endforeach
-     @endif
- </table>   
+                    @endif 
+                    @if(($comment->evaluation) == 3)
+                        <div class="star-rating-icon">
+                          <span class="glyphicon glyphicon-star"></span>
+                          <span class="glyphicon glyphicon-star"></span>
+                          <span class="glyphicon glyphicon-star"></span>
+                          <span class="glyphicon glyphicon-star-empty"></span>
+                          <span class="glyphicon glyphicon-star-empty"></span>
+                        </div>
+                    @endif 
+                    @if(($comment->eevaluation) == 4)
+                        <div class="star-rating-icon">
+                          <span class="glyphicon glyphicon-star"></span>
+                          <span class="glyphicon glyphicon-star"></span>
+                          <span class="glyphicon glyphicon-star"></span>
+                          <span class="glyphicon glyphicon-star"></span>
+                          <span class="glyphicon glyphicon-star-empty"></span>
+                        </div>
+                    @endif
+                    @if(($comment->evaluation) == 5)
+                        <div class="star-rating-icon">
+                          <span class="glyphicon glyphicon-star"></span>
+                          <span class="glyphicon glyphicon-star"></span>
+                          <span class="glyphicon glyphicon-star"></span>
+                          <span class="glyphicon glyphicon-star"></span>
+                          <span class="glyphicon glyphicon-star"></span>
+                        </div>
+                    @endif
+                    <p class="col-xs-12"><a href="{{url('book_comments'.$comment->id)}}">{{$comment->comment_text}}</a></p>
+        	    </div>
+           </div>  
+           @endforeach
+        @endif
+
+
+ 
                  
                  
   </div>

@@ -23,7 +23,7 @@ use App\Comment;
 
 
 <!--所有している本-->
-<h2 class="col-xs-12">{{$user->name}}さんがコメントをいれた書籍</h2>　
+<h4 class="col-xs-12">{{$user->name}}さんがコメントをいれた書籍</h4>　
         @if(isset($user_books)>0)
         <?php $i=0 ?>
             @foreach($user_books as $user_book)

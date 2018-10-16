@@ -12,7 +12,7 @@ use App\Tag;
 
  <p class="page-header">本を登録する</p>
   <div class="form-group">
-    <p>背表紙のバーコードを読みとる</p>
+    <p><b>背表紙のバーコードを読みとる場合<b></p>
     <div id="container">
         <div  id="canvas_wrapper" style="display:none;" >
 		<canvas width="320" height="240" id="picture"></canvas>
@@ -23,7 +23,7 @@ use App\Tag;
 		</div>
 	</div>
 
-    <label  class="col-sm-3 control-label form-control-static btn-group-lg" for="isbn">ISBNを入力してください<p style="font-size:10px;">※裏表紙や奥付に記載されている１３桁のユニークコード</p>:</label>
+    <label  class="col-sm-3 control-label form-control-static btn-group-lg" for="isbn">ISBNを直接入力する場合<p style="font-size:10px;">※裏表紙や奥付に記載されている１３桁のユニークコード</p>:</label>
     <div class="col-sm-9">
         <input  class="form-control-static col-sm-9" type="text" class="form-control" id="isbn" placeholder="ISBNとは978始まる13桁の数字を入力（ーハイフンは含まない）">
         <button id="btn" class="form-control-static" onclick="send_ISBN()">検索</button>

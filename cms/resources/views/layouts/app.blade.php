@@ -52,10 +52,9 @@
         var EXIFJS_URL = "{{asset('js/exif.js')}}";
     </script>
     <script type="text/javascript" src="{{asset('js/JOB.js')}}"></script>
-  
 
-
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+  <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
 
 </head>
 <body>
@@ -171,10 +170,7 @@
     
 
 
-    
-        
-        
-  
+
 </body>
 <footer>
 <div class="row">

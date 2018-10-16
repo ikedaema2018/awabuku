@@ -33,7 +33,6 @@ use App\Category;
            <?php $i=0 ?>
     　   </div> 
     　   @endif
-    　 
     @endforeach
   @endif             
  </div>     

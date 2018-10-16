@@ -14,13 +14,14 @@ use App\Category;
 
 <div class="row">
     <div class="col-xs-offset-1 col-xs-10 col-xs-offset-1">    
-    <h2>Book Rental</h2>
+    <h3>Book Rental</h3>
     </div>
     <div class="col-sm-3" style="text-align: center;">
         <img src="{{ $book->BookImage}}" height="200px;"></img>
     </div>
     <div class="col-sm-9">
-        <h2>{{ $book->BookTitle }}</h2>
+      <div style="margin-left:40px;">
+        <h3>{{ $book->BookTitle }}</h3>
         <p>{{ $book->BookAuthor }}</p>
         <p>{{ $book->isbn10 }}/&nbsp;{{ $book->isbn13 }}</p>
         <p>{{ $book->PublishedDate}}</p>
@@ -29,6 +30,7 @@ use App\Category;
         <p>{{ Category::find($category_list->category_id)->category_name}}</p>
          @endforeach
          @endif
+      </div>
     </div>
 </div>  
 <div class="col-xs-offset-1 col-xs-10 col-xs-offset-1">
