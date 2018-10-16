@@ -1008,8 +1008,8 @@ class BooksController extends Controller
     } 
     //スレッド用の書籍の新規登録
     public function thread_comment_insert(Request $request) {
- 
-
+        logger("------------------------------------");
+        logger($request);
         $thread_comments = new Thread_comment;
         $thread_comments->comment_id =$request->id;
         $thread_comments->thread_id =$request->thread_id;

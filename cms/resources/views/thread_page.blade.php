@@ -23,7 +23,6 @@ use App\Key;
         <div class="col-xs-2">
             <span navbar-brand><img class="avater img-circle" src="{{$thread_user_name->avater}}"></img></span>
             <p>{{ $thread_user_name->name}}</p>
-
         </div>
          <div style="margin-bottom:5px;">
              <a href="{{url('category_page/'.$thread->category_id)}}"><p>{{ Category::find($thread->category_id)->category_name}}</p></a>
@@ -32,9 +31,7 @@ use App\Key;
         <div class="col-xs-10">                    
              <p>{{ $thread->thread_body }}</p>
         </div> 
-       
     　</div>    
-    　
 </div>
 
 <div class="row">
@@ -57,18 +54,16 @@ use App\Key;
         	</div>
         			    
     <!--モーダルボディー    -->    			    
-        	 <div class="modal-body">
-    
+        	<div class="modal-body">
         		<h4 style="text-decoration:underline; text-decoration-color:#FFFF00;">オススメする本をタップしてください</h4>
         		
     <!--カルーセル開始   -->     		
-        		<div id="sampleCarousel" class="carousel slide" data-interval="false" data-ride="carousel">
+        	 <div id="sampleCarousel" class="carousel slide" data-interval="false" data-ride="carousel">
               <ul class="carousel-indicators" style="list-style:none;">
             		<li class="active" data-target="#sampleCarousel" data-slide-to="0"></li>
             		<li data-target="#sampleCarousel" data-slide-to="1"></li>
             		<li data-target="#sampleCarousel" data-slide-to="2"></li>
               </ul>
-                
                 <div class="carousel-inner" role="listbox">
                   <?php $i=0;?>
                     @if(isset($user_comments)>0)
@@ -77,79 +72,67 @@ use App\Key;
                             @if($i==1)
       <!--カルーセルactiive   -->                        
                         	  <div class="item active">
-                                <ul style="list-style:none;" class="row">
-                                    <li class="thread_page carousel_book_info col-sm-4"><img src="{{$user_comment->user_c->BookImage}}"></img></li>
-                                    <li class="thread_page carousel_book_info col-sm-8">
-                                      <div> 
-                                        <!--<p class="itemid" hidden>{{$user_comment->id}}</p>-->
-                                        <!--<h3 class="itemtitle">{{$user_comment->user_c->BookTitle}}</h3>-->
-                                        <!--<p>{{$user_comment->user_c->BookAuthor}}</p>-->
-                                        <!--<p>{{$user_comment->comment_text}}</p>-->
-                                        <form id="aaa" action="{{url('thread_2')}}" method="post" class="horizontal">
-                                  　　    {{csrf_field()}}
-                                
-                                  	 
-                                  	       <input type="hidden" name="thread_id"  value="{{$thread->id}}" >
-                                  	       <input type="textarea" name="thread_comment"  placeholder="コメントを入力" rows="10" class="form-control">
-                                  	       <input type="text" name="
-                                  	       "/>
-                                           <button type="submit" class="btn btn-primary"/ value="">投稿する</button>
-                                	    </form>
-                                      </div> 
-                                    </li>
-                                </ul>    
+                        	      <form id="aaa" action="{{url('thread_2')}}" method="post" class="horizontal">
+                        	           {{csrf_field()}}
+                        	          <input name='id' type="hidden" value="{{$user_comment->id}}">
+                      	              <input type="hidden" name="thread_id" value="{{ $thread->id }}"></input>
+                                        <ul style="list-style:none;" class="row">
+                                            <li class="thread_page carousel_book_info col-sm-4"><img src="{{$user_comment->user_c->BookImage}}"></img></li>
+                                            <li class="thread_page carousel_book_info col-sm-8">
+                                                 <p class="itemid" hidden>{{$user_comment->id}}</p>
+                                                 <h3 class="itemtitle">{{$user_comment->user_c->BookTitle}}</h3>
+                                                 <p>{{$user_comment->user_c->BookAuthor}}</p>
+                                                 <p>{{$user_comment->comment_text}}</p>
+                                            </li>
+                                        </ul>    
+                                            <div style="margin-top:30px;">
+                                                <input type="textarea" name="thread_comment"   placeholder="スレッドに対するコメント" rows="10" class="form-control">
+                                                <button type="submit" class="btn btn-primary" value="">投稿する</button>
+                                            </div> 
+                                   </form>
                         	  </div>
                             @else
-      <!--カルーセルnon actiive   -->                         
-                          		<div class="item sitei">
-                          		 <ul style="list-style:none;">                                                                                       
-                                    <li class="thread_page carousel_book_info col-sm-4"><img src="{{$user_comment->user_c->BookImage}}" alt="送信する"></img></li>
-                                    <li class="thread_page carousel_book_info col-sm-8">
-                                      <div>  
-                                        <p class="itemid" hidden>{{$user_comment->id}}</p>
-                                        <h3 class="itemtitle">{{$user_comment->user_c->BookTitle}}</h3>
-                                        <p>{{$user_comment->user_c->BookAuthor}}</p>
-                                        <p>{{$user_comment->comment_text}}</p>
-                                      </div> 
-                                    </li>
-                                 </ul>      
-                          		</div>                          
+      <!--カルーセルnon actiive   -->                
+                                <div class="item">
+                                  	<form id="aaa" action="{{url('thread_2')}}" method="post" class="horizontal">
+                                  	    {{csrf_field()}}
+                                	          <input name='id' type="hidden" value="{{$user_comment->id}}"></input>
+                              	              <input type="hidden" name="thread_id" value="{{ $thread->id }}"></input>
+                                  		 <ul style="list-style:none;">                                                                                       
+                                            <li class="thread_page carousel_book_info col-sm-4"><img src="{{$user_comment->user_c->BookImage}}" alt="送信する"></img></li>
+                                            <li class="thread_page carousel_book_info col-sm-8">
+                                                 <p class="itemid" hidden>{{$user_comment->id}}</p>
+                                                 <h3 class="itemtitle">{{$user_comment->user_c->BookTitle}}</h3>
+                                                 <p>{{$user_comment->user_c->BookAuthor}}</p>
+                                                 <p>{{$user_comment->comment_text}}</p>
+                                            </li>
+                                         </ul>    
+                                        <div style="margin-top:30px;">
+                                            <input type="textarea" name="thread_comment"   placeholder="スレッドに対するコメント" rows="10" class="form-control">
+                                            <button type="submit" class="btn btn-primary" value="">投稿する</button>
+                                        </div> 
+                                  
+                                    </form>
+                                  </div>
                            @endif
                         @endforeach
                       @endif
                 </div>
-                
-                <a class="left carousel-control test" href="#sampleCarousel" role="button" data-slide="prev" onClick="ddd()">
+                <a class="left carousel-control test" href="#sampleCarousel" role="button" data-slide="prev" >
               		<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
               		<span class="sr-only">前へ</span>
                 </a>
-              	<a class="right carousel-control test2" href="#sampleCarousel" role="button" data-slide="next" onClick="ccc()">
+              	<a class="right carousel-control test2" href="#sampleCarousel" role="button" data-slide="next" >
               		<span class="glyphicon glyphicon-chevron-right" aria-hidden="true" ></span>
               		<span class="sr-only">次へ</span>
               	</a>
             </div>
-    <!--カルーセル終了   				-->
-    
-    
-    <!--コメント入力  				-->
-    
-        	<div class="row">
-        	    <p>あなたがチェックした本</p>
-            </div>
-    
-    	　　<!--<form id="aaa" action="{{url('thread_2')}}" method="post" class="horizontal">-->
-      　<!--　    {{csrf_field()}}-->
-    
-      	 
-      	<!--       <input type="hidden" name="thread_id"  value="{{$thread->id}}" >-->
-      	<!--       <input type="textarea" name="thread_comment"  placeholder="コメントを入力" rows="10" class="form-control">-->
-       <!--        <button type="submit" class="btn btn-primary"/ value="">投稿する</button>-->
-    	  <!--  </form>-->
-    		  
+    <!--カルーセル終了   		-->
+
     <!--モーダルフッター    --> 		  
-    		  <div class="modal-footer">
-        		<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-        	  </div>
+    <!--		  <div class="modal-footer">-->
+    <!--    		<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>-->
+    <!--    	  </div>-->
         	</div>
         </div>
     </div>
@@ -362,7 +345,7 @@ use App\Key;
     </div> 
     
     <div class="form-group">  
-          <label>おすすめポイントト</label>
+          <label>おすすめポイント</label>
           
           <div class="center">
           <textarea  rows="5" class="form-control" name="comment_text" placeholder="例）++の勉強をしたい人におすすめ" autofocu></textarea>
@@ -499,26 +482,24 @@ use App\Key;
 <!--コメントを表示する　終了-->
       
     
-   <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>-->
-   <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>-->
-   <script>
+  <script>
      
-        $(".item").on("click",function(){
-           $("#aaa").find("[name='id']").remove();
-           $("#aaa").find("[name='BookTitle']").remove();
+        // $(".item").on("click",function(){
+        //   $("#aaa").find("[name='id']").remove();
+        //   $("#aaa").find("[name='BookTitle']").remove();
            
-        let id = $(this).find(".itemid").text();
-        let BookTitle =$(this).find(".itemtitle").text();
-        let form = $("<input name='id'>").attr("type","hidden");
-        let form2 =$("<input name='BookTitle'>").attr("type","text");
+        // let id = $(this).find(".itemid").text();
+        // let BookTitle =$(this).find(".itemtitle").text();
+        // let form = $("<input name='id'>").attr("type","hidden");
+        // let form2 =$("<input name='BookTitle'>").attr("type","text");
         
-        form.val(id);
-        form2.val(BookTitle);
-        $("#aaa").prepend(form);
-        $("#aaa").prepend(form2);
+        // form.val(id);
+        // form2.val(BookTitle);
+        // $("#aaa").prepend(form);
+        // $("#aaa").prepend(form2);
         
         
-        });
+        // });
         
         $("#btn").on("click", function () {
             const isbn = $("#isbn").val();
@@ -700,80 +681,80 @@ console.log(new_tag_category_id);
  
  
  //配列のインデックス
- var BCIndex = 0
- var titleArr = Array.from(document.getElementsByClassName('itemtitle')).map(el=>el.textContent);
- var idArr = Array.from(document.getElementsByClassName('itemid')).map(el=>el.textContent);
- var slideClickFlag = true;
- let form = $("<input name='id'>").attr("type","hidden");
- let form2 =$("<input name='BookTitle'>").attr("type","text");
- form.val(idArr[0]);
- form2.val(titleArr[0]);
+//  var BCIndex = 0
+//  var titleArr = Array.from(document.getElementsByClassName('itemtitle')).map(el=>el.textContent);
+//  var idArr = Array.from(document.getElementsByClassName('itemid')).map(el=>el.textContent);
+//  var slideClickFlag = true;
+//  let form = $("<input name='id'>").attr("type","hidden");
+//  let form2 =$("<input name='BookTitle'>").attr("type","text");
+//  form.val(idArr[0]);
+//  form2.val(titleArr[0]);
 
-$("#aaa").prepend(form);
-$("#aaa").prepend(form2);
+// $("#aaa").prepend(form);
+// $("#aaa").prepend(form2);
  
-function ccc(){
-    // console.log(slideClickFlag)
-    //       if (slideClickFlag){
-    //           slideClickFlag=false;
-    //       }
+// function ccc(){
+//     // console.log(slideClickFlag)
+//     //       if (slideClickFlag){
+//     //           slideClickFlag=false;
+//     //       }
     
-    $('test2').hide()
-          $("#aaa").find("[name='id']").remove();
-          $("#aaa").find("[name='BookTitle']").remove();
+//     $('test2').hide()
+//           $("#aaa").find("[name='id']").remove();
+//           $("#aaa").find("[name='BookTitle']").remove();
            
-        let id = $(".item.sitei").find(".itemid").text();
-        let BookTitle =$(".item.sitei").find(".itemtitle").text();
-        let form = $("<input name='id'>").attr("type","hidden");
-        let form2 =$("<input name='BookTitle'>").attr("type","text");
+//         let id = $(".item.sitei").find(".itemid").text();
+//         let BookTitle =$(".item.sitei").find(".itemtitle").text();
+//         let form = $("<input name='id'>").attr("type","hidden");
+//         let form2 =$("<input name='BookTitle'>").attr("type","text");
         
         
         
-        if (BCIndex == titleArr.length - 1) {
-            BCIndex = 0
-        }else{
-            BCIndex += 1;
-        }
-        console.log(BCIndex);
-        form.val(idArr[BCIndex]);
-        form2.val(titleArr[BCIndex]);
+//         if (BCIndex == titleArr.length - 1) {
+//             BCIndex = 0
+//         }else{
+//             BCIndex += 1;
+//         }
+//         console.log(BCIndex);
+//         form.val(idArr[BCIndex]);
+//         form2.val(titleArr[BCIndex]);
 
-        $("#aaa").prepend(form);
-        $("#aaa").prepend(form2);
+//         $("#aaa").prepend(form);
+//         $("#aaa").prepend(form2);
 
-         setTimeout(function(){$('test2').show() }, 1000);
-};
+//          setTimeout(function(){$('test2').show() }, 1000);
+// };
 
-function ddd(){
-    console.log(slideClickFlag)
-    if (slideClickFlag){
-        slideClickFlag=false;
+// function ddd(){
+//     console.log(slideClickFlag)
+//     if (slideClickFlag){
+//         slideClickFlag=false;
         
-    $("#aaa").find("[name='id']").remove();
-          $("#aaa").find("[name='BookTitle']").remove();
+//     $("#aaa").find("[name='id']").remove();
+//           $("#aaa").find("[name='BookTitle']").remove();
            
-        let id = $(".item.sitei").find(".itemid").text();
-        let BookTitle =$(".item.sitei").find(".itemtitle").text();
-        let form = $("<input name='id'>").attr("type","hidden");
-        let form2 =$("<input name='BookTitle'>").attr("type","text");
+//         let id = $(".item.sitei").find(".itemid").text();
+//         let BookTitle =$(".item.sitei").find(".itemtitle").text();
+//         let form = $("<input name='id'>").attr("type","hidden");
+//         let form2 =$("<input name='BookTitle'>").attr("type","text");
         
         
         
-        if (BCIndex == 0) {
-            BCIndex = titleArr.length - 1
-        }else{
-            BCIndex -= 1;
-        }
-        form.val(idArr[BCIndex]);
-        form2.val(titleArr[BCIndex]);
+//         if (BCIndex == 0) {
+//             BCIndex = titleArr.length - 1
+//         }else{
+//             BCIndex -= 1;
+//         }
+//         form.val(idArr[BCIndex]);
+//         form2.val(titleArr[BCIndex]);
 
-        $("#aaa").prepend(form);
-        $("#aaa").prepend(form2);
+//         $("#aaa").prepend(form);
+//         $("#aaa").prepend(form2);
         
    
-         setTimeout(function(){slideClickFlag  = true; }, 1000);
-}
-};
+//          setTimeout(function(){slideClickFlag  = true; }, 1000);
+// }
+// };
 
 </script>
 

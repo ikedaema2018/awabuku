@@ -174,9 +174,9 @@ use App\Tag;
          @foreach($comments as $comment)
           
            <div class="panel panel-info" style="margin-left:20px;">
-        	 <div class="panel-heading" style=text-align:left>
-        	  <ul style="list-style:none;" class="sample">
-               <!--<li><span><img class="avater img-circle" src="{{$comment->user->avater}}" style="inline"></img></span></li>-->
+        	 <div class="panel-heading" style=text-align>
+        	  <ul style="list-style:none;  vertical-align: bottom;" class="sample">
+               <li><span><img class="avater img-circle" src="{{$comment->user->avater}}" style="inline"></img></span></li>
         	   <li><a href="{{url('user_search_page/'.$comment->user->id)}}"><p>{{$comment->user->name}}</p></a>
               </ul>
         	 </div>
