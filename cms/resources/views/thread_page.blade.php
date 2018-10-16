@@ -81,10 +81,20 @@ use App\Key;
                                     <li class="thread_page carousel_book_info col-sm-4"><img src="{{$user_comment->user_c->BookImage}}"></img></li>
                                     <li class="thread_page carousel_book_info col-sm-8">
                                       <div> 
-                                        <p class="itemid" hidden>{{$user_comment->id}}</p>
-                                        <h3 class="itemtitle">{{$user_comment->user_c->BookTitle}}</h3>
-                                        <p>{{$user_comment->user_c->BookAuthor}}</p>
-                                        <p>{{$user_comment->comment_text}}</p>
+                                        <!--<p class="itemid" hidden>{{$user_comment->id}}</p>-->
+                                        <!--<h3 class="itemtitle">{{$user_comment->user_c->BookTitle}}</h3>-->
+                                        <!--<p>{{$user_comment->user_c->BookAuthor}}</p>-->
+                                        <!--<p>{{$user_comment->comment_text}}</p>-->
+                                        <form id="aaa" action="{{url('thread_2')}}" method="post" class="horizontal">
+                                  　　    {{csrf_field()}}
+                                
+                                  	 
+                                  	       <input type="hidden" name="thread_id"  value="{{$thread->id}}" >
+                                  	       <input type="textarea" name="thread_comment"  placeholder="コメントを入力" rows="10" class="form-control">
+                                  	       <input type="text" name="
+                                  	       "/>
+                                           <button type="submit" class="btn btn-primary"/ value="">投稿する</button>
+                                	    </form>
                                       </div> 
                                     </li>
                                 </ul>    
@@ -109,11 +119,11 @@ use App\Key;
                       @endif
                 </div>
                 
-                <a class="left carousel-control" href="#sampleCarousel" role="button" data-slide="prev" onClick="ddd()">
+                <a class="left carousel-control test" href="#sampleCarousel" role="button" data-slide="prev" onClick="ddd()">
               		<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
               		<span class="sr-only">前へ</span>
                 </a>
-              	<a class="right carousel-control" href="#sampleCarousel" role="button" data-slide="next" onClick="ccc()">
+              	<a class="right carousel-control test2" href="#sampleCarousel" role="button" data-slide="next" onClick="ccc()">
               		<span class="glyphicon glyphicon-chevron-right" aria-hidden="true" ></span>
               		<span class="sr-only">次へ</span>
               	</a>
@@ -127,14 +137,14 @@ use App\Key;
         	    <p>あなたがチェックした本</p>
             </div>
     
-    	　　<form id="aaa" action="{{url('thread_2')}}" method="post" class="horizontal">
-      　　    {{csrf_field()}}
+    	　　<!--<form id="aaa" action="{{url('thread_2')}}" method="post" class="horizontal">-->
+      　<!--　    {{csrf_field()}}-->
     
       	 
-      	       <input type="hidden" name="thread_id"  value="{{$thread->id}}" >
-      	       <input type="textarea" name="thread_comment"  placeholder="コメントを入力" rows="10" class="form-control">
-               <button type="submit" class="btn btn-primary"/ value="">投稿する</button>
-    	    </form>
+      	<!--       <input type="hidden" name="thread_id"  value="{{$thread->id}}" >-->
+      	<!--       <input type="textarea" name="thread_comment"  placeholder="コメントを入力" rows="10" class="form-control">-->
+       <!--        <button type="submit" class="btn btn-primary"/ value="">投稿する</button>-->
+    	  <!--  </form>-->
     		  
     <!--モーダルフッター    --> 		  
     		  <div class="modal-footer">
@@ -693,7 +703,7 @@ console.log(new_tag_category_id);
  var BCIndex = 0
  var titleArr = Array.from(document.getElementsByClassName('itemtitle')).map(el=>el.textContent);
  var idArr = Array.from(document.getElementsByClassName('itemid')).map(el=>el.textContent);
- var slideClickFlag = false;
+ var slideClickFlag = true;
  let form = $("<input name='id'>").attr("type","hidden");
  let form2 =$("<input name='BookTitle'>").attr("type","text");
  form.val(idArr[0]);
@@ -703,12 +713,12 @@ $("#aaa").prepend(form);
 $("#aaa").prepend(form2);
  
 function ccc(){
-    console.log(slideClickFlag)
-          if (slideClickFlag){
-              return false;
-          }
-        slideClickFlag = true
-
+    // console.log(slideClickFlag)
+    //       if (slideClickFlag){
+    //           slideClickFlag=false;
+    //       }
+    
+    $('test2').hide()
           $("#aaa").find("[name='id']").remove();
           $("#aaa").find("[name='BookTitle']").remove();
            
@@ -730,16 +740,15 @@ function ccc(){
 
         $("#aaa").prepend(form);
         $("#aaa").prepend(form2);
-        
-        setTimeout(slideClickFlag = false,1000);
-}
+
+         setTimeout(function(){$('test2').show() }, 1000);
+};
 
 function ddd(){
     console.log(slideClickFlag)
     if (slideClickFlag){
-              return false
-          }
-          slideClickFlag = true
+        slideClickFlag=false;
+        
     $("#aaa").find("[name='id']").remove();
           $("#aaa").find("[name='BookTitle']").remove();
            
@@ -761,8 +770,11 @@ function ddd(){
         $("#aaa").prepend(form);
         $("#aaa").prepend(form2);
         
-        setTimeout(slideClickFlag = false, 1000);
+   
+         setTimeout(function(){slideClickFlag  = true; }, 1000);
 }
+};
+
 </script>
 
     
