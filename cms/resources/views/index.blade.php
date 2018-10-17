@@ -115,8 +115,20 @@ use App\Category_genre;
                             @endif
                         </div>
                 
+                        <!--$genleBookValuesをソートさせるためにひなん-->
+                        <!--<?php-->
+                        <!--$tmp_genleBookValues = $genreBookValues;-->
+                        // foreachで1つずつ値を取り出す
+                        <!--foreach ($tmp_genleBookValues as $key => $value) {-->
+                        <!--  $id[$key] = $value['id'];-->
+                        <!--}-->
+                        // array_multisortで'id'の列を昇順に並び替える
+                        <!--array_multisort($id, SORT_DESC, $tmp_genleBookValues);-->
+                        <!--?>-->
                         
-                        @foreach($genreBookValues as $genreBookValue)
+                        
+                        
+                        @foreach($tmp_genleBookValues as $genreBookValue)
                                 @if(($loop->iteration)<6)
                                 
                                         <div class="col-sm-2" style="text-align:center; margin-bottom:30px;">
@@ -131,7 +143,7 @@ use App\Category_genre;
                                 @endif
                        
                          @endforeach
-                         @if(count($genreBookValues)>0)
+                         @if(count($tmp_genleBookValues)>0)
                             <div class= "col-sm-12 text-right border_bottom">
                                 <a href="{{url('category_genre_page/'.Category_genre::where('category_genrename', $genreBookKey)->first()->id)}}">もっと見る</a>
                             </div>  

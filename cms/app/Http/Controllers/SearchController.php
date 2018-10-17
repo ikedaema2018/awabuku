@@ -31,7 +31,7 @@ class SearchController extends Controller
  
   #クエリ生成
   $query = Book::query();
- 
+// Orwherehas
   #もしキーワードがあったら
   if(!empty($keyword))
   {
