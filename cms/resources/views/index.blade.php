@@ -116,15 +116,23 @@ use App\Category_genre;
                         </div>
                 
                         <!--$genleBookValuesをソートさせるためにひなん-->
-                        <!--<?php-->
-                        <!--$tmp_genleBookValues = $genreBookValues;-->
+                        <?php
+
+                        $tmp_genleBookValues = $genreBookValues;
                         // foreachで1つずつ値を取り出す
-                        <!--foreach ($tmp_genleBookValues as $key => $value) {-->
-                        <!--  $id[$key] = $value['id'];-->
-                        <!--}-->
-                        // array_multisortで'id'の列を昇順に並び替える
-                        <!--array_multisort($id, SORT_DESC, $tmp_genleBookValues);-->
-                        <!--?>-->
+                        foreach ($tmp_genleBookValues as $key => $value) {
+                          logger("---------------------------------");
+                          logger($key);
+                          logger($value);
+                        }
+                        
+                        //ソート
+                        usort($tmp_genleBookValues, function ($a, $b) {
+                            // return $a['id'] < $b['id'] ? -1 : 1;
+                            //逆順の場合はこっち
+                            return  $a['id'] > $b['id'] ? -1 : 1;
+                        });
+                        ?>
                         
                         
                         
