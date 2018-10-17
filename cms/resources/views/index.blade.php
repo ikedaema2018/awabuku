@@ -41,22 +41,22 @@ use App\Category_genre;
             <div style="background-color:#fffaf0;"> 
                 <div class="row">　
                     <ul style="list-style:none;  vertical-align: bottom;" class="sample">
-                     <li><span><img class="avater img-circle" src="{{$topic_user->avater}}" style="inline"></img></span></li>
-                     <li><p style="font-size:15px;"><a href="{{url('user_search_page/'.$topic_user->id)}}">{{$topic_user->name}}</a>さんのオススメ</p></li>
+                     <li><span><img class="avater img-circle" src="{{$topic_user2->avater}}" style="inline"></img></span></li>
+                     <li><p style="font-size:15px;"><a href="{{url('user_search_page/'.$topic_user2->id)}}">{{$topic_user2->name}}</a>さんのオススメ</p></li>
                     </ul>
                 </div>
                 <div class="row">
                     <div  class="col-sm-offset-1 col-sm-3" style="text-align:center;">
-                        <a href="{{url('rental/'.$topic_book->id)}}"><img src="{{$topic_book->BookImage}}" width="128" height="180" style="display:inline"></img></a>
+                        <a href="{{url('rental/'.$topic_book2->id)}}"><img src="{{$topic_book2->BookImage}}" width="128" height="180" style="display:inline"></img></a>
                     </div>
                     <div  class="col-sm-8">    
                         <div class="col-xs-offset-1 col-xs-11">
-                            <a href="{{url('rental/'.$topic_book->id)}}"><h4><b>{{$topic_book->BookTitle}}</b></h4></a>
+                            <a href="{{url('rental/'.$topic_book2->id)}}"><h4><b>{{$topic_book->BookTitle}}</b></h4></a>
                               <div class="col-xs-12"> 
-                            　 　<p class="cut_txt">{{$topic->comment_text}}</p>
+                            　 　<p class="cut_txt">{{$topic2->comment_text}}</p>
                             　</div>
                             <div class="col-xs-offset-6 col-xs-6">
-                              <a href="{{url('book_comment/'.$topic->id)}}">もっとみる</a>
+                              <a href="{{url('book_comment/'.$topic2->id)}}">もっとみる</a>
                             </div>
                         </div>    
                     </div> 

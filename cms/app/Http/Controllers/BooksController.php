@@ -30,13 +30,20 @@ class BooksController extends Controller
 //index TOP画面
     public function index(){
         
-        //topics
+        //topics1
         
         $topic=Comment::where('today_book',1)->first();
         $topic_user=User::where('id',$topic->user_id)->first();
         $topic_book=Book::where('id',$topic->book_id)->first();
         $topic_categories=Category_list::where('book_id',$topic_book->id)->get();
-        $topic_category_names=[];
+        $topic_category_names=[];    
+        
+        //topics2
+        $topic2=Comment::where('today_book',2)->first();
+        $topic_user2=User::where('id',$topic2->user_id)->first();
+        $topic_book2=Book::where('id',$topic2->book_id)->first();
+        $topic_category2=Category_list::where('book_id',$topic_book2->id)->get();
+        $topic_category_names2=[];
         
          //カテゴリーリストのカテゴリ名を取得.
         foreach($topic_categories as $topic_category){
@@ -93,7 +100,15 @@ class BooksController extends Controller
             'topic_user'=>$topic_user,
             'topic_book'=>$topic_book,
             'topic_category'=>$topic_category,
-            'topic_category_names'=>$topic_category_names,
+            'topic_category_names'=>$topic_category_names,    
+            
+            
+            'topic2'=>$topic2,
+            'topic_user2'=>$topic_user2,
+            'topic_book2'=>$topic_book2,
+            'topic_category2'=>$topic_category2,
+            'topic_category_names2'=>$topic_category_names2,
+            
             'categories' => $categories,
             'category_lists' => $category_lists,
             'thread_lists'  =>$thread_lists,

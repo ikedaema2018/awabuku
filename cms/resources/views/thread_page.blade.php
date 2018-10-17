@@ -55,7 +55,7 @@ use App\Key;
         			    
     <!--モーダルボディー    -->    			    
         	<div class="modal-body">
-        		<h4 style="text-decoration:underline; text-decoration-color:#FFFF00;">オススメする本をタップしてください</h4>
+        		<h4 style="text-decoration:underline; text-decoration-color:#FFFF00;">オススメする本を選び、コメントを入力してください</h4>
         		
     <!--カルーセル開始   -->     		
         	 <div id="sampleCarousel" class="carousel slide" data-interval="false" data-ride="carousel">
@@ -71,12 +71,9 @@ use App\Key;
                     	    <?php $i++;?>
                             @if($i==1)
       <!--カルーセルactiive   -->                        
-                        	  <div class="item active">
-                        	      <form id="aaa" action="{{url('thread_2')}}" method="post" class="horizontal">
-                        	           {{csrf_field()}}
-                        	          <input name='id' type="hidden" value="{{$user_comment->id}}">
-                      	              <input type="hidden" name="thread_id" value="{{ $thread->id }}"></input>
-                                        <ul style="list-style:none;" class="row">
+                        	  <div class="item active" style="margin-bottom:20px;">
+                        	     
+                                        <ul style="list-style:none; display:inline-block;">
                                             <li class="thread_page carousel_book_info col-sm-4"><img src="{{$user_comment->user_c->BookImage}}"></img></li>
                                             <li class="thread_page carousel_book_info col-sm-8">
                                                  <p class="itemid" hidden>{{$user_comment->id}}</p>
@@ -84,11 +81,19 @@ use App\Key;
                                                  <p>{{$user_comment->user_c->BookAuthor}}</p>
                                                  <p>{{$user_comment->comment_text}}</p>
                                             </li>
-                                        </ul>    
-                                            <div style="margin-top:30px;">
+                                        </ul>  
+                                    <form id="aaa" action="{{url('thread_2')}}" method="post" class="horizontal">
+                        	           {{csrf_field()}}
+                        	          <input name='id' type="hidden" value="{{$user_comment->id}}">
+                      	              <input type="hidden" name="thread_id" value="{{ $thread->id }}"></input>
+                                        <div style="margin-top:30px;">
+                                            <label>スレッドコメント</label>
                                                 <input type="textarea" name="thread_comment"   placeholder="スレッドに対するコメント" rows="10" class="form-control">
-                                                <button type="submit" class="btn btn-primary" value="">投稿する</button>
-                                            </div> 
+                                       
+                                        <div class="col-xs-offset-5 col-xs-7" style="margin-top:30px;">
+                                            <button type="submit" class="btn btn-primary" value="">投稿する</button>
+                                        </div> 
+                                          </div> 
                                    </form>
                         	  </div>
                             @else
@@ -98,7 +103,7 @@ use App\Key;
                                   	    {{csrf_field()}}
                                 	          <input name='id' type="hidden" value="{{$user_comment->id}}"></input>
                               	              <input type="hidden" name="thread_id" value="{{ $thread->id }}"></input>
-                                  		 <ul style="list-style:none;">                                                                                       
+                                  		   <ul style="list-style:none; display: inline-block;">                                                                                     
                                             <li class="thread_page carousel_book_info col-sm-4"><img src="{{$user_comment->user_c->BookImage}}" alt="送信する"></img></li>
                                             <li class="thread_page carousel_book_info col-sm-8">
                                                  <p class="itemid" hidden>{{$user_comment->id}}</p>
@@ -107,11 +112,14 @@ use App\Key;
                                                  <p>{{$user_comment->comment_text}}</p>
                                             </li>
                                          </ul>    
-                                        <div style="margin-top:30px;">
-                                            <input type="textarea" name="thread_comment"   placeholder="スレッドに対するコメント" rows="10" class="form-control">
-                                            <button type="submit" class="btn btn-primary" value="">投稿する</button>
-                                        </div> 
-                                  
+                                      <div style="margin-top:30px;">
+                                      <label>スレッドコメント</label>
+                                        <input type="textarea" name="thread_comment"   placeholder="スレッドに対するコメント" rows="10" class="form-control">
+                                     
+                                            <div class="col-xs-offset-5 col-xs-7"style="margin-top:30px;">
+                                                <button type="submit" class="btn btn-primary" value="">投稿する</button>
+                                            </div> 
+                                      </div> 
                                     </form>
                                   </div>
                            @endif
