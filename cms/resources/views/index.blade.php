@@ -119,13 +119,7 @@ use App\Category_genre;
                         <?php
 
                         $tmp_genleBookValues = $genreBookValues;
-                        // foreachで1つずつ値を取り出す
-                        foreach ($tmp_genleBookValues as $key => $value) {
-                          logger("---------------------------------");
-                          logger($key);
-                          logger($value);
-                        }
-                        
+
                         //ソート
                         usort($tmp_genleBookValues, function ($a, $b) {
                             // return $a['id'] < $b['id'] ? -1 : 1;
