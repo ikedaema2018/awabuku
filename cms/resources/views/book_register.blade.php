@@ -157,10 +157,32 @@ use App\Tag;
            <p style="font-size:10px;">※複数回答可</p>
               <p id="tagslist"></p>
               	<div class="modal-body">
-                  <div id="ajax_data"></div>
+                  <div id="ajax_data">
+                      <!--もしtags_idに値が入っていたら-->
+                      
+                      @if(count(old('tag_id')) > 0)
+                      @foreach($tags as $tag)
+                      <?php
+                        if (in_array($tag->id, old('tag_id'))){
+                            echo '<label><input type="checkbox" value="' .$tag->id. '" class="check" name="tag_id[]" checked ></input> '.$tag->tags.' </label>';
+                        }
+                      ?>
+                      @endforeach
+                      @endif
+                      
+                      @if(count(old('tag_add')) > 0)
+                      @for($i = 0; $i < count(old('tag_add')); $i++)
+                      <label><input type="checkbox" checked="checked" class="check" value="{{ old('tag_add')[$i] }}" name="tag_add[]"></input>{{old('tag_add')[$i]}}</label>
+                      <input type="hidden"  value="{{old('tag_category_id')[$i]}}" class="check" name="tag_category_id[]" ></input>
+                      @endfor
+                      @endif
+                      
+                  </div>
                   <div id ="new_tag"></div>
                    <div style="margin-top:20px; margin-bottom:20px;">
                         <p>カテゴリを選択してタグを追加する</p>
+                        <!--ここで赤くするなりエラー文っぽくしてください-->
+                        <p class="tag_add_error" style="display: none;">カテゴリーを選択してね！</p>
                         
                         <form id="form_id">
                             <select id="tags" form="form_id">
@@ -168,9 +190,11 @@ use App\Tag;
                             </select>
                             <input type="text" name="tags" id="new_tag_name" form="form_id"></input>
                             <button id="bbb" form="form_id">タグを追加する</button>
-                        </form>    
-                        
-                        
+                        </form>
+                        <?php
+                        echo '<pre>' . var_export(old('tag_add'), true) . '</pre>';
+                        echo '<pre>' . var_export(old('tag_category_id'), true) . '</pre>';
+                        ?>
                     </div>
                  </div>
          
@@ -431,6 +455,11 @@ $("#bbb").on("click",function(){
 const new_tag_category_id =$('#tags').val();
 const new_tag_name = $('#new_tag_name').val();
 console.log(new_tag_category_id);
+console.log(new_tag_name);
+    if (new_tag_category_id == "カテゴリを選択" || new_tag_name == "") {
+        $('.tag_add_error').show()
+        return true;
+    }
 
     $("#new_tag").append('<label><input type="checkbox" checked="checked" class="check" value="'+ new_tag_name +'" name="tag_add[]"></input>'+new_tag_name+"</label>");
     $("#new_tag").append('<input type="hidden"  value="'+new_tag_category_id+'" class="check" name="tag_category_id[]" ></input>');

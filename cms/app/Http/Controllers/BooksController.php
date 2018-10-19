@@ -288,29 +288,21 @@ class BooksController extends Controller
     
     //ブックス画面の表示
     public function book_register() {
-        
-        if(Auth::check()){
             // $categories = Category::orderBy('id', 'asc')->get(); 
 
             $genres = Category_genre::all();
            
-           
             $keys= Key::orderBy('id','asc') ->get(); 
-           
+            
+            $tags = Tag::all();
 
             return view('book_register',
             [
             'genres'=>$genres,  
             'keys'=>$keys,
-         
+            'tags' => $tags,
             ]
-          
-            );
-        
-            
-        }else{
-            return redirect('/aiu');
-        }
+        );
     }
     
     //登録
@@ -405,14 +397,13 @@ class BooksController extends Controller
                 }
             }
                 
-        
             for ($i = 0; $i < count($request->tag_id); $i++){
                 if(count(Book_tag::where('book_id', $book_id)
                 ->where('tag_id', $request->tag_id[$i])->get()) == 0){
-                $book_tag =new Book_tag;
-                $book_tag ->book_id=$book_id;
-                $book_tag ->tag_id= $request->tag_id[$i];
-                $book_tag ->save();
+                    $book_tag =new Book_tag;
+                    $book_tag ->book_id =$book_id;
+                    $book_tag ->tag_id = $request->tag_id[$i];
+                    $book_tag ->save();
                 }
             }
 
@@ -489,7 +480,6 @@ class BooksController extends Controller
                     $book_tag =new Book_tag;
                     $book_tag ->book_id=$book_id;
                     $book_tag ->tag_id= $request->tag_id[$i];
-                   
                     $book_tag ->save();
                 }
             }
