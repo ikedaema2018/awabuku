@@ -69,7 +69,7 @@
     <div style="display:flex; width:100%; margin:5px auto;" class="head_wrapper">    
         <div class="col-xs-12 col-sm-6" style="display:table-cell;width:50%;"> 
             <div class="titile_wrappert" > 
-                <h2>Our Books</h2>
+                <h2>Our Books&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h2><p>私たちの本棚を作る</p></h2>
             </div>
         </div>
         <div class="col-xs-12 col-sm-6 search" style="display:table-cell;">

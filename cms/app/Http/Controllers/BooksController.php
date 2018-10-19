@@ -55,7 +55,6 @@ class BooksController extends Controller
          }
         }    
     
-        
         $genres = Category_genre::all();
         
         // カテゴリジャンルごとの本一覧.
@@ -144,12 +143,8 @@ class BooksController extends Controller
             }
             
             // とあるカテゴリージャンルに紐づく、本の一覧.
-           
             $genreBooks[$category_genre->category_genrename] = $books;
            
-            
-       
-            
         return view('category_genre_page', [
             
              'category_genre' => $category_genre,
@@ -167,11 +162,8 @@ class BooksController extends Controller
                 ->get();
       
         return view('category_page', [
-            
-            
              'category' =>$category,
              'book_lists' =>$book_lists
-      
         ]);
   
   
@@ -325,279 +317,219 @@ class BooksController extends Controller
     public function book_insert(Request $request) {
         // //バリデーション
         
-        //Authで通らなければ、登録ができないように追加する
-        if(Auth::check()){
-        
-        
         $validate_rule = [         
                 'BookTitle'       => 'required',
-                'BookAuthor'      => 'required',
-                'isbn10'          => 'required',
-                'isbn13'          => 'required',
-                'PublishedDate'   => 'required',
-                'Publisher'       => 'required',
-                'BookImage'       => 'required',
-                'BookDiscription' => 'required',
-                
-                
-                
                 'category_id'     =>'required',
                 'rental_flag'     =>'required',
-              
                 'comment_text'    =>'required',
-                'evaluation'      =>'required'
+                'evaluation'      =>'required',
+                'key' => 'required'
         ];
         
-       $error_msg=[
-                'BookTitle'       => '本の情報が入力されていません',
-                'BookAuthor'      => '本の情報が入力されていません',
-                'isbn10'          => '本の情報が入力されていません',
-                'isbn13'          => '本の情報が入力されていません',
-                'PublishedDate'   => '本の情報が入力されていません',
-                'BookImage'       => '本の情報が入力されていません',
-                'BookDiscription' => '本の情報が入力されていません',
-                'Publisher'       => '本の情報が入力されていません',
+        $error_msg=[
+            'BookTitle.required'       => '本の情報が入力されていません',
+            'category_id.required'     =>'カテゴリが入力されていません',
+            'rental_flag.required'     =>'本が貸し出しの可否を選択してください',
+            'comment_text.required'    =>'コメントを入力してください',
+            'evaluation.required'      =>'評価を入力してください',
+            'key.required' => 'オススメな人を入力してください'
+        ];
+           
+        $validator = Validator::make($request->all(), $validate_rule, $error_msg);
 
-                'category_id'     =>'カテゴリが入力されていません',
-                'rental_flag'     =>'本が貸し出しの可否を選択してください',
-               
-                'comment_text'    =>'コメントを入力してください',
-                'evaluation'      =>'評価を入力してください'
-
-           ];
-         $validator = Validator::make($request->all(), $validate_rule, $error_msg);
-
-        // バリデーション:エラー 
+        // バリデーション:エラー
         if ($validator->fails()) {
-                return redirect('/book')
-                    ->withInput()
-                    ->withErrors($validator);
+            return redirect('/book')
+                ->withInput()
+                ->withErrors($validator);
         }
         
         //isbnをstr型に変更
         $isbn10 = strval($request->isbn10);
         $isbn13 = strval($request->isbn13);
         
-        
         if(count(Book::where('isbn13', $isbn13)->get()) == 0) {
         
-        // 本作成処理...
-        $books = new Book;
-        $books->BookTitle = $request->BookTitle;
-        $books->BookAuthor = $request->BookAuthor;
-        $books->isbn10 = $isbn10;
-        $books->isbn13 = $isbn13;
-        $books->PublishedDate = $request->PublishedDate;
-        $books->Publisher = $request->Publisher;
-        $books->BookImage = $request->BookImage;
-        $books->BookDiscription= $request->BookDiscription;
-        
-        $books->save();
-        
-        $aiu = Book::orderBy('id', 'desc')->first();
-        $book_id = $aiu->id;
-        
-        
-        $category = $request->category_id;
-        for ($i = 0; $i < count($request->category_id); $i++){
-            if(count(Category_list::where('book_id', $book_id)
-            ->where('category_id', $request->category_id[$i])->get()) == 0){
-        $category_lists =new Category_list;
-        $category_lists->book_id=$book_id;
-        $category_lists->category_id= $request->category_id;
-        $category_lists->save();
-        }
-        }
-        
-        
-    for($i = 0; $i < count($request->tag_add); $i++){
-          
-            if(count(Tag::where('tags',$request->tag_add[$i])->where('category_id', $request->tag_category_id[$i])
-            ->get())==0){
-        $tag =new Tag;
-        $tag->category_id = $request->tag_category_id[$i];
-        $tag->tags =$request->tag_add[$i];
-        $tag ->save();
-        $newTag = $tag->id;
-        $book_tag=new Book_tag;
-        $book_tag ->tag_id=$newTag;
-        $book_tag ->book_id=$book_id;
-        $book_tag -> save();
-        
-        }else{
-        $tag = Tag::where('tags',$request->tag_add[$i])->where('category_id', $request->tag_category_id[$i])->first();
-        $newTag = $tag->id;
-        $book_tag=new Book_tag;
-        $book_tag ->tag_id=$newTag;
-        $book_tag ->book_id=$book_id;
-        $book_tag -> save();
-        }
-        }
-        
-    
-        for ($i = 0; $i < count($request->tag_id); $i++){
-            if(count(Book_tag::where('book_id', $book_id)
-            ->where('tag_id', $request->tag_id[$i])->get()) == 0){
-        $book_tag =new Book_tag;
-        $book_tag ->book_id=$book_id;
-        $book_tag ->tag_id= $request->tag_id[$i];
-    
-        
-        $book_tag ->save();
-        }
-        }
-
-        
-        
-
-        $owners = new Owner;
-        $owners->book_id= $book_id;
-        $owners->user_id= $request->user_id;
-        
-        $owners->rental_flag= $request->rental_flag;
-        
-        
-        if($request->gs == 2  && Auth::user()->kanri_flag == 1) {
-            //ここで$request->gsをもとにユーザー情報を検策
-            $id= User::find($request->gs);
-            $owners->user_id = $id->id;
-        
-            echo '<pre>' . var_export($id, true) . '</pre>';
-            echo '<pre>' . var_export($owners, true) . '</pre>';
+            // 本作成処理...
+            $books = new Book;
+            $books->BookTitle = $request->BookTitle;
+            $books->BookAuthor = $request->BookAuthor;
+            $books->isbn10 = $isbn10;
+            $books->isbn13 = $isbn13;
+            $books->PublishedDate = $request->PublishedDate;
+            $books->Publisher = $request->Publisher;
+            $books->BookImage = $request->BookImage;
+            $books->BookDiscription= $request->BookDiscription;
+            
+            $books->save();
+            
+            $aiu = Book::orderBy('id', 'desc')->first();
+            $book_id = $aiu->id;
             
             
-        }else{
-            $owners->user_id =$request->user_id;
-        }
-        
-        $owners->save();  
-        
-        $eok = Owner::orderBy('id', 'desc')->first();
-        $owner_id = $eok->id;
-        
-        
-        $comments = new Comment;
-        $comments->book_id= $book_id;
-        $comments->owner_id =$owner_id;
-        $comments->user_id= $request->user_id;
-        $comments->comment_text= $request->comment_text;
-        $comments->evaluation= $request->evaluation;
-        $comments->key= $request->key;
-        $comments->save();  
-    
-    
-    
-        }else{
-        $aiu = Book::where('isbn13', $isbn13)->first();
-        $book_id = $aiu->id;
-       
-        
-        
-        for ($i = 0; $i < count($request->category_id); $i++){
-            if(count(Category_list::where('book_id', $book_id)
-            ->where('category_id', $request->category_id[$i])->get()) == 0){
-        $category_lists =new Category_list;
-        $category_lists->book_id=$book_id;
-        $category_lists->category_id= $request->category_id[$i];
-        $category_lists->save();
+            $category = $request->category_id;
+            for ($i = 0; $i < count($request->category_id); $i++){
+                if(count(Category_list::where('book_id', $book_id)
+                ->where('category_id', $request->category_id[$i])->get()) == 0){
+                $category_lists =new Category_list;
+                $category_lists->book_id=$book_id;
+                $category_lists->category_id= $request->category_id;
+                $category_lists->save();
+                }
             }
-        }
-
-       for($i = 0; $i < count($request->tag_add); $i++){
-          
-            if(count(Tag::where('tags',$request->tag_add[$i])->where('category_id', $request->tag_category_id[$i])
-            ->get())==0){
-        $tag =new Tag;
-        $tag->category_id = $request->tag_category_id[$i];
-        $tag->tags =$request->tag_add[$i];
-        $tag ->save();
-        $newTag = $tag->id;
-        $book_tag=new Book_tag;
-        $book_tag ->tag_id=$newTag;
-        $book_tag ->book_id=$book_id;
-        $book_tag -> save();
-        
-        }else{
-        $tag = Tag::where('tags',$request->tag_add[$i])->where('category_id', $request->tag_category_id[$i])->first();
-        $newTag = $tag->id;
-        $book_tag=new Book_tag;
-        $book_tag ->tag_id=$newTag;
-        $book_tag ->book_id=$book_id;
-        $book_tag -> save();
-        }
-        }
         
         
-        for ($i = 0; $i < count($request->tag_id); $i++){
-            if(count(Book_tag::where('book_id', $book_id)
-            ->where('tag_id', $request->tag_id[$i])->get()) == 0){
-        $book_tag =new Book_tag;
-        $book_tag ->book_id=$book_id;
-        $book_tag ->tag_id= $request->tag_id[$i];
-       
-        $book_tag ->save();
-        }
-        }
-
-        
-        
-        $owners = new Owner;
-        $owners->book_id= $book_id;
-        $owners->user_id= $request->user_id;
-      
-        $owners->rental_flag= $request->rental_flag;
-        
-        
-      if($request->gs == 2  && Auth::user()->kanri_flag == 1) {
-            //ここで$request->gsをもとにユーザー情報を検策
-         
-            $id= User::find($request->gs);
-            logger('------------abc------------------');
-            logger($id); 
-            logger($request->gs);
-            logger($owners); 
-            $owners->user_id = $id->id;
-  
-        }
-       
-        
-        $owners->save();  
-       
-        $eok = Owner::orderBy('id', 'desc')->first();
-        $owner_id = $eok->id;
-        
-        
-        $comments = new Comment;
-        $comments->book_id= $book_id;
-        $comments->owner_id =$owner_id;
-        $comments->user_id= $request->user_id;
-        $comments->comment_text= $request->comment_text;
-        $comments->evaluation= $request->evaluation;
-        $comments->key= $request->key;
-   
-        $comments->save();   
-        
-}
-
-        return redirect('/book_owner/'.$owners->id);
-
-        }else{
-          return redirect('/book');
+            //タグが０以上の時
+            if (count($request->tag_add) > 0) {
+                for($i = 0; $i < count($request->tag_add); $i++){
+                  
+                    if(count(Tag::where('tags',$request->tag_add[$i])->where('category_id', $request->tag_category_id[$i])
+                    ->get())==0){
+                        $tag =new Tag;
+                        $tag->category_id = $request->tag_category_id[$i];
+                        $tag->tags =$request->tag_add[$i];
+                        $tag ->save();
+                        $newTag = $tag->id;
+                        $book_tag=new Book_tag;
+                        $book_tag ->tag_id=$newTag;
+                        $book_tag ->book_id=$book_id;
+                        $book_tag -> save();
+                    }else{
+                        $tag = Tag::where('tags',$request->tag_add[$i])->where('category_id', $request->tag_category_id[$i])->first();
+                        $newTag = $tag->id;
+                        $book_tag=new Book_tag;
+                        $book_tag ->tag_id=$newTag;
+                        $book_tag ->book_id=$book_id;
+                        $book_tag -> save();
+                    }
+                }
             }
-       
-    
- }
+                
+        
+            for ($i = 0; $i < count($request->tag_id); $i++){
+                if(count(Book_tag::where('book_id', $book_id)
+                ->where('tag_id', $request->tag_id[$i])->get()) == 0){
+                $book_tag =new Book_tag;
+                $book_tag ->book_id=$book_id;
+                $book_tag ->tag_id= $request->tag_id[$i];
+                $book_tag ->save();
+                }
+            }
 
+            $owners = new Owner;
+            $owners->book_id= $book_id;
+            $owners->user_id= $request->user_id;
+            $owners->rental_flag= $request->rental_flag;
+            
+            if($request->gs == 2  && Auth::user()->kanri_flag == 1) {
+                //ここで$request->gsをもとにユーザー情報を検策
+                $id= User::find($request->gs);
+                $owners->user_id = $id->id;
+            }else{
+                $owners->user_id =$request->user_id;
+            }
+            
+            $owners->save();  
+            
+            $eok = Owner::orderBy('id', 'desc')->first();
+            $owner_id = $eok->id;
+            
+            $comments = new Comment;
+            $comments->book_id= $book_id;
+            $comments->owner_id =$owner_id;
+            $comments->user_id= $request->user_id;
+            $comments->comment_text= $request->comment_text;
+            $comments->evaluation= $request->evaluation;
+            $comments->key= $request->key;
+            $comments->save();
+            return redirect('/book_owner/'.$owners->id);
+        } else {
+            $aiu = Book::where('isbn13', $isbn13)->first();
+            $book_id = $aiu->id;
+           
+            for ($i = 0; $i < count($request->category_id); $i++){
+                    if(count(Category_list::where('book_id', $book_id)
+                    ->where('category_id', $request->category_id[$i])->get()) == 0){
+                    $category_lists =new Category_list;
+                    $category_lists->book_id=$book_id;
+                    $category_lists->category_id= $request->category_id[$i];
+                    $category_lists->save();
+                }
+            }
+            
+            //タグが０以上の時
+            if (count($request->tag_add) > 0) {
+               for($i = 0; $i < count($request->tag_add); $i++){
+                    if(count(Tag::where('tags',$request->tag_add[$i])->where('category_id', $request->tag_category_id[$i])
+                    ->get())==0){
+                        $tag =new Tag;
+                        $tag->category_id = $request->tag_category_id[$i];
+                        $tag->tags =$request->tag_add[$i];
+                        $tag ->save();
+                        $newTag = $tag->id;
+                        $book_tag=new Book_tag;
+                        $book_tag ->tag_id=$newTag;
+                        $book_tag ->book_id=$book_id;
+                        $book_tag -> save();
+                    }else{
+                        $tag = Tag::where('tags',$request->tag_add[$i])->where('category_id', $request->tag_category_id[$i])->first();
+                        $newTag = $tag->id;
+                        $book_tag=new Book_tag;
+                        $book_tag ->tag_id=$newTag;
+                        $book_tag ->book_id=$book_id;
+                        $book_tag -> save();
+                    }
+                }
+            }
+                
+                
+            for ($i = 0; $i < count($request->tag_id); $i++){
+                if(count(Book_tag::where('book_id', $book_id)
+                ->where('tag_id', $request->tag_id[$i])->get()) == 0){
+                    $book_tag =new Book_tag;
+                    $book_tag ->book_id=$book_id;
+                    $book_tag ->tag_id= $request->tag_id[$i];
+                   
+                    $book_tag ->save();
+                }
+            }
+            
+            
+            $owners = new Owner;
+            $owners->book_id= $book_id;
+            $owners->user_id= $request->user_id;
+            $owners->rental_flag= $request->rental_flag;
+            
+            if($request->gs == 2  && Auth::user()->kanri_flag == 1) {
+                //ここで$request->gsをもとにユーザー情報を検策
+                $id= User::find($request->gs);
+                $owners->user_id = $id->id;
+            }
+           
+            $owners->save();  
+            $eok = Owner::orderBy('id', 'desc')->first();
+            $owner_id = $eok->id;
+            
+            $comments = new Comment;
+            $comments->book_id= $book_id;
+            $comments->owner_id =$owner_id;
+            $comments->user_id= $request->user_id;
+            $comments->comment_text= $request->comment_text;
+            $comments->evaluation= $request->evaluation;
+            $comments->key= $request->key;
+       
+            $comments->save();   
+            return redirect('/book_owner/'.$owners->id);
+        }
+    }
 
 
         public function category_list() {
-         $categories = Category::orderBy('id', 'asc')->get();
-         return view('book_register', [
-         'categories' => $categories
-         ]);
-     }
-   
-     
+            $categories = Category::orderBy('id', 'asc')->get();
+            return view('book_register', [
+            'categories' => $categories
+            ]);
+        }
    
        //本の登録情報をを更新viewページに飛ばす
         public function book_update_view(Owner $owner) {
@@ -615,7 +547,7 @@ class BooksController extends Controller
                     // 取得できたら、$categoriesに追加.
                     $categories = array_merge($categories, $tmp_categories);
                 }
-                 $genreCategories[$genre->category_genrename] = $categories;
+                $genreCategories[$genre->category_genrename] = $categories;
             }
         return view('book_update_view',['owner'=>$owner])
         ->with([
@@ -914,13 +846,6 @@ class BooksController extends Controller
             'rental_flag'=>'required',
         ]);
         
-        // var_dump($request->all());
-        // if ($validator->fails()){
-        //     return redirect('/book_update_view')
-        //     ->withInput(["id"=>$request->id])
-        //     ->withError($validator);
-        // }
-        
         $owner = Owner::find($request->id);
         $owner->rental_flag = $request->rental_flag;
         $owner->save();
@@ -1022,9 +947,8 @@ class BooksController extends Controller
         );
     } 
     //スレッド用の書籍の新規登録
+    
     public function thread_comment_insert(Request $request) {
-        logger("------------------------------------");
-        logger($request);
         $thread_comments = new Thread_comment;
         $thread_comments->comment_id =$request->id;
         $thread_comments->thread_id =$request->thread_id;

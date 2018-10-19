@@ -10,6 +10,10 @@ use App\Tag;
 <div class="row">
 <div class="col-sm-offset-2 col-sm-8 col-sm-offset-2">
 
+    @if(count($errors)> 0)
+        <p>入力に問題があります！！！！！！！！！！！！！！！！！！</p>
+    @endif
+    
  <p class="page-header">本を登録する</p>
   <div class="form-group">
     <p><b>背表紙のバーコードを読みとる場合<b></p>
@@ -31,24 +35,12 @@ use App\Tag;
     <div id="message"></div>
   </div>
 
-@if ($errors->any())
-  <div class="errors">
-    <ul>
-      @foreach ($errors->all() as $error)
-        <li>{{ $error }}</li>
-      @endforeach
-    </ul>
-  </div>
-@endif
-
-
-             
 <form action="{{url('book')}}" method="post" class="horizontal">
       
 {{ csrf_field() }}
     
 <div style="background-color:#DDFFFF;">
-    <div class="row">    
+    <div class="row">
         <div class="col-sm-3" style=text-align:center;>
             <p>表紙画像:</p>
             <p id="BookThumbnail" class="type"></p>
@@ -122,10 +114,15 @@ use App\Tag;
             @endif
     <div class="form-group">  
           <p><b>本の貸出はできますか？</b></p>
+          
+          @if($errors->has('rental_flag'))
+          <p>エラー:{{$errors->first('rental_flag')}}</p>
+          @endif
+          
           <div class="block-contents">
-          <label class="radio-inline"><input type="radio" name="rental_flag" value=0>はい</label>
-        　<label class="radio-inline"><input type="radio" name="rental_flag" value=1>いいえ</label>
-        　<label class="radio-inline"><input type="radio" name="rental_flag" value=2>同期内のみ</label>
+          <label class="radio-inline"><input type="radio" name="rental_flag" value=0 @if(old('rental_flag')=="0") checked @endif>はい</label>
+        　<label class="radio-inline"><input type="radio" name="rental_flag" value=1 @if(old('rental_flag')=="1") checked @endif>いいえ</label>
+        　<label class="radio-inline"><input type="radio" name="rental_flag" value=2 @if(old('rental_flag')=="2") checked @endif>同期内のみ</label>
         　</div>
     </div>
     
@@ -164,6 +161,7 @@ use App\Tag;
                   <div id ="new_tag"></div>
                    <div style="margin-top:20px; margin-bottom:20px;">
                         <p>カテゴリを選択してタグを追加する</p>
+                        
                         <form id="form_id">
                             <select id="tags" form="form_id">
                             <option>カテゴリを選択</option>
@@ -173,7 +171,6 @@ use App\Tag;
                         </form>    
                         
                         
-                      
                     </div>
                  </div>
          
@@ -196,24 +193,25 @@ use App\Tag;
     <div class="form-group">
           <p><b>評価</b></p> 
         <div class="evaluation center">
-            <input id="star1" type="radio" name="evaluation" value="5" />
+            <input id="star1" type="radio" name="evaluation" value="5" @if(old('evaluation')=="5") checked @endif/>
             <label for="star1"class="radio-inline"><span class="text">最高</span>★</label>
-            <input id="star2" type="radio" name="evaluation" value="4" />
+            <input id="star2" type="radio" name="evaluation" value="4" @if(old('evealuation')=="4") checked @endif/>
             <label for="star2"class="radio-inline"><span class="text">良い</span>★</label>
-            <input id="star3" type="radio" name="evaluation" value="3" />
+            <input id="star3" type="radio" name="evaluation" value="3" @if(old('evaluation')=="3") checked @endif/>
             <label for="star3"class="radio-inline"><span class="text">普通</span>★</label>
-            <input id="star4" type="radio" name="evaluation" value="2" />
+            <input id="star4" type="radio" name="evaluation" value="2" @if(old('evaluation')=="2") checked @endif/>
             <label for="star4"class="radio-inline"><span class="text">悪い</span>★</label>
-            <input id="star5" type="radio" name="evaluation" value="1" />
+            <input id="star5" type="radio" name="evaluation" value="1" @if(old('evaluation')=="1") checked @endif/>
             <label for="star5"class="radio-inline"><span class="text">最悪</span>★</label>
         </div>
+        <p>{{old('evealuation')}}</p>
     </div> 
     
     <div class="form-group">  
           <label>おすすめポイント</label>
           
           <div class="center">
-          <textarea  rows="5" class="form-control" name="comment_text" placeholder="例）++の勉強をしたい人におすすめ" autofocu></textarea>
+          <textarea  rows="5" class="form-control" name="comment_text" placeholder="例）++の勉強をしたい人におすすめ">{{old('comment_text')}}</textarea>
           </div>
     </div>      
     

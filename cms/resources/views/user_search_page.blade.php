@@ -40,11 +40,11 @@ use App\Comment;
                     <p>{{ $user_book->BookAuthor }}</p>
        
                    <div class="col-sm-6 text-center">
-                       
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#sampleModal1" onClick="aaa({{$user_book->id}},{{$user->id}})">
+                	  コメントを見る
+                    </button>
                  <li>              
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#sampleModal1" onClick="aaa({{$user_book->id}},{{$user->id}})">
-            	  コメントを見る
-                </button>
+                
 
         <!-- コメント入力モーダル -->
         <div class="modal fade" id="sampleModal1" tabindex="-1">
