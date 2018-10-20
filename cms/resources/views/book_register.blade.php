@@ -15,6 +15,7 @@ use App\Tag;
     @endif
     
  <p class="page-header">本を登録する</p>
+ <div id="books_wraper"></div>
   <div class="form-group">
     <p><b>背表紙のバーコードを読みとる場合<b></p>
     <div id="container">
@@ -26,6 +27,10 @@ use App\Tag;
 			<input id="Take-Picture" type="file" accept="image/*;capture=camera" />
 		</div>
 	</div>
+	
+	<!--タイトル検索-->
+	<input type="text" id="book_title"/>
+	<button onClick="send_title()">タイトル検索テスト</button>
 
     <label  class="col-sm-3 control-label form-control-static btn-group-lg" for="isbn">ISBNを直接入力する場合<p style="font-size:10px;">※裏表紙や奥付に記載されている１３桁のユニークコード</p>:</label>
     <div class="col-sm-9">
@@ -182,7 +187,7 @@ use App\Tag;
                    <div style="margin-top:20px; margin-bottom:20px;">
                         <p>カテゴリを選択してタグを追加する</p>
                         <!--ここで赤くするなりエラー文っぽくしてください-->
-                        <p class="tag_add_error" style="display: none;">カテゴリーを選択してね！</p>
+                        <p class="tag_add_error" style="display: none;">カテゴリーを選択して、追加したいタグ名を追加してね！</p>
                         
                         <form id="form_id">
                             <select id="tags" form="form_id">
@@ -191,10 +196,6 @@ use App\Tag;
                             <input type="text" name="tags" id="new_tag_name" form="form_id"></input>
                             <button id="bbb" form="form_id">タグを追加する</button>
                         </form>
-                        <?php
-                        echo '<pre>' . var_export(old('tag_add'), true) . '</pre>';
-                        echo '<pre>' . var_export(old('tag_category_id'), true) . '</pre>';
-                        ?>
                     </div>
                  </div>
          
@@ -260,7 +261,37 @@ use App\Tag;
 
 
     <script>
+        
+        
+        
         var selected_tag_ids = [];
+       
+        var send_title = function(){
+            const title = $('#book_title').val();
+            const googleUrl = "https://www.googleapis.com/books/v1/volumes?q=intitle:" + title;
+            $.getJSON(googleUrl, function (data) {
+                for (i = 0; i < data.items.length; i++) {
+                    console.log(data.items[i].volumeInfo);
+                    
+                    let book_img;
+                    try {
+                             book_img = data.items[i].volumeInfo.imageLinks.smallThumbnail;
+                             if (data1[0].summary.cover == ""){ throw new Error() }
+                        } catch(e) {
+                            book_img = "http://www.tatemachi.com/wp/wp-content/themes/tatemachi/img/shopimage-noimage.jpg";
+                        }
+                        
+                    $('#books_wraper').append('<div id="book' +i+ '" onClick="book_select('+i+')"><p class="titletitle">' +data.items[i].volumeInfo.title+ '</p><img class="imgimg" src="'+ book_img +'"></div>');
+                }
+            })
+        }
+        
+        function book_select(num){
+            $("#BookTitle").html('<input class="form-control input-lg" name="BookTitle" readonly="readonly" type="text"  value="' + $('#book' + num).children('.titletitle').text() +
+                            '">');
+            $("#BookThumbnail").html('<img src="'+$('#book' + num).children('.imgimg').attr('src')+'">');
+            $('#books_wraper').remove();
+        }
        
         var send_ISBN =function(){
             const isbn = $("#isbn").val();
@@ -441,12 +472,8 @@ $(".category").on("click",function(){
         selectBox += '<option value="'+selectedvalue[i]+'" name="option" >'+selectedname[i]+'</option>';
     };
      
-
-
     $("#tags").empty();
     $("#tags").append(selectBox);
-  
-    
 });
 
 
@@ -454,8 +481,6 @@ $(".category").on("click",function(){
 $("#bbb").on("click",function(){
 const new_tag_category_id =$('#tags').val();
 const new_tag_name = $('#new_tag_name').val();
-console.log(new_tag_category_id);
-console.log(new_tag_name);
     if (new_tag_category_id == "カテゴリを選択" || new_tag_name == "") {
         $('.tag_add_error').show()
         return true;
