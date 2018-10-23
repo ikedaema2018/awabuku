@@ -15,9 +15,9 @@ use App\Tag;
     @endif
     
  <p class="page-header">本を登録する</p>
- <div id="books_wraper"></div>
+ 
   <div class="form-group">
-    <p><b>背表紙のバーコードを読みとる場合<b></p>
+    <p><b>①背表紙のバーコードを読みとる場合<b></p>
     <div id="container">
         <div  id="canvas_wrapper" style="display:none;" >
 		<canvas width="320" height="240" id="picture"></canvas>
@@ -29,13 +29,18 @@ use App\Tag;
 	</div>
 	
 	<!--タイトル検索-->
-	<input type="text" id="book_title"/>
-	<button onClick="send_title()">タイトル検索テスト</button>
-
-    <label  class="col-sm-3 control-label form-control-static btn-group-lg" for="isbn">ISBNを直接入力する場合<p style="font-size:10px;">※裏表紙や奥付に記載されている１３桁のユニークコード</p>:</label>
-    <div class="col-sm-9">
+	<div>
+    	<p><b>②タイトルで検索する場合</b></p>    
+    	<input type="text" id="book_title"/>
+    	<button onClick="send_title()">検索</button>
+    	<div id="books_wraper"></div>
+	</div>
+　　<div>
+        <p>③ISBNを直接入力する場合<p style="font-size:10px;">※裏表紙や奥付に記載されている１３桁のユニークコード</p></p>
+    <div>
         <input  class="form-control-static col-sm-9" type="text" class="form-control" id="isbn" placeholder="ISBNとは978始まる13桁の数字を入力（ーハイフンは含まない）">
         <button id="btn" class="form-control-static" onclick="send_ISBN()">検索</button>
+    </div>
     </div>
     <div id="message"></div>
   </div>
@@ -267,21 +272,41 @@ use App\Tag;
         var selected_tag_ids = [];
        
         var send_title = function(){
+            $('#books_wraper').empty();
             const title = $('#book_title').val();
             const googleUrl = "https://www.googleapis.com/books/v1/volumes?q=intitle:" + title;
             $.getJSON(googleUrl, function (data) {
                 for (i = 0; i < data.items.length; i++) {
-                    console.log(data.items[i].volumeInfo);
+                   console.log(data.items[i].volumeInfo);
                     
                     let book_img;
                     try {
                              book_img = data.items[i].volumeInfo.imageLinks.smallThumbnail;
-                             if (data1[0].summary.cover == ""){ throw new Error() }
+                             if (data.items[i].volumeInfo.imageLinks.smallThumbnail == ""){ throw new Error() }
                         } catch(e) {
                             book_img = "http://www.tatemachi.com/wp/wp-content/themes/tatemachi/img/shopimage-noimage.jpg";
                         }
-                        
-                    $('#books_wraper').append('<div id="book' +i+ '" onClick="book_select('+i+')"><p class="titletitle">' +data.items[i].volumeInfo.title+ '</p><img class="imgimg" src="'+ book_img +'"></div>');
+                    
+                    var book_isbn10 = "";
+                    var book_isbn13 = "";
+                　　try{
+                　　  book_isbn10 =data.items[i].volumeInfo.industryIdentifiers[0].identifier;
+                　　}catch(e){
+                　　    book_isbn10=""
+                　　}       
+                　　
+                　　try{
+                　　  book_isbn13 =data.items[i].volumeInfo.industryIdentifiers[1].identifier;
+                　　}catch(e){
+                　　    book_isbn13=""
+                　　}
+                
+                if (book_isbn10.length != 10) {
+                    book_isbn10 = "";
+                    book_isbn13 = "";
+                }
+                　　
+                    $('#books_wraper').append('<div id="book' +i+ '" onClick="book_select('+i+')"><p class="titletitle">' +data.items[i].volumeInfo.title+ '</p><p class="isbn10_2" style="display:none">' + isbn10+  '</p><p class="isbn13_2" style="display:none">' + book_isbn13+ '</p><p class="BookAuthor_2"style="display:none">' + data.items[i].volumeInfo.authors + '</p><p class="PublishedDate_2"style="display:none">' + data.items[i].volumeInfo.publishedDate + '</p><p class="BookDiscription_2"style="display:none">' + data.items[i].volumeInfo.description + '</p><p class="Publisher_2" style="display:none">' + data.items[i].volumeInfo.publisher +  '</p><p class="BookImage_2" style="display:none">' + book_img + '</p><img class="imgimg" src="'+ book_img +'"></div>');
                 }
             })
         }
@@ -289,8 +314,22 @@ use App\Tag;
         function book_select(num){
             $("#BookTitle").html('<input class="form-control input-lg" name="BookTitle" readonly="readonly" type="text"  value="' + $('#book' + num).children('.titletitle').text() +
                             '">');
+            $("#isbn10").html('<input class="form-control input-sm" name ="isbn10" readonly="readonly" type="hidden" value="' + $('#book' + num).children('.isbn10_2').text() +
+                            '">');  
+            $("#isbn13").html('<input class="form-control input-sm" name ="isbn13" readonly="readonly" type="number" value="' + $('#book' + num).children('.isbn13_2').text() +
+                            '">');    
+            $("#BookAuthor").html('<input class="form-control input-sm" name="BookAuthor" readonly="readonly" type="text" value="' + $('#book' + num).children('.BookAuthor_2').text() +
+                            '">');   
+            $("#PublishedDate").html('<input class="form-control input-sm" name="PublishedDate" readonly="readonly" type="text" value="' + $('#book' + num).children('.PublishedDate_2').text() +
+                            '">'); 
+            $("#Publisher").html('<input class="form-control input-sm" name="Publisher" readonly="readonly" type="text" value="'+ $('#book' + num).children('.Publisher_2').text() +
+                            '">');  
+            $("#BookDiscription").html('<input class="form-control input-lg" name="BookDiscription"  readonly="readonly" type="text" value="'+ $('#book' + num).children('.BookDiscription_2').text() +
+                            '">');               
             $("#BookThumbnail").html('<img src="'+$('#book' + num).children('.imgimg').attr('src')+'">');
-            $('#books_wraper').remove();
+            $("#BookImage").html('<input name="BookImage" type="hidden" value="' + $('#book' + num).children('.BookImage_2').text() +
+                            '">');
+            $('#books_wraper').empty();
         }
        
         var send_ISBN =function(){

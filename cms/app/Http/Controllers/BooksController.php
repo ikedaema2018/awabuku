@@ -340,7 +340,7 @@ class BooksController extends Controller
         $isbn10 = strval($request->isbn10);
         $isbn13 = strval($request->isbn13);
         
-        if(count(Book::where('isbn13', $isbn13)->get()) == 0) {
+        if(count(Book::where('BookTitle', $request->BookTitle)->get()) == 0) {
         
             // 本作成処理...
             $books = new Book;
