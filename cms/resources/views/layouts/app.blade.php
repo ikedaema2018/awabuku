@@ -7,6 +7,16 @@
     
     
     <title>OurBooks</title>
+    
+    <!--bootstrap-->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    
+
+
     <link rel="stylesheet" href="{{asset('css/thread_page.css')}}">
     <link rel="stylesheet" href="{{asset('css/book_register.css')}}">
     
@@ -21,32 +31,32 @@
     <link rel="stylesheet" href="{{asset('css/login.css')}}">
     <link rel="stylesheet" href="{{asset('css/gsbook.css')}}">    
     <link rel="stylesheet" href="{{asset('css/book_comment.css')}}">
-    <link rel="stylesheet" href="{{asset('css/key.css')}}">
+    <link rel="stylesheet" href="{{asset('css/key.css')}}">    
+    <link rel="stylesheet" href="{{asset('css/head.css')}}">
     
-    
-    <link rel="stylesheet" href="{{secure_asset('css/head.css')}}" type="text/css" />
-    
-    
+    <!--<link rel="stylesheet" href="{{secure_asset('css/head.css')}}" type="text/css" />-->
+ 
     <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>-->
     <script
   src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>
+  
+
+
+
     
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
-    
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
-    <!-- Latest compiled and minified CSS -->
+<!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     
-    <!-- Optional theme -->
+<!-- Optional theme -->
 
-    <!-- Latest compiled and minified JavaScript -->
+<!-- Latest compiled and minified JavaScript -->
     
-    <!--fontaweome-->
+<!--fontaweome-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    
+
     <script type="text/javascript">
         var DECODER_WORKER_URL = "{{asset('js/DecoderWorker.js')}}";
         var EXIFJS_URL = "{{asset('js/exif.js')}}";
@@ -68,42 +78,46 @@
         
     <div style="display:flex; width:100%; margin:5px auto;" class="head_wrapper">    
         <div class="col-xs-12 col-sm-6" style="display:table-cell;width:50%;"> 
-            <div class="titile_wrappert" > 
-                <h2>Our Books&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h2><p>私たちの本棚を作る</p></h2>
+            <div class="titile_wrapper" > 
+                <h2><img src="{{asset('img/OurBooks.svg')}}" style="width: 300px; height: 40px;"></h2>
             </div>
         </div>
-        <div class="col-xs-12 col-sm-6 search" style="display:table-cell;">
-        
-          <form class="form-inline" action="{{url('/search')}}">
-            <div class="input-group serach_box col-xs-12">
-          
-              <input type="text" class="form-control keyword_search" name="keyword" value="" placeholder="キーワードを入力してください。" >
-              <span class="input-group-btn">
-                <button type="submit"class="btn btn-info" name="search_button">
-                  <i class='glyphicon glyphicon-search'></i></button>
-                
-              </span>
-           </div>  
-          </form>
-            
+        <div class="col-xs-12 col-sm-6" style="display:table-cell;position: relative;text-align:right;" >
+          @if (Auth::check()) 
+          <ul style="list-style-type:none; display: flex; justify-content: space-between;">
+                    <li >
+                        <a href="{{url('mypage')}}"><p　style="display:none">{{Auth::user()->name}}さん</p></a>
+                    </li>    
+                    <li >
+                        <a href="{{url('book')}}"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> 本を登録する</a>
+                    </li>
+                    <li >
+                        <a href="{{url('logout')}}">ログアウトする</a>
+                    </li>
+                @else
+                    <li ><span navbar-brand>ゲストさん</span></li><br>
+                    <li >><a href="{{url('facebook')}}">ログインする</a></li>
+                @endif 
+          </ul>        
         </div>    
     </div>
 
+
+<!--navbarの表示 -->
         <nav class="navbar navbar-default" >
-          <div class="container-fluid" style="background-color: #00CCCC;"">
+          <div class="container-fluid" style="background-color: #343a40;">
 
 
             <div class="navbar-header">
             
-            <!--スマホ用トグルボタンの設置-->
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".target">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              
-            </button>
+                <!--スマホ用トグルボタンの設置-->
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".target">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
             
             <!--ロゴ表示の指定-->
            
@@ -119,49 +133,35 @@
                     <li>
                         <a href="{{url('gsbooks')}}">g's library</a>
                     </li>
+                    <!--<li>-->
+                    <!--    <a href="{{url('book')}}"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> 本を登録する</a>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                    <!--    <a href="{{url('mypage')}}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> マイページ</a>-->
+                    <!--</li>-->
                     <li>
-                        <a href="{{url('book')}}"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>本を登録する</a>
-                    </li>
-                    <li>
-                        <a href="{{url('mypage')}}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>マイページ</a>
-                    </li>
-                    <li>
-                        <a href="{{url('threads')}}"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>スレッド</a>
+                        <a href="{{url('threads')}}"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> スレッド</a>
                     </li>  
                     <li>
-                        <a href="{{url('user_page')}}"><img src="{{asset('img/group.png')}}" style="width: 20px; height: 20px;"><span>メンバー<span></a>
+                        <a href="{{url('user_page')}}"><img src="{{asset('img/group.png')}}" style="width: 20px; height: 20px;"><span> メンバー<span></a>
  
-                    </li>
-                
+                    </li> 
+                 
                 </ul> 
-           
-    
+   
+            <ul class="nav navbar-nav navbar-right">   
+            <li>
+            <form class="form-inline my-2 my-lg-0" action="{{url('/search')}}">
+                  <input class="form-control mr-sm-2" type="search" placeholder="キーワードを入力してください。" aria-label="Search"name="keyword" value="">
+                  <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
                
-               
-                
-            <ul class="nav navbar-nav navbar-right">    
-                @if (Auth::check()) 
-                
-                <!--<li>-->
-                <!--    <span navbar-brand>facebookID:{{Auth::user()->facebook_id}}</span>-->
-                <!--</li><br>-->
-    
-                <!--<li>-->
-                <!--    <span navbar-brand><img class="avater" src="{{Auth::user()->avater}}"></img></span>-->
-                <!--</li><br>-->
-                    <li style="display:none">
-                        <p　style="display:none">ID:{{Auth::user()->id}}<br>{{Auth::user()->name}}さん</p>
-                    </li>    
-                    <li>
-                        <span navbar-brand><img class="avater img-circle" src="{{Auth::user()->avater}}"></img></span>                    
-                    </li>
-                    <li>
-                    <a href="{{url('logout')}}">ログアウトする</a>
-                @else
-                    <li><span navbar-brand>ゲストさん</span></li><br>
-                    <li><a href="{{url('facebook')}}">ログインする</a></li>
-                @endif
-            </ul>
+            </li>  
+             </ul>
+    </form>
+            
+            
+            
+            
             
             </div>
         </nav>    

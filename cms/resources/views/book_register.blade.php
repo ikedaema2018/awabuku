@@ -11,7 +11,7 @@ use App\Tag;
 <div class="col-sm-offset-2 col-sm-8 col-sm-offset-2">
 
     @if(count($errors)> 0)
-        <p>入力に問題があります！！！！！！！！！！！！！！！！！！</p>
+        <p>入力項目を確認してください</p>
     @endif
     
  <p class="page-header">本を登録する</p>
@@ -50,7 +50,12 @@ use App\Tag;
 {{ csrf_field() }}
     
 <div style="background-color:#DDFFFF;">
+    
     <div class="row">
+          @if($errors->has('BookTitle'))
+          <p style="color:#CC0033">エラー:{{$errors->first('BookTitle')}}</p>
+          @endif
+        
         <div class="col-sm-3" style=text-align:center;>
             <p>表紙画像:</p>
             <p id="BookThumbnail" class="type"></p>
@@ -126,7 +131,7 @@ use App\Tag;
           <p><b>本の貸出はできますか？</b></p>
           
           @if($errors->has('rental_flag'))
-          <p>エラー:{{$errors->first('rental_flag')}}</p>
+          <p style="color:#CC0033">エラー:{{$errors->first('rental_flag')}}</p>
           @endif
           
           <div class="block-contents">
@@ -138,6 +143,12 @@ use App\Tag;
     
    <div class="form-group">   
           <p><b>カテゴリーを選択する</b><p>
+             
+          @if($errors->has('category_id'))
+          <p style="color:#CC0033">エラー:{{$errors->first('category_id')}}</p>
+          @endif
+          
+          
           <div class="block-contents">   
            <p style="font-size:10px;">※複数回答可</p>
             <?php $i=0 ?>
@@ -210,6 +221,9 @@ use App\Tag;
      
     <div class="form-group"> 
           <p><b>オススメしたい人</b></p>
+           @if($errors->has('key'))
+          <p style="color:#CC0033">エラー:{{$errors->first('key')}}</p>
+          @endif
           <div class="block-contents">
               
               @if(count($keys)>0)
@@ -222,6 +236,9 @@ use App\Tag;
      
     <div class="form-group">
           <p><b>評価</b></p> 
+           @if($errors->has('evaluation'))
+          <p style="color:#CC0033">エラー:{{$errors->first('evaluation')}}</p>
+          @endif
         <div class="evaluation center">
             <input id="star1" type="radio" name="evaluation" value="5" @if(old('evaluation')=="5") checked @endif/>
             <label for="star1"class="radio-inline"><span class="text">最高</span>★</label>
@@ -237,7 +254,10 @@ use App\Tag;
         <p>{{old('evealuation')}}</p>
     </div> 
     
-    <div class="form-group">  
+    <div class="form-group"> 
+          @if($errors->has('comment_text'))
+          <p>エラー:{{$errors->first('comment_text')}}</p>
+          @endif
           <label>おすすめポイント</label>
           
           <div class="center">
@@ -350,7 +370,7 @@ use App\Tag;
                             $("#BookThumbnail").text("");
                             $("#BookDiscription").text("");
                             $("#BookImage").text("");
-                            $("#message").html(' <p class = "bg-warning" id = "warning" > 該当する書籍がありません。 < /p>');
+                            $("#message").html(' <p class = "bg-warning" id = "warning" > 該当する書籍がありません。 </p>');
                             $('#message > p').fadeOut(3000);
                         } else {
                             //googleURLの処理

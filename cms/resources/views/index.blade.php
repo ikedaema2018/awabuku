@@ -133,14 +133,14 @@ use App\Category_genre;
                         @foreach($tmp_genleBookValues as $genreBookValue)
                                 @if(($loop->iteration)<6)
                                 
-                                        <div class="col-sm-2" style="text-align:center; margin-bottom:30px;">
+                                        <div class="col-sm-3" style="text-align:center; margin-bottom:30px;">
                                            
                                             <a href="{{url('rental/'.$genreBookValue["id"])}}"><img src="{{$genreBookValue["BookImage"]}}" width="128" height="180"></img></a>
                                             <a href="{{url('rental/'.$genreBookValue["id"])}}"><p>{{$genreBookValue["BookTitle"]}}</p></a>
                                             
                                         </div>
                                 @endif
-                                @if(($loop->iteration)==6)
+                                @if(($loop->iteration)==4)
                                 @break
                                 @endif
                        

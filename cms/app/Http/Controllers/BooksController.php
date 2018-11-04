@@ -324,7 +324,7 @@ class BooksController extends Controller
             'rental_flag.required'     =>'本が貸し出しの可否を選択してください',
             'comment_text.required'    =>'コメントを入力してください',
             'evaluation.required'      =>'評価を入力してください',
-            'key.required' => 'オススメな人を入力してください'
+            'key.required' => 'オススメしたい人を入力してください'
         ];
            
         $validator = Validator::make($request->all(), $validate_rule, $error_msg);
