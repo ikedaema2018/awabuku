@@ -73,7 +73,7 @@
 
     
     
-    <header>
+<header>
         
         
     <div style="display:flex; width:100%; margin:5px auto;" class="head_wrapper">    
@@ -104,12 +104,9 @@
 
 
 <!--navbarの表示 -->
-        <nav class="navbar navbar-default" >
+    <nav class="navbar navbar-default" >
           <div class="container-fluid" style="background-color: #343a40;">
-
-
             <div class="navbar-header">
-            
                 <!--スマホ用トグルボタンの設置-->
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".target">
                   <span class="sr-only">Toggle navigation</span>
@@ -118,14 +115,10 @@
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
                 </button>
+         　 </div>
             
-            <!--ロゴ表示の指定-->
-           
-          </div>
-            
-            
-            <div class="container-fluid">
-             <div class="collapse navbar-collapse target">
+         
+            <div class="collapse navbar-collapse target">
                 <ul class="nav navbar-nav">
                     <li>
                         <a href="{{url(' ')}}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a>
@@ -144,32 +137,20 @@
                     </li>  
                     <li>
                         <a href="{{url('user_page')}}"><img src="{{asset('img/group.png')}}" style="width: 20px; height: 20px;"><span> メンバー<span></a>
- 
                     </li> 
-                 
                 </ul> 
-   
-            <ul class="nav navbar-nav navbar-right">   
-            <li>
-            <form class="form-inline my-2 my-lg-0" action="{{url('/search')}}">
-                  <input class="form-control mr-sm-2" type="search" placeholder="キーワードを入力してください。" aria-label="Search"name="keyword" value="">
-                  <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+         
+             
+                        <form class="form-inline my-2 my-lg-0 navbar-form navbar-right" action="{{url('/search')}}">
+                          <input class="form-control mr-sm-2" type="search" placeholder="キーワードを入力してください。" aria-label="Search"name="keyword" value="">
+                          <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+                        </form> 
                
-            </li>  
-             </ul>
-    </form>
-            
-            
-            
-            
-            
-            </div>
-        </nav>    
-    </header>
+            </div>    
+        </div>
+    </nav>    
+</header>
     @yield('content')
-    
-
-
 
 </body>
 <footer>

@@ -12,7 +12,7 @@ use App\Category_genre;
     <div class="bxslider-wrap">
       <ul class="bxslider">
         <li>
-            <div style="background-color:#fffaf0;"> 
+            <div style="background-color:#FFFFFF;"> 
                 <div class="row">　
                     <ul style="list-style:none;  vertical-align: bottom;" class="sample">
                      <li><span><img class="avater img-circle" src="{{$topic_user->avater}}" style="inline"></img></span></li>
@@ -38,7 +38,7 @@ use App\Category_genre;
             </div>
         </li>     
         <li>
-            <div style="background-color:#fffaf0;"> 
+            <div style="background-color:#FFFFFF;"> 
                 <div class="row">　
                     <ul style="list-style:none;  vertical-align: bottom;" class="sample">
                      <li><span><img class="avater img-circle" src="{{$topic_user2->avater}}" style="inline"></img></span></li>
