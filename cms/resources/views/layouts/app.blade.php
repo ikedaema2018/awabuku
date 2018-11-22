@@ -33,6 +33,7 @@
     <link rel="stylesheet" href="{{asset('css/book_comment.css')}}">
     <link rel="stylesheet" href="{{asset('css/key.css')}}">    
     <link rel="stylesheet" href="{{asset('css/head.css')}}">
+    <link rel="icon" href="{{asset('img/favicon.ico')}}" type="image/x-icon">
     
     <!--<link rel="stylesheet" href="{{secure_asset('css/head.css')}}" type="text/css" />-->
  
@@ -76,31 +77,62 @@
 <header>
         
         
-    <div style="display:flex; width:100%; margin:5px auto;" class="head_wrapper">    
-        <div class="col-xs-12 col-sm-6" style="display:table-cell;width:50%;"> 
+    <!--<div style="display:flex; width:100%; margin:5px auto; position: relative;" class="head_wrapper">    -->
+    <!--    <div class="col-xs-12 col-sm-6" style="display:table-cell;width:50%;"> -->
+    <!--        <div class="titile_wrapper" > -->
+    <!--            <h2><img src="{{asset('img/OurBooks.svg')}}" style="width: 300px; height: 40px;"></h2>-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--    <div class="col-xs-12 col-sm-6" style="display:table-cell;position: relative;text-align:right;position: absolute; bottom: 0;right: 0;" >-->
+    <!--      @if (Auth::check()) -->
+    <!--      <ul style="list-style-type:none; display: flex; justify-content: space-between;">-->
+    <!--                <li >-->
+    <!--                    <a href="{{url('mypage')}}"><p　style="display:none">{{Auth::user()->name}}さん</p></a>-->
+    <!--                </li>    -->
+    <!--                <li >-->
+    <!--                    <a href="{{url('book')}}"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> 本を登録する</a>-->
+    <!--                </li>-->
+    <!--                <li >-->
+    <!--                    <a href="{{url('logout')}}">ログアウトする</a>-->
+    <!--                </li>-->
+    <!--            @else-->
+    <!--                <li ><span navbar-brand>ゲストさん</span></li><br>-->
+    <!--                <li >><a href="{{url('facebook')}}">ログインする</a></li>-->
+    <!--            @endif -->
+    <!--      </ul>        -->
+    <!--    </div>    -->
+    <!--</div>-->
+    
+    
+    
+    <div class="row" style="position: relative;">    
+        <div class="col-xs-12 col-sm-6"> 
             <div class="titile_wrapper" > 
-                <h2><img src="{{asset('img/OurBooks.svg')}}" style="width: 300px; height: 40px;"></h2>
+                <h2><img src="{{asset('img/OurBooks.svg')}}" style="width: 285px; height: 30px;"></h2>
             </div>
         </div>
-        <div class="col-xs-12 col-sm-6" style="display:table-cell;position: relative;text-align:right;" >
+        <div style="padding-right:20px; position: absolute; text-align:right; bottom: 0;right: 0;">
           @if (Auth::check()) 
           <ul style="list-style-type:none; display: flex; justify-content: space-between;">
-                    <li >
+                    <li style="padding-right:20px;">
                         <a href="{{url('mypage')}}"><p　style="display:none">{{Auth::user()->name}}さん</p></a>
                     </li>    
-                    <li >
+                    <li style="padding-right:20px;">
                         <a href="{{url('book')}}"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> 本を登録する</a>
                     </li>
-                    <li >
+                    <li style="padding-right:20px;">
                         <a href="{{url('logout')}}">ログアウトする</a>
                     </li>
+            </ul>        
                 @else
-                    <li ><span navbar-brand>ゲストさん</span></li><br>
-                    <li >><a href="{{url('facebook')}}">ログインする</a></li>
-                @endif 
-          </ul>        
+            <ul style="list-style-type:none; display: flex; justify-content: space-between;">    
+                    <li style="padding-right:20px;"><span navbar-brand>ゲストさん</span></li>
+                    <li style="padding-right:20px;"><a href="{{url('facebook')}}">ログインする</a></li>
+             </ul>     
+            @endif 
         </div>    
     </div>
+    
 
 
 <!--navbarの表示 -->
@@ -121,7 +153,7 @@
             <div class="collapse navbar-collapse target">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="{{url(' ')}}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a>
+                        <a href="{{url(' ')}}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home</a>
                     </li> 
                     <li>
                         <a href="{{url('gsbooks')}}">g's library</a>
@@ -161,4 +193,5 @@
    @show
  </div>
 </div>
+</footer>
 </html>
